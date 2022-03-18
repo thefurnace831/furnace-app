@@ -166,7 +166,7 @@ $RECYCLE.BIN/
 ### Flutter ###
 # Flutter/Dart/Pub related
 **/doc/api/
-.dart_tool/
+.dart_tool/*
 .flutter-plugins
 .flutter-plugins-dependencies
 .fvm/
@@ -229,3 +229,25 @@ lib/generated_plugin_registrant.dart
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter
 
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+# Support for Project snippet scope
+
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,dart,flutter
