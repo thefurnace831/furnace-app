@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'The Furnace',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'The Furnace'),
     );
   }
 }
@@ -95,21 +95,16 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            Spacer(flex: 3,),
+            Text('The Furnace', style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),),
+            Spacer(flex: 1,),
+            FloatingActionButton.extended(onPressed: () {}, label: Text('Login'),),
+            Spacer(flex: 1,),
+            FloatingActionButton.extended(onPressed: () {}, label: Text('Register'),),
+            Spacer(flex: 3,),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
