@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:furnace_app/register.dart';
 
+import 'login.dart';
+import 'register.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -20,7 +23,9 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => const MyHomePage(title: 'The Furnace Home Page')
+          '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
+          '/login': (context) => loginPage(),
+          '/register': (context) => const Register()
         });
   }
 }
@@ -73,28 +78,34 @@ class MyHomePage extends StatelessWidget {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Spacer(
+            const Spacer(
               flex: 3,
             ),
-            Text(
+            const Text(
               'The Furnace',
               style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
             ),
-            Spacer(
+            const Spacer(
               flex: 1,
             ),
             FloatingActionButton.extended(
-              onPressed: () {},
-              label: Text('Login'),
+              heroTag: "loginMenuButton",
+              onPressed: () {
+                Navigator.pushNamed(context, '/login');
+              },
+              label: const Text('Login'),
             ),
-            Spacer(
+            const Spacer(
               flex: 1,
             ),
             FloatingActionButton.extended(
-              onPressed: () {},
-              label: Text('Register'),
+              heroTag: "registerMenuButton",
+              onPressed: () {
+                Navigator.pushNamed(context, '/register');
+              },
+              label: const Text('Register'),
             ),
-            Spacer(
+            const Spacer(
               flex: 3,
             ),
           ],
