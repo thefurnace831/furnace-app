@@ -73,21 +73,33 @@ class MyHomePage extends StatelessWidget {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Spacer(
+              flex: 3,
             ),
             Text(
-              ':/',
-              style: Theme.of(context).textTheme.headline4,
+              'The Furnace',
+              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+            ),
+            Spacer(
+              flex: 1,
+            ),
+            FloatingActionButton.extended(
+              onPressed: () {},
+              label: Text('Login'),
+            ),
+            Spacer(
+              flex: 1,
+            ),
+            FloatingActionButton.extended(
+              onPressed: () {},
+              label: Text('Register'),
+            ),
+            Spacer(
+              flex: 3,
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => print("pressed"),
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
