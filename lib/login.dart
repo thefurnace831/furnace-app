@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  LoginPage({Key? key}) : super(key: key);
+
+  String usermame = "";
+  String password = "";
 
   _LoginPageState createState() => _LoginPageState();
 }
@@ -39,7 +42,11 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           children: const [
                             Text("Username", textScaleFactor: 1.2),
-                            TextField()
+                            TextField(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -52,7 +59,12 @@ class _LoginPageState extends State<LoginPage> {
                               "Password",
                               textScaleFactor: 1.2,
                             ),
-                            TextField()
+                            TextField(
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
                           ],
                         ),
                       ),
