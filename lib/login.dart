@@ -54,6 +54,17 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: ElevatedButton(
+                            onPressed: () {
+                              // ignore: dead_code
+                              if (false) {
+                                //todo: implement button functionality
+                              }
+                            },
+                            child: const Text('Submit')),
+                      ),
                     ],
                   ),
                 ],
