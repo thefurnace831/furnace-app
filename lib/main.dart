@@ -4,6 +4,7 @@ import 'package:furnace_app/register.dart';
 
 import 'login.dart';
 import 'register.dart';
+import 'landing.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
           '/login': (context) => loginPage(),
-          '/register': (context) => const Register()
+          '/register': (context) => const Register(),
+          '/landing': (context) => landingPage()
         });
   }
 }
