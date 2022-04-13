@@ -9,10 +9,11 @@ class _loginPageState extends State<loginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: const Text("place holder text"),
+          title: const Text("Furnace Login"),
         ),
         body: Column(
           children: [
@@ -36,7 +37,7 @@ class _loginPageState extends State<loginPage> {
                         margin: const EdgeInsets.all(10.0),
                         child: Column(
                           children: const [
-                            Text("Username", textScaleFactor: 1.2),
+                            Text("Email", textScaleFactor: 1.2),
                             TextField()
                           ],
                         ),
@@ -50,11 +51,20 @@ class _loginPageState extends State<loginPage> {
                               "Password",
                               textScaleFactor: 1.2,
                             ),
-                            TextField()
+                            TextField(
+                              obscureText: true,
+                            ),
                           ],
                         ),
                       ),
                     ],
+                  ),
+                  FloatingActionButton.extended(
+                    heroTag: "loginMenuButton",
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/landing');
+                    },
+                    label: const Text('Login'),
                   ),
                 ],
               ),

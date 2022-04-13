@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
 
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:furnace_app/register.dart';
 
 import 'login.dart';
 import 'register.dart';
 import 'landing.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final keyApplicationId = 'j7D0LsyZNZZf5VgBYrc6FFe6lu2AP5abAab8vcZk';
+  final keyClientKey = 'tNNM7p3yOvnxYT95ideyWwZogR0hI57bn1YrX5Qh';
+  final keyParseServerUrl = 'https://parseapi.back4app.com';
+
+  await Parse().initialize(keyApplicationId, keyParseServerUrl,
+      clientKey: keyClientKey, autoSendSessionId: true);
+
+  // var firstObject = ParseObject('FirstClass')
+  //   ..set(
+  //       'message', 'Hey ! First message from Flutter. Parse is now connected');
+  // await firstObject.save();
   runApp(const MyApp());
 }
 

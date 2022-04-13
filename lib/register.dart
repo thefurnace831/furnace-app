@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'dart:io';
 import 'dart:convert';
 
@@ -41,6 +42,7 @@ class _RegisterState extends State<Register> {
                     child: Column(
                       children: [
                         TextField(
+                          controller: _nameController,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -65,6 +67,7 @@ class _RegisterState extends State<Register> {
                           height: 30,
                         ),
                         TextField(
+                          controller: _emailController,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -89,6 +92,7 @@ class _RegisterState extends State<Register> {
                           height: 30,
                         ),
                         TextField(
+                          controller: _passwordController,
                           style: const TextStyle(color: Colors.black),
                           obscureText: true,
                           decoration: InputDecoration(
@@ -129,7 +133,7 @@ class _RegisterState extends State<Register> {
                               child: IconButton(
                                   color: Colors.black,
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/');
+                                    registerAccount();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_forward,
@@ -147,5 +151,21 @@ class _RegisterState extends State<Register> {
         ],
       ),
     );
+  }
+
+  void registerAccount() async {
+    final username = _nameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    final user = ParseUser.createUser(username, password, email);
+
+    var response = await user.signUp();
+
+    if (response.success) {
+      Navigator.pushNamed(context, '/');
+    } else {
+      print(response.error!.message);
+    }
   }
 }
