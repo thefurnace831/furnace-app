@@ -5,13 +5,13 @@ import 'package:furnace_app/register.dart';
 
 import 'login.dart';
 import 'register.dart';
-import 'landing.dart';
+import 'welcome.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final keyApplicationId = 'j7D0LsyZNZZf5VgBYrc6FFe6lu2AP5abAab8vcZk';
-  final keyClientKey = 'tNNM7p3yOvnxYT95ideyWwZogR0hI57bn1YrX5Qh';
-  final keyParseServerUrl = 'https://parseapi.back4app.com';
+  const keyApplicationId = 'j7D0LsyZNZZf5VgBYrc6FFe6lu2AP5abAab8vcZk';
+  const keyClientKey = 'tNNM7p3yOvnxYT95ideyWwZogR0hI57bn1YrX5Qh';
+  const keyParseServerUrl = 'https://parseapi.back4app.com';
 
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, autoSendSessionId: true);
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
           '/login': (context) => loginPage(),
           '/register': (context) => const Register(),
-          '/landing': (context) => landingPage()
+          '/welcome': (context) => WelcomePage()
         });
   }
 }

@@ -163,7 +163,8 @@ class _RegisterState extends State<Register> {
     var response = await user.signUp();
 
     if (response.success) {
-      Navigator.pushNamed(context, '/');
+      await user.login();
+      Navigator.pushNamed(context, '/welcome');
     } else {
       print(response.error!.message);
     }
