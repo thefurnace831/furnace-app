@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
-          '/login': (context) => loginPage(),
+          '/login': (context) => LoginPage(),
           '/register': (context) => const Register(),
           '/welcome': (context) => WelcomePage()
         });

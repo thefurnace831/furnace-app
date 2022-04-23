@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -11,6 +11,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,10 +44,11 @@ class _LoginPageState extends State<LoginPage> {
                         width: 100,
                         margin: const EdgeInsets.all(10.0),
                         child: Column(
-                          children: const [
-                            Text("Email", textScaleFactor: 1.2),
+                          children: [
+                            const Text("Email", textScaleFactor: 1.2),
                             TextField(
-                              decoration: InputDecoration(
+                              controller: _emailController,
+                              decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                               ),
                             )
@@ -55,14 +59,15 @@ class _LoginPageState extends State<LoginPage> {
                         width: 100,
                         margin: const EdgeInsets.all(10.0),
                         child: Column(
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               "Password",
                               textScaleFactor: 1.2,
                             ),
                             TextField(
+                              controller: _passwordController,
                               obscureText: true,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -73,26 +78,51 @@ class _LoginPageState extends State<LoginPage> {
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: ElevatedButton(
                             onPressed: () {
-                              // ignore: dead_code
-                              if (false) {
-                                //todo: implement button functionality
-                              }
+                              login();
                             },
                             child: const Text('Submit')),
                       ),
                     ],
-                  ),
-                  FloatingActionButton.extended(
-                    heroTag: "loginMenuButton",
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/landing');
-                    },
-                    label: const Text('Login'),
                   ),
                 ],
               ),
             ),
           ],
         ));
+  }
+
+  void showError(String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error!"),
+          content: Text(errorMessage),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    final user = ParseUser(email, password, null);
+
+    var response = await user.login();
+
+    if (response.success) {
+      Navigator.pushNamed(context, '/welcome');
+    } else {
+      showError(response.error!.message);
+    }
   }
 }
