@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class loginPage extends StatefulWidget {
-  _loginPageState createState() => _loginPageState();
+class LoginPage extends StatefulWidget {
+  LoginPage({Key? key}) : super(key: key);
+
+  String usermame = "";
+  String password = "";
+
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _loginPageState extends State<loginPage> {
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +43,11 @@ class _loginPageState extends State<loginPage> {
                         child: Column(
                           children: const [
                             Text("Email", textScaleFactor: 1.2),
-                            TextField()
+                            TextField(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -53,9 +62,23 @@ class _loginPageState extends State<loginPage> {
                             ),
                             TextField(
                               obscureText: true,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
                             ),
                           ],
                         ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: ElevatedButton(
+                            onPressed: () {
+                              // ignore: dead_code
+                              if (false) {
+                                //todo: implement button functionality
+                              }
+                            },
+                            child: const Text('Submit')),
                       ),
                     ],
                   ),
