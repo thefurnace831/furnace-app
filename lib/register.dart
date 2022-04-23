@@ -57,7 +57,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
-                              hintText: "Name",
+                              hintText: "First & Last Name",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -153,12 +153,38 @@ class _RegisterState extends State<Register> {
     );
   }
 
+  void showError(String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error!"),
+          content: Text(errorMessage),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void registerAccount() async {
     final username = _nameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
-    final user = ParseUser.createUser(username, password, email);
+    if (email.isEmpty || password.isEmpty || username.isEmpty) {
+      showError("All fields are required!");
+      return;
+    }
+
+    final user = ParseUser.createUser(email, password, email);
+    user.set('fullName', username);
 
     var response = await user.signUp();
 
@@ -166,7 +192,7 @@ class _RegisterState extends State<Register> {
       await user.login();
       Navigator.pushNamed(context, '/welcome');
     } else {
-      print(response.error!.message);
+      showError(response.error!.message);
     }
   }
 }

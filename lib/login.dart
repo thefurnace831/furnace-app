@@ -115,6 +115,11 @@ class _LoginPageState extends State<LoginPage> {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
+    if (email.isEmpty || password.isEmpty) {
+      showError("All fields are required!");
+      return;
+    }
+
     final user = ParseUser(email, password, null);
 
     var response = await user.login();
