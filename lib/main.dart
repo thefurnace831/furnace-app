@@ -6,6 +6,7 @@ import 'package:furnace_app/register.dart';
 import 'login.dart';
 import 'register.dart';
 import 'welcome.dart';
+import 'landing.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +41,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
           '/login': (context) => LoginPage(),
           '/register': (context) => const Register(),
-          '/welcome': (context) => WelcomePage()
+          '/welcome': (context) => WelcomePage(),
+          '/Capture': (context) => capturePage()
         });
   }
 }
@@ -119,6 +121,16 @@ class MyHomePage extends StatelessWidget {
                 Navigator.pushNamed(context, '/register');
               },
               label: const Text('Register'),
+            ),
+            const Spacer(
+              flex: 3,
+            ),
+            FloatingActionButton.extended(
+              heroTag: "Camera",
+              onPressed: () {
+                Navigator.pushNamed(context, '/Capture');
+              },
+              label: const Text('Capture'),
             ),
             const Spacer(
               flex: 3,
