@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           '/login': (context) => LoginPage(),
           '/register': (context) => const Register(),
           '/welcome': (context) => const WelcomePage(),
-          '/capture': (context) => capturePage()
+          '/capture': (context) => const capturePage()
         });
   }
 }
@@ -98,10 +98,8 @@ class MyHomePage extends StatelessWidget {
             const Spacer(
               flex: 3,
             ),
-            const Text(
-              'The Furnace',
-              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-            ),
+            Image.asset('assets/images/logo.png',
+                height: 200, width: 300, fit: BoxFit.fitWidth),
             const Spacer(
               flex: 1,
             ),
