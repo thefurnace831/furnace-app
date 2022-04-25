@@ -29,8 +29,10 @@ class WelcomePageState extends State<WelcomePage> {
               flex: 1,
             ),
             FloatingActionButton.extended(
-              heroTag: "loginMenuButton",
-              onPressed: () {},
+              heroTag: "cameraButton",
+              onPressed: () {
+                Navigator.pushNamed(context, '/capture');
+              },
               label: const Text('Scan QR'),
             ),
             const Spacer(
