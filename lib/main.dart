@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         title: 'The Furnace',
         theme: ThemeData(
           // This is the theme of your application.
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.red,
         ),
         initialRoute: '/',
         routes: {
