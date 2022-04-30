@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'dart:io';
 import 'dart:convert';
 
@@ -41,6 +42,7 @@ class _RegisterState extends State<Register> {
                     child: Column(
                       children: [
                         TextField(
+                          controller: _nameController,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -55,7 +57,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
-                              hintText: "Name",
+                              hintText: "First & Last Name",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -65,6 +67,7 @@ class _RegisterState extends State<Register> {
                           height: 30,
                         ),
                         TextField(
+                          controller: _emailController,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -89,6 +92,7 @@ class _RegisterState extends State<Register> {
                           height: 30,
                         ),
                         TextField(
+                          controller: _passwordController,
                           style: const TextStyle(color: Colors.black),
                           obscureText: true,
                           decoration: InputDecoration(
@@ -129,7 +133,7 @@ class _RegisterState extends State<Register> {
                               child: IconButton(
                                   color: Colors.black,
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/');
+                                    registerAccount();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_forward,
@@ -147,5 +151,48 @@ class _RegisterState extends State<Register> {
         ],
       ),
     );
+  }
+
+  void showError(String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error!"),
+          content: Text(errorMessage),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void registerAccount() async {
+    final username = _nameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty || username.isEmpty) {
+      showError("All fields are required!");
+      return;
+    }
+
+    final user = ParseUser.createUser(email, password, email);
+    user.set('fullName', username);
+
+    var response = await user.signUp();
+
+    if (response.success) {
+      await user.login();
+      Navigator.pushNamed(context, '/welcome');
+    } else {
+      showError(response.error!.message);
+    }
   }
 }

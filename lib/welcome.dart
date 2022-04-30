@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
-class landingPage extends StatefulWidget {
-  landingPageState createState() => landingPageState();
+class WelcomePage extends StatefulWidget {
+  const WelcomePage({Key? key}) : super(key: key);
+
+  @override
+  WelcomePageState createState() => WelcomePageState();
 }
 
-class landingPageState extends State<landingPage> {
+class WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("The Furnace"),
+        title: const Text("The Furnace"),
       ),
       body: Center(
         child: Column(
@@ -26,8 +29,10 @@ class landingPageState extends State<landingPage> {
               flex: 1,
             ),
             FloatingActionButton.extended(
-              heroTag: "loginMenuButton",
-              onPressed: () {},
+              heroTag: "cameraButton",
+              onPressed: () {
+                Navigator.pushNamed(context, '/capture');
+              },
               label: const Text('Scan QR'),
             ),
             const Spacer(

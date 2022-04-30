@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:furnace_app/register.dart';
 
 import 'login.dart';
 import 'register.dart';
-import 'landing.dart';
+import 'welcome.dart';
 import 'capture.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  const keyApplicationId = 'j7D0LsyZNZZf5VgBYrc6FFe6lu2AP5abAab8vcZk';
+  const keyClientKey = 'tNNM7p3yOvnxYT95ideyWwZogR0hI57bn1YrX5Qh';
+  const keyParseServerUrl = 'https://parseapi.back4app.com';
+
+  await Parse().initialize(keyApplicationId, keyParseServerUrl,
+      clientKey: keyClientKey, autoSendSessionId: true);
+
+  // var firstObject = ParseObject('FirstClass')
+  //   ..set(
+  //       'message', 'Hey ! First message from Flutter. Parse is now connected');
+  // await firstObject.save();
   runApp(const MyApp());
 }
 
@@ -21,15 +34,15 @@ class MyApp extends StatelessWidget {
         title: 'The Furnace',
         theme: ThemeData(
           // This is the theme of your application.
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.red,
         ),
         initialRoute: '/',
         routes: {
           '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
-          '/login': (context) => loginPage(),
+          '/login': (context) => LoginPage(),
           '/register': (context) => const Register(),
-          '/landing': (context) => landingPage(),
-          '/Capture': (context) => capturePage()
+          '/welcome': (context) => const WelcomePage(),
+          '/capture': (context) => const capturePage()
         });
   }
 }
@@ -85,10 +98,8 @@ class MyHomePage extends StatelessWidget {
             const Spacer(
               flex: 3,
             ),
-            const Text(
-              'The Furnace',
-              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-            ),
+            Image.asset('assets/images/logo.png',
+                height: 200, width: 300, fit: BoxFit.fitWidth),
             const Spacer(
               flex: 1,
             ),
@@ -108,16 +119,6 @@ class MyHomePage extends StatelessWidget {
                 Navigator.pushNamed(context, '/register');
               },
               label: const Text('Register'),
-            ),
-            const Spacer(
-              flex: 3,
-            ),
-            FloatingActionButton.extended(
-              heroTag: "Camera",
-              onPressed: () {
-                Navigator.pushNamed(context, '/Capture');
-              },
-              label: const Text('Capture'),
             ),
             const Spacer(
               flex: 3,
