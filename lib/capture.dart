@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 // ignore: camel_case_types
 class capturePage extends StatefulWidget {
@@ -58,6 +59,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   @override
   void initState() {
     super.initState();
+    createLog("Kitchen");
     _controller = CameraController(
       widget.camera,
       ResolutionPreset.medium,
@@ -107,6 +109,41 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         child: const Icon(Icons.camera_alt),
       ),
     );
+  }
+
+  void showError(String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error!"),
+          content: Text(errorMessage),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void createLog(String location) async {
+    ParseObject newLog = ParseObject("log");
+    ParseUser? user = await ParseUser.currentUser() as ParseUser?;
+    newLog.set("location", location);
+    newLog.set("user", user);
+
+    var response = await newLog.save();
+
+    if (response.success) {
+      Navigator.pushNamed(context, '/welcome');
+    } else {
+      showError(response.error!.message);
+    }
   }
 }
 
