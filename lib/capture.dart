@@ -59,7 +59,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   @override
   void initState() {
     super.initState();
-    createLog("Kitchen");
     _controller = CameraController(
       widget.camera,
       ResolutionPreset.medium,
