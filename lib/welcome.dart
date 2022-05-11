@@ -7,6 +7,7 @@ class WelcomePage extends StatefulWidget {
   WelcomePageState createState() => WelcomePageState();
 }
 
+// The page of the app that is displayed a to logged-in user
 class WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {

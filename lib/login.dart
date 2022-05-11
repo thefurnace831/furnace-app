@@ -111,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  // Attempts to log the user in to Parse
   void login() async {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();

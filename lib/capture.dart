@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
+// Camera view reached from the welcome page. Scans QR codes and then creates logs to the database based on the string in the QR code
 // ignore: camel_case_types
 class capturePage extends StatefulWidget {
   const capturePage({Key? key}) : super(key: key);
@@ -34,7 +34,7 @@ class capturePageState extends State<capturePage> {
   @override
   Widget build(BuildContext context) {
     main();
-    return Scaffold();
+    return const Scaffold();
   }
 }
 
@@ -130,6 +130,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     );
   }
 
+  // TODO: Call when a QR code is successfully scanned
   void createLog(String location) async {
     ParseObject newLog = ParseObject("log");
     ParseUser? user = await ParseUser.currentUser() as ParseUser?;

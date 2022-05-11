@@ -17,10 +17,6 @@ void main() async {
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, autoSendSessionId: true);
 
-  // var firstObject = ParseObject('FirstClass')
-  //   ..set(
-  //       'message', 'Hey ! First message from Flutter. Parse is now connected');
-  // await firstObject.save();
   runApp(const MyApp());
 }
 
@@ -47,6 +43,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// This widget contains buttons for navigating to Login and Registration
 class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 

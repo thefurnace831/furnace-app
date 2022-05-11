@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'dart:io';
-import 'dart:convert';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -173,18 +171,23 @@ class _RegisterState extends State<Register> {
     );
   }
 
+  /*
+  Adds an account to the parse database with the given fields
+  Note that the email supplied by the user is actually assigned to the object's username
+  This is to enforce unique emails and allow for duplicate names
+  */
   void registerAccount() async {
-    final username = _nameController.text.trim();
+    final fullName = _nameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
-    if (email.isEmpty || password.isEmpty || username.isEmpty) {
+    if (email.isEmpty || password.isEmpty || fullName.isEmpty) {
       showError("All fields are required!");
       return;
     }
 
     final user = ParseUser.createUser(email, password, email);
-    user.set('fullName', username);
+    user.set('fullName', fullName);
 
     var response = await user.signUp();
 
