@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -14,6 +15,14 @@ class WelcomePageState extends State<WelcomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("The Furnace"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              logout();
+            },
+            child: const Text('Logout'),
+          )
+        ],
       ),
       body: Center(
         child: Column(
@@ -43,5 +52,16 @@ class WelcomePageState extends State<WelcomePage> {
         ),
       ),
     );
+  }
+
+  void logout() async {
+    final user = await ParseUser.currentUser();
+    if (user == null) {
+      return;
+    }
+
+    await user.logout();
+
+    Navigator.pushNamed(context, "/");
   }
 }
