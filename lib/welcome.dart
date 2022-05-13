@@ -17,6 +17,7 @@ class WelcomePageState extends State<WelcomePage> {
         title: const Text("The Furnace"),
         actions: <Widget>[
           TextButton(
+            style: TextButton.styleFrom(primary: Colors.white),
             onPressed: () {
               logout();
             },
