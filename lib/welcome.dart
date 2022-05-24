@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -7,12 +8,22 @@ class WelcomePage extends StatefulWidget {
   WelcomePageState createState() => WelcomePageState();
 }
 
+// The page of the app that is displayed a to logged-in user
 class WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("The Furnace"),
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(primary: Colors.white),
+            onPressed: () {
+              logout();
+            },
+            child: const Text('Logout'),
+          )
+        ],
       ),
       body: Center(
         child: Column(
@@ -42,5 +53,16 @@ class WelcomePageState extends State<WelcomePage> {
         ),
       ),
     );
+  }
+
+  void logout() async {
+    final user = await ParseUser.currentUser();
+    if (user == null) {
+      return;
+    }
+
+    await user.logout();
+
+    Navigator.pushNamed(context, "/");
   }
 }

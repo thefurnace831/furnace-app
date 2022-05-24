@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
+// Camera view reached from the welcome page. Scans QR codes and then creates logs to the database based on the string in the QR code
 // ignore: camel_case_types
 class capturePage extends StatefulWidget {
   const capturePage({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class capturePageState extends State<capturePage> {
   @override
   Widget build(BuildContext context) {
     main();
-    return Scaffold();
+    return const Scaffold();
   }
 }
 
@@ -107,6 +108,42 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         child: const Icon(Icons.camera_alt),
       ),
     );
+  }
+
+  void showError(String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error!"),
+          content: Text(errorMessage),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // TODO: Call when a QR code is successfully scanned
+  void createLog(String location) async {
+    ParseObject newLog = ParseObject("log");
+    ParseUser? user = await ParseUser.currentUser() as ParseUser?;
+    newLog.set("location", location);
+    newLog.set("user", user);
+
+    var response = await newLog.save();
+
+    if (response.success) {
+      Navigator.pushNamed(context, '/welcome');
+    } else {
+      showError(response.error!.message);
+    }
   }
 }
 
