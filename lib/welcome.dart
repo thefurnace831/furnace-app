@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:furnace_app/scanner.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class WelcomePage extends StatefulWidget {
-  const WelcomePage({Key? key}) : super(key: key);
+  bool checkedIn;
+  WelcomePage(this.checkedIn, {Key? key}) : super(key: key);
 
   @override
   WelcomePageState createState() => WelcomePageState();
@@ -10,6 +12,7 @@ class WelcomePage extends StatefulWidget {
 
 // The page of the app that is displayed a to logged-in user
 class WelcomePageState extends State<WelcomePage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,9 +45,11 @@ class WelcomePageState extends State<WelcomePage> {
             FloatingActionButton.extended(
               heroTag: "cameraButton",
               onPressed: () {
-                Navigator.pushNamed(context, '/capture');
+                //Navigator.pushNamed(context, '/scanner');
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScanPage(widget.checkedIn)));
               },
-              label: const Text('Scan QR'),
+              label: Text(widget.checkedIn ? "QR Check Out" : "QR Check In"),
+              icon: const Icon(Icons.qr_code_scanner),
             ),
             const Spacer(
               flex: 3,

@@ -4,9 +4,8 @@ import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:furnace_app/register.dart';
 
 import 'login.dart';
-import 'register.dart';
 import 'welcome.dart';
-import 'capture.dart';
+import 'scanner.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,8 +36,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
           '/login': (context) => LoginPage(),
           '/register': (context) => const Register(),
-          '/welcome': (context) => const WelcomePage(),
-          '/capture': (context) => const capturePage()
+          '/welcome': (context) => WelcomePage(false),
+          '/scanner': (context) => ScanPage(false)
         });
   }
 }
