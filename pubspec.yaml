@@ -35,6 +35,8 @@ dependencies:
   path: ^1.8.0
   path_provider: ^2.0.9
 
+  flutter_barcode_scanner: any
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
