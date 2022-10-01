@@ -41,7 +41,8 @@ class _LoginPageState extends State<LoginPage> {
                   Column(
                     children: [
                       Container(
-                        width: 100,
+                        padding: EdgeInsets.all(20),
+                        width: 300,
                         margin: const EdgeInsets.all(10.0),
                         child: Column(
                           children: [
@@ -50,14 +51,17 @@ class _LoginPageState extends State<LoginPage> {
                               controller: _emailController,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
+                                hintText: "Email",
+                                prefixIcon: Icon(Icons.email),
                               ),
                             )
                           ],
                         ),
                       ),
                       Container(
-                        width: 100,
-                        margin: const EdgeInsets.all(10.0),
+                        padding: EdgeInsets.all(20),
+                        width: 300,
+                        margin: const EdgeInsets.all(10),
                         child: Column(
                           children: [
                             const Text(
@@ -69,8 +73,11 @@ class _LoginPageState extends State<LoginPage> {
                               obscureText: true,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
+                                hintText: "Password",
+                                prefixIcon: Icon(Icons.lock),
                               ),
                             ),
+
                           ],
                         ),
                       ),
