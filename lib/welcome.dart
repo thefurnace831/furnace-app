@@ -45,7 +45,6 @@ class WelcomePageState extends State<WelcomePage> {
             FloatingActionButton.extended(
               heroTag: "cameraButton",
               onPressed: () {
-                //Navigator.pushNamed(context, '/scanner');
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScanPage(widget.checkedIn)));
               },
               label: Text(widget.checkedIn ? "QR Check Out" : "QR Check In"),
