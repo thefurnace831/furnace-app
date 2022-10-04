@@ -6,11 +6,13 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
-// TODO: Remove hardcoded strings, add to a database
+// TODO: Remove hardcoded strings, add to a database instead
 
 class ScanPage extends StatefulWidget {
   bool checkedIn;
-  ScanPage(this.checkedIn, {Key? key}) : super(key: key);
+  DateTime? initTime;
+
+  ScanPage(this.checkedIn, this.initTime, {Key? key}) : super(key: key);
   @override
   _ScanState createState() => _ScanState();
 }
@@ -44,9 +46,10 @@ class _ScanState extends State<ScanPage> {
     if (!mounted) return;
 
     if (scannedCode == "Check out-Qq86!^B*UW") {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => WelcomePage(widget.checkedIn = false)));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => WelcomePage(widget.checkedIn = false, null)));
       return;
     } else if (widget.checkedIn && scannedCode != "Check out-Qq86!^B*UW") {
+      //TODO: SHOW WHICH ROOM THEY NEED TO CHECK OUT OF IN ERROR MSG
       showError("Checkout of Previous Room!");
       return;
     } else if (rooms.containsKey(scannedCode)) {
@@ -77,7 +80,7 @@ class _ScanState extends State<ScanPage> {
     var response = await newLog.save();
 
     if (response.success) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => WelcomePage(widget.checkedIn = true)));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => WelcomePage(widget.checkedIn = true, widget.initTime)));
     } else {
       widget.checkedIn = false;
       showError(response.error!.message);
@@ -96,7 +99,7 @@ class _ScanState extends State<ScanPage> {
               child: const Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WelcomePage(widget.checkedIn)));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WelcomePage(widget.checkedIn, widget.initTime)));
               },
             ),
           ],
