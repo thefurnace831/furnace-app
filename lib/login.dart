@@ -40,9 +40,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Column(
                     children: [
-                      Container( // EMAIL BOX
-                        width: 200,
-                        margin: const EdgeInsets.all(20.0),
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        width: 300,
+                        margin: const EdgeInsets.all(10.0),
                         child: Column(
                           children: [
                             // const Text("Email", textScaleFactor: 1.2),
@@ -51,21 +52,17 @@ class _LoginPageState extends State<LoginPage> {
                               controller: _emailController,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: 'Email',
+                                hintText: "Email",
+                                prefixIcon: Icon(Icons.email),
                               ),
                             )
                           ],
                         ),
                       ),
-
-
-                      Container( // PASSWORD BOX
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 2, color: Colors.green),
-                        ),
-                        width: 200,
-                        margin: const EdgeInsets.all(10.0),
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        width: 300,
+                        margin: const EdgeInsets.all(10),
                         child: Column(
                           children: [
                             // const Text(
@@ -78,9 +75,11 @@ class _LoginPageState extends State<LoginPage> {
                               obscureText: true,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: 'Password'
+                                hintText: "Password",
+                                prefixIcon: Icon(Icons.lock),
                               ),
                             ),
+
                           ],
                         ),
 
