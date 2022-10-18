@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:furnace_app/register.dart';
 
+import 'api/room.dart';
 import 'login.dart';
 import 'welcome.dart';
 import 'scanner.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  const keyApplicationId = 'j7D0LsyZNZZf5VgBYrc6FFe6lu2AP5abAab8vcZk';
-  const keyClientKey = 'tNNM7p3yOvnxYT95ideyWwZogR0hI57bn1YrX5Qh';
+  const keyApplicationId = 'q5fW7bzeVL9PnFWUoWt8l9tGl3HxHVvFOLQKe8G5';
+  const keyClientKey = '3XYTD8qj1WVOkzZmyDng5Mdi1e3YLGuiQamD2yrv';
   const keyParseServerUrl = 'https://parseapi.back4app.com';
 
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
@@ -36,8 +37,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
           '/login': (context) => LoginPage(),
           '/register': (context) => const Register(),
-          '/welcome': (context) => WelcomePage(false, null),
-          '/scanner': (context) => ScanPage(false, null)
+          '/welcome': (context) => WelcomePage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: '')),
+          '/scanner': (context) => ScanPage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: ''))
         });
   }
 }
