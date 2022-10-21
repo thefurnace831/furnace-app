@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:furnace_app/scanner.dart';
@@ -7,7 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatefulWidget {
   bool checkedIn;
-  WelcomePage(this.checkedIn, {Key? key}) : super(key: key);
+  DateTime? initTime;
+  WelcomePage(this.checkedIn, this.initTime, {Key? key}) : super(key: key);
 
 
   @override
@@ -16,6 +19,28 @@ class WelcomePage extends StatefulWidget {
 
 // The page of the app that is displayed a to logged-in user
 class WelcomePageState extends State<WelcomePage> {
+  Timer? timer;
+  String? loggedTime;
+
+  @override
+  void initState() {
+    super.initState();
+    loggedTime = "";
+
+    if (widget.initTime == null && widget.checkedIn) {
+      widget.initTime = DateTime.now();
+    }
+
+    if (widget.checkedIn) {
+      timer = Timer.periodic(const Duration(seconds: 0), (timer) {
+        setState(() {
+          loggedTime = getLoggedTime(widget.initTime!);
+        });
+      });
+    } else {
+      timer?.cancel();
+    }
+  }
 
 
   @override
@@ -47,11 +72,18 @@ class WelcomePageState extends State<WelcomePage> {
             const Spacer(
               flex: 1,
             ),
+            Text(
+              widget.checkedIn ?  'Time Checked In: $loggedTime' : "",
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const Spacer(
+              flex: 1,
+            ),
             FloatingActionButton.extended(
               heroTag: "cameraButton",
               onPressed: () {
-                //Navigator.pushNamed(context, '/scanner');
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScanPage(widget.checkedIn)));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ScanPage(widget.checkedIn, widget.initTime)));
               },
               label: Text(widget.checkedIn ? "QR Check Out" : "QR Check In"),
               icon: const Icon(Icons.qr_code_scanner),
@@ -86,4 +118,14 @@ class WelcomePageState extends State<WelcomePage> {
 
     Navigator.pushNamed(context, "/");
   }
+}
+
+String getLoggedTime(DateTime startTime) {
+  Duration totalTime = DateTime.now().difference(startTime);
+
+  String hours = totalTime.inHours.toString().padLeft(0, '2');
+  String minutes = totalTime.inMinutes.remainder(60).toString().padLeft(2, '0');
+  String seconds = totalTime.inSeconds.remainder(60).toString().padLeft(2, '0');
+
+  return "$hours:$minutes:$seconds";
 }

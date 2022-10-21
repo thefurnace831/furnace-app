@@ -53,8 +53,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
           '/login': (context) => LoginPage(),
           '/register': (context) => const Register(),
-          '/welcome': (context) => WelcomePage(false),
-          '/scanner': (context) => ScanPage(false)
+          '/welcome': (context) => WelcomePage(false, null),
+          '/scanner': (context) => ScanPage(false, null)
         });
 
 
