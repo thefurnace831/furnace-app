@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:furnace_app/main.dart';
 import 'package:furnace_app/scanner.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -84,6 +85,22 @@ class WelcomePageState extends State<WelcomePage> {
 
     await user.logout();
 
-    Navigator.pushNamed(context, "/");
+    //Navigator.pushNamed(context, "/");
+    Navigator.push(context,
+      PageRouteBuilder(
+        transitionDuration: Duration(milliseconds: 400),
+        transitionsBuilder: (context, animation, animationTime,child) {
+          return ScaleTransition(
+            alignment: Alignment.center,
+            scale: animation,
+
+            child: child,
+          );
+        },
+        pageBuilder: (context, animation, animationTime){
+          return MyHomePage(title: 'The Furnace Home Page');
+        },
+      ),
+    );
   }
 }
