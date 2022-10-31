@@ -1,3 +1,4 @@
+import 'package:page_transition/page_transition.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 import 'package:flutter/material.dart';
@@ -146,10 +147,12 @@ class MyHomePage extends StatelessWidget {
                     .getInstance();
 
                 if( sharedPreferences.get('email')== "empty") {
-                  Navigator.pushNamed(context, '/login');
+                  //Navigator.pushNamed(context, '/login');
+                  Navigator.of(context).push(PageTransition(child: LoginPage(), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
                 }
                 else{
-                  Navigator.pushNamed(context, '/welcome');
+                  //Navigator.pushNamed(context, '/welcome');
+                  Navigator.of(context).push(PageTransition(child: WelcomePage(false), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
                 }
               },
               label: const Text('Login'),
@@ -160,7 +163,8 @@ class MyHomePage extends StatelessWidget {
             FloatingActionButton.extended(
               heroTag: "registerMenuButton",
               onPressed: () {
-                Navigator.pushNamed(context, '/register');
+                //Navigator.pushNamed(context, '/register');
+                Navigator.of(context).push(PageTransition(child: Register(), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
               },
               label: const Text('Register'),
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class Register extends StatefulWidget {
@@ -193,7 +194,23 @@ class _RegisterState extends State<Register> {
 
     if (response.success) {
       await user.login();
-      Navigator.pushNamed(context, '/welcome');
+      //Navigator.pushNamed(context, '/welcome');
+      Navigator.push(context,
+        PageRouteBuilder(
+          transitionDuration: Duration(milliseconds: 400),
+          transitionsBuilder: (context, animation, animationTime,child) {
+            return ScaleTransition(
+              alignment: Alignment.center,
+              scale: animation,
+
+              child: child,
+            );
+          },
+          pageBuilder: (context, animation, animationTime){
+            return WelcomePage(false);
+          },
+        ),
+      );
     } else {
       showError(response.error!.message);
     }
