@@ -34,9 +34,11 @@ dependencies:
   camera: ^0.9.4+19
   path: ^1.8.0
   path_provider: ^2.0.9
+  shared_preferences:
   intl: ^0.17.0
 
   flutter_barcode_scanner: any
+  page_transition: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +65,13 @@ flutter:
   assets:
     - assets/images/logo.png
 
+  fonts:
+    - family: Creattion
+    - fonts:
+        - asset: fonts/Creattion Demo.otf
+    - family: Crunchy
+    - fonts:
+        - asset: fonts/Crunchy_PERSONAL_USE_ONLY.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:furnace_app/main.dart';
 import 'package:furnace_app/scanner.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/room.dart';
 
@@ -11,6 +14,7 @@ class WelcomePage extends StatefulWidget {
   DateTime? initTime;
   Room room;
   WelcomePage(this.checkedIn, this.initTime, this.room, {Key? key}) : super(key: key);
+
 
   @override
   WelcomePageState createState() => WelcomePageState();
@@ -40,6 +44,7 @@ class WelcomePageState extends State<WelcomePage> {
       timer?.cancel();
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,14 +108,41 @@ class WelcomePageState extends State<WelcomePage> {
   }
 
   void logout() async {
-    final user = await ParseUser.currentUser();
+
+    // Code for persistent login
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final user = ParseUser(sharedPreferences.get('email').toString(), sharedPreferences.get('pass').toString(), null);
+
+     sharedPreferences.setString('email', "empty");
+     sharedPreferences.setString('pass', '');
+
+     print("This is " + sharedPreferences.get('email').toString());
+
+    //final user = await ParseUser.currentUser();
     if (user == null) {
+      print("inside");
       return;
     }
 
     await user.logout();
 
-    Navigator.pushNamed(context, "/");
+    //Navigator.pushNamed(context, "/");
+    Navigator.push(context,
+      PageRouteBuilder(
+        transitionDuration: Duration(milliseconds: 400),
+        transitionsBuilder: (context, animation, animationTime,child) {
+          return ScaleTransition(
+            alignment: Alignment.center,
+            scale: animation,
+
+            child: child,
+          );
+        },
+        pageBuilder: (context, animation, animationTime){
+          return MyHomePage(title: 'The Furnace Home Page');
+        },
+      ),
+    );
   }
 }
 

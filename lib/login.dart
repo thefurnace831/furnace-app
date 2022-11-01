@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -8,11 +10,15 @@ class LoginPage extends StatefulWidget {
   String password = "";
 
   _LoginPageState createState() => _LoginPageState();
+
+
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +90,12 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              // Code for persistent login
+                              final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                              sharedPreferences.setString('email', _emailController.text);
+                              sharedPreferences.setString('pass', _passwordController.text);
+
                               login();
                             },
                             child: const Text('Submit')),
@@ -120,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // Attempts to log the user in to Parse
   void login() async {
+
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
@@ -132,8 +144,25 @@ class _LoginPageState extends State<LoginPage> {
 
     var response = await user.login();
 
+
     if (response.success) {
-      Navigator.pushNamed(context, '/welcome');
+      //Navigator.pushNamed(context, '/welcome');
+      Navigator.push(context,
+      PageRouteBuilder(
+          transitionDuration: Duration(milliseconds: 400),
+      transitionsBuilder: (context, animation, animationTime,child) {
+        return ScaleTransition(
+          alignment: Alignment.center,
+          scale: animation,
+
+          child: child,
+        );
+      },
+        pageBuilder: (context, animation, animationTime){
+            return WelcomePage(false);
+        },
+          ),
+      );
     } else {
       showError(response.error!.message);
     }
