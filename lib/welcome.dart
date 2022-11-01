@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -115,6 +114,7 @@ class WelcomePageState extends State<WelcomePage> {
 
      sharedPreferences.setString('email', "empty");
      sharedPreferences.setString('pass', '');
+     sharedPreferences.setBool('loggedIn', false);
 
      print("This is " + sharedPreferences.get('email').toString());
 

@@ -93,11 +93,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: ElevatedButton(
                             onPressed: () async {
-                              // Code for persistent login
-                              final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                              sharedPreferences.setString('email', _emailController.text);
-                              sharedPreferences.setString('pass', _passwordController.text);
-
                               login();
                             },
                             child: const Text('Submit')),
@@ -146,9 +141,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
     var response = await user.login();
 
-
     if (response.success) {
-      //Navigator.pushNamed(context, '/welcome');
+      // Code for persistent login
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      sharedPreferences.setString('email', _emailController.text);
+      sharedPreferences.setString('pass', _passwordController.text);
+      sharedPreferences.setBool('loggedIn', true);
+
       Navigator.push(context,
       PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 400),
