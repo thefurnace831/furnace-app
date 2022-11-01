@@ -4,7 +4,7 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
-  String username = "";
+  String usermame = "";
   String password = "";
 
   _LoginPageState createState() => _LoginPageState();
@@ -32,69 +32,63 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   const Padding(
-                    padding: EdgeInsets.fromLTRB(20, 50, 20, 50),
+                    padding: EdgeInsets.fromLTRB(20, 20, 20, 100),
                     child: Text(
-                      "Login",
-                      textScaleFactor: 3,
+                      "Login Page",
+                      textScaleFactor: 2,
                     ),
                   ),
                   Column(
                     children: [
-                      Container( // EMAIL BOX
-                        width: 200,
-                        margin: const EdgeInsets.all(20.0),
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        width: 300,
+                        margin: const EdgeInsets.all(10.0),
                         child: Column(
                           children: [
-                            // const Text("Email", textScaleFactor: 1.2),
+                            const Text("Email", textScaleFactor: 1.2),
                             TextField(
-                              textAlign: TextAlign.center,
                               controller: _emailController,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: 'Email',
+                                hintText: "Email",
+                                prefixIcon: Icon(Icons.email),
                               ),
                             )
                           ],
                         ),
                       ),
-
-
-                      Container( // PASSWORD BOX
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 2, color: Colors.green),
-                        ),
-                        width: 200,
-                        margin: const EdgeInsets.all(10.0),
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        width: 300,
+                        margin: const EdgeInsets.all(10),
                         child: Column(
                           children: [
-                            // const Text(
-                            //   "Password",
-                            //   textScaleFactor: 1.2,
-                            // ),
+                            const Text(
+                              "Password",
+                              textScaleFactor: 1.2,
+                            ),
                             TextField(
-                              textAlign: TextAlign.center,
                               controller: _passwordController,
                               obscureText: true,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: 'Password'
+                                hintText: "Password",
+                                prefixIcon: Icon(Icons.lock),
                               ),
                             ),
+
                           ],
                         ),
-
-
                       ),
-                      const Padding(padding: EdgeInsets.symmetric(vertical: 20.0),
-                      ),
-                      SizedBox(
-                        width: 175.0,
-                        height: 40.0,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: ElevatedButton(
-                            onPressed: () { login(); },
+                            onPressed: () {
+                              login();
+                            },
                             child: const Text('Submit')),
-                          ),
+                      ),
                     ],
                   ),
                 ],
