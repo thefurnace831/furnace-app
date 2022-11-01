@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:furnace_app/register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'api/room.dart';
 import 'login.dart';
 import 'welcome.dart';
 import 'scanner.dart';
@@ -13,8 +14,8 @@ String finalEmail = "empty";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  const keyApplicationId = 'j7D0LsyZNZZf5VgBYrc6FFe6lu2AP5abAab8vcZk';
-  const keyClientKey = 'tNNM7p3yOvnxYT95ideyWwZogR0hI57bn1YrX5Qh';
+  const keyApplicationId = 'q5fW7bzeVL9PnFWUoWt8l9tGl3HxHVvFOLQKe8G5';
+  const keyClientKey = '3XYTD8qj1WVOkzZmyDng5Mdi1e3YLGuiQamD2yrv';
   const keyParseServerUrl = 'https://parseapi.back4app.com';
 
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
@@ -54,8 +55,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
           '/login': (context) => LoginPage(),
           '/register': (context) => const Register(),
-          '/welcome': (context) => WelcomePage(false, null),
-          '/scanner': (context) => ScanPage(false, null)
+          '/welcome': (context) => WelcomePage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: '')),
+          '/scanner': (context) => ScanPage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: ''))
         });
 
 
@@ -115,11 +116,10 @@ class MyHomePage extends StatelessWidget {
             Column(
               children: [
                 Container(
-                    padding: EdgeInsets.all(1),
+                    padding: const EdgeInsets.all(1),
                     width: 300,
-                    //margin: const EdgeInsets.all(20),
                     child: Column(
-                        children: [
+                        children: const [
                           Text("Welcome",
                               textScaleFactor: 1.3,
                               style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic,  fontFamily: 'Crunchy')
@@ -148,11 +148,11 @@ class MyHomePage extends StatelessWidget {
 
                 if( sharedPreferences.get('email')== "empty") {
                   //Navigator.pushNamed(context, '/login');
-                  Navigator.of(context).push(PageTransition(child: LoginPage(), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
+                  Navigator.of(context).push(PageTransition(child: LoginPage(), type: PageTransitionType.topToBottom, duration: const Duration(milliseconds: 600)));
                 }
                 else{
                   //Navigator.pushNamed(context, '/welcome');
-                  Navigator.of(context).push(PageTransition(child: WelcomePage(false), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
+                  Navigator.of(context).push(PageTransition(child: WelcomePage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: '')), type: PageTransitionType.topToBottom, duration: const Duration(milliseconds: 600)));
                 }
               },
               label: const Text('Login'),
@@ -164,7 +164,7 @@ class MyHomePage extends StatelessWidget {
               heroTag: "registerMenuButton",
               onPressed: () {
                 //Navigator.pushNamed(context, '/register');
-                Navigator.of(context).push(PageTransition(child: Register(), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
+                Navigator.of(context).push(PageTransition(child: const Register(), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
               },
               label: const Text('Register'),
             ),
