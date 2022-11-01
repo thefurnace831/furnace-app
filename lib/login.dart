@@ -3,10 +3,12 @@ import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'api/room.dart';
+
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
-  String usermame = "";
+  String username = "";
   String password = "";
 
   _LoginPageState createState() => _LoginPageState();
@@ -47,7 +49,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         width: 300,
                         margin: const EdgeInsets.all(10.0),
                         child: Column(
@@ -65,7 +67,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         width: 300,
                         margin: const EdgeInsets.all(10),
                         child: Column(
@@ -149,7 +151,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       //Navigator.pushNamed(context, '/welcome');
       Navigator.push(context,
       PageRouteBuilder(
-          transitionDuration: Duration(milliseconds: 400),
+          transitionDuration: const Duration(milliseconds: 400),
       transitionsBuilder: (context, animation, animationTime,child) {
         return ScaleTransition(
           alignment: Alignment.center,
@@ -159,7 +161,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         );
       },
         pageBuilder: (context, animation, animationTime){
-            return WelcomePage(false);
+            return WelcomePage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: ''));
         },
           ),
       );

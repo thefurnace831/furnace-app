@@ -116,11 +116,10 @@ class MyHomePage extends StatelessWidget {
             Column(
               children: [
                 Container(
-                    padding: EdgeInsets.all(1),
+                    padding: const EdgeInsets.all(1),
                     width: 300,
-                    //margin: const EdgeInsets.all(20),
                     child: Column(
-                        children: [
+                        children: const [
                           Text("Welcome",
                               textScaleFactor: 1.3,
                               style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic,  fontFamily: 'Crunchy')
@@ -149,11 +148,11 @@ class MyHomePage extends StatelessWidget {
 
                 if( sharedPreferences.get('email')== "empty") {
                   //Navigator.pushNamed(context, '/login');
-                  Navigator.of(context).push(PageTransition(child: LoginPage(), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
+                  Navigator.of(context).push(PageTransition(child: LoginPage(), type: PageTransitionType.topToBottom, duration: const Duration(milliseconds: 600)));
                 }
                 else{
                   //Navigator.pushNamed(context, '/welcome');
-                  Navigator.of(context).push(PageTransition(child: WelcomePage(false), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
+                  Navigator.of(context).push(PageTransition(child: WelcomePage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: '')), type: PageTransitionType.topToBottom, duration: const Duration(milliseconds: 600)));
                 }
               },
               label: const Text('Login'),
@@ -165,7 +164,7 @@ class MyHomePage extends StatelessWidget {
               heroTag: "registerMenuButton",
               onPressed: () {
                 //Navigator.pushNamed(context, '/register');
-                Navigator.of(context).push(PageTransition(child: Register(), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
+                Navigator.of(context).push(PageTransition(child: const Register(), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
               },
               label: const Text('Register'),
             ),
