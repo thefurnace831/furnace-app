@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         );
       },
         pageBuilder: (context, animation, animationTime){
-            return WelcomePage(false);
+            return WelcomePage(false,null);
         },
           ),
       );

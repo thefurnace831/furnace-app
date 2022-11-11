@@ -207,7 +207,7 @@ class _RegisterState extends State<Register> {
             );
           },
           pageBuilder: (context, animation, animationTime){
-            return WelcomePage(false);
+            return WelcomePage(false,null);
           },
         ),
       );

@@ -152,7 +152,7 @@ class MyHomePage extends StatelessWidget {
                 }
                 else{
                   //Navigator.pushNamed(context, '/welcome');
-                  Navigator.of(context).push(PageTransition(child: WelcomePage(false), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
+                  Navigator.of(context).push(PageTransition(child: WelcomePage(false,null), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
                 }
               },
               label: const Text('Login'),
