@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/room.dart';
 
@@ -196,7 +197,14 @@ class _RegisterState extends State<Register> {
 
     if (response.success) {
       await user.login();
-      //Navigator.pushNamed(context, '/welcome');
+
+      // If user registration is successful, keep them logged in
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      sharedPreferences.setString('email', email);
+      sharedPreferences.setString('pass', password);
+      sharedPreferences.setBool('loggedIn', true);
+
+
       Navigator.push(context,
         PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 400),
