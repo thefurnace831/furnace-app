@@ -60,39 +60,57 @@ class WelcomePageState extends State<WelcomePage> {
         ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
+          //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Spacer(
               flex: 3,
             ),
-            const Text(
-              'The Furnace',
-              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-            ),
+            // const Text(
+            //   'The Furnace',
+            //   style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+            // ),
             const Spacer(
               flex: 1,
             ),
-            Text(
+            // Replace Image URL here to change the image
+            Container(
+              alignment: Alignment.center,
+              child: Image.asset('assets/images/hallway.jpg', fit: BoxFit.fitWidth, opacity: const AlwaysStoppedAnimation(0.6)),
+            ),
+
+            Container(
+              alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
               widget.checkedIn ?  'Time Checked In: $loggedTime' : "",
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                FloatingActionButton.extended(
+                  heroTag: "cameraButton",
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ScanPage(widget.checkedIn, widget.initTime)));
+                  },
+                  label: Text(widget.checkedIn ? "QR Check Out" : "QR Check In"),
+                  icon: const Icon(Icons.qr_code_scanner),
+                ),
+
+              ],
             ),
-            const Spacer(
-              flex: 1,
-            ),
-            FloatingActionButton.extended(
-              heroTag: "cameraButton",
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ScanPage(widget.checkedIn, widget.initTime)));
-              },
-              label: Text(widget.checkedIn ? "QR Check Out" : "QR Check In"),
-              icon: const Icon(Icons.qr_code_scanner),
-            ),
-            const Spacer(
-              flex: 3,
+            // const Spacer(
+            //   flex: 1,
+            // ),
+
+            // const Spacer(
+            //   flex: 3,
+            // ),
             ),
           ],
+
+
         ),
       ),
     );

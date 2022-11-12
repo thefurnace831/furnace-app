@@ -44,6 +44,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       textScaleFactor: 2,
                     ),
                   ),
+
+
                   Column(
                     children: [
                       Container(

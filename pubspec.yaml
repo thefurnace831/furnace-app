@@ -36,6 +36,7 @@ dependencies:
   path_provider: ^2.0.9
   shared_preferences:
   intl: ^0.17.0
+  marquee: ^2.2.3
 
   flutter_barcode_scanner: any
   page_transition: ^2.0.5
@@ -63,15 +64,12 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/logo.png
+    - assets/images/
 
   fonts:
-    - family: Creattion
-    - fonts:
-        - asset: fonts/Creattion Demo.otf
-    - family: Crunchy
-    - fonts:
-        - asset: fonts/Crunchy_PERSONAL_USE_ONLY.ttf
+    - family: Creation
+      fonts:
+        - asset: assets/Fonts/Cunchy.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
