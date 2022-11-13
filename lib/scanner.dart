@@ -6,8 +6,6 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import 'api/room.dart';
 
-// TODO: Remove hardcoded strings, add to a database instead
-
 class ScanPage extends StatefulWidget {
   bool checkedIn;
   DateTime? initTime;

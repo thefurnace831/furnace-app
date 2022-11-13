@@ -8,8 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/room.dart';
 
-import 'api/room.dart';
-
 class WelcomePage extends StatefulWidget {
   bool checkedIn;
   DateTime? initTime;
@@ -68,10 +66,6 @@ class WelcomePageState extends State<WelcomePage> {
             const Spacer(
               flex: 3,
             ),
-            // const Text(
-            //   'The Furnace',
-            //   style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-            // ),
             const Spacer(
               flex: 1,
             ),
@@ -87,7 +81,7 @@ class WelcomePageState extends State<WelcomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-              widget.checkedIn ?  'Time Checked In: $loggedTime' : "",
+              widget.checkedIn ?  'Time Checked In: $loggedTime' : ""),
             Text(
               widget.checkedIn ? '${widget.room.roomName}' : "",
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -96,7 +90,7 @@ class WelcomePageState extends State<WelcomePage> {
                   heroTag: "cameraButton",
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ScanPage(widget.checkedIn, widget.initTime)));
+                        builder: (context) => ScanPage(widget.checkedIn, widget.initTime, widget.room)));
                   },
                   label: Text(widget.checkedIn ? "QR Check Out" : "QR Check In"),
                   icon: const Icon(Icons.qr_code_scanner),
@@ -104,31 +98,8 @@ class WelcomePageState extends State<WelcomePage> {
 
               ],
             ),
-            const Spacer(
-              flex: 1,
-            ),
-            Text(
-              widget.checkedIn ?  'Checked In: $loggedTime' : "",
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
-            ),
-            const Spacer(
-              flex: 1,
-            ),
-            FloatingActionButton.extended(
-              heroTag: "cameraButton",
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ScanPage(widget.checkedIn, widget.initTime, widget.room)));
-              },
-              label: Text(widget.checkedIn ? "QR Check Out" : "QR Check In"),
-              icon: const Icon(Icons.qr_code_scanner),
-            ),
-            const Spacer(
-              flex: 3,
-            ),
+            )
           ],
-
-
         ),
       ),
     );
@@ -157,7 +128,7 @@ class WelcomePageState extends State<WelcomePage> {
     //Navigator.pushNamed(context, "/");
     Navigator.push(context,
       PageRouteBuilder(
-        transitionDuration: Duration(milliseconds: 400),
+        transitionDuration: const Duration(milliseconds: 400),
         transitionsBuilder: (context, animation, animationTime,child) {
           return ScaleTransition(
             alignment: Alignment.center,
@@ -167,7 +138,7 @@ class WelcomePageState extends State<WelcomePage> {
           );
         },
         pageBuilder: (context, animation, animationTime){
-          return MyHomePage(title: 'The Furnace Home Page');
+          return const MyHomePage(title: 'The Furnace Home Page');
         },
       ),
     );
