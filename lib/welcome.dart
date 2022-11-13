@@ -8,12 +8,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/room.dart';
 
+import 'api/room.dart';
+
 class WelcomePage extends StatefulWidget {
   bool checkedIn;
   DateTime? initTime;
   Room room;
   WelcomePage(this.checkedIn, this.initTime, this.room, {Key? key}) : super(key: key);
-
 
   @override
   WelcomePageState createState() => WelcomePageState();
