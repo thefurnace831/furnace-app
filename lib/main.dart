@@ -4,24 +4,32 @@ import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 import 'package:flutter/material.dart';
 import 'package:furnace_app/register.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'api/room.dart';
 import 'login.dart';
 import 'welcome.dart';
 import 'scanner.dart';
 
-String finalEmail = "empty";
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  const keyApplicationId = 'j7D0LsyZNZZf5VgBYrc6FFe6lu2AP5abAab8vcZk';
-  const keyClientKey = 'tNNM7p3yOvnxYT95ideyWwZogR0hI57bn1YrX5Qh';
+  const keyApplicationId = 'q5fW7bzeVL9PnFWUoWt8l9tGl3HxHVvFOLQKe8G5';
+  const keyClientKey = '3XYTD8qj1WVOkzZmyDng5Mdi1e3YLGuiQamD2yrv';
   const keyParseServerUrl = 'https://parseapi.back4app.com';
 
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, autoSendSessionId: true);
 
-  runApp(const MyApp());
+  runApp(
+    // Allows us to fetch sharedPreferences from build context (rendering only)
+    MultiProvider(
+      providers: [
+        Provider.value(value: await SharedPreferences.getInstance()),
+      ],
+      child: const MyApp()
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,18 +38,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // Function for persistent login
-    Future getValidationData() async {
-      final SharedPreferences sharedPreferences = await SharedPreferences
-          .getInstance();
-      String obtainedEmail = sharedPreferences.get('email').toString();
-      finalEmail = obtainedEmail;
-
-      print("This is " + finalEmail);
-    }
-
-    // Function call for persistent login
-    getValidationData();
+    final isLoggedIn = context.read<SharedPreferences>().getBool('loggedIn') ?? false;
 
     return MaterialApp(
         title: 'The Furnace',
@@ -49,17 +46,14 @@ class MyApp extends StatelessWidget {
           // This is the theme of your application.
           primarySwatch: Colors.red,
         ),
-        // finalEmail=="empty" ? LoginPage() : WelcomePage(false)
-        initialRoute: '/',
+        initialRoute: isLoggedIn ? '/welcome' : '/',
         routes: {
           '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
           '/login': (context) => LoginPage(),
           '/register': (context) => const Register(),
-          '/welcome': (context) => WelcomePage(false, null),
-          '/scanner': (context) => ScanPage(false, null)
+          '/welcome': (context) => WelcomePage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: '')),
+          '/scanner': (context) => ScanPage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: ''))
         });
-
-
   }
 }
 
@@ -117,11 +111,10 @@ class MyHomePage extends StatelessWidget {
               children: [
 
                 Container(
-                    padding: EdgeInsets.all(1),
+                    padding: const EdgeInsets.all(1),
                     width: 300,
-                    //margin: const EdgeInsets.all(20),
                     child: Column(
-                        children: [
+                        children: const [
                           Text("Welcome",
                                textScaleFactor: 3.5,
                                style: TextStyle(fontWeight: FontWeight.bold,  fontFamily: 'Creation', color: Colors.orange)
@@ -159,11 +152,11 @@ class MyHomePage extends StatelessWidget {
 
                 if( sharedPreferences.get('email')== "empty") {
                   //Navigator.pushNamed(context, '/login');
-                  Navigator.of(context).push(PageTransition(child: LoginPage(), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
+                  Navigator.of(context).push(PageTransition(child: LoginPage(), type: PageTransitionType.topToBottom, duration: const Duration(milliseconds: 600)));
                 }
                 else{
                   //Navigator.pushNamed(context, '/welcome');
-                  Navigator.of(context).push(PageTransition(child: WelcomePage(false,null), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
+                  Navigator.of(context).push(PageTransition(child: WelcomePage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: '')), type: PageTransitionType.topToBottom, duration: const Duration(milliseconds: 600)));
                 }
               },
               label: const Text('Login'),
@@ -174,8 +167,7 @@ class MyHomePage extends StatelessWidget {
             FloatingActionButton.extended(
               heroTag: "registerMenuButton",
               onPressed: () {
-                //Navigator.pushNamed(context, '/register');
-                Navigator.of(context).push(PageTransition(child: Register(), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
+                Navigator.of(context).push(PageTransition(child: const Register(), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
               },
               label: const Text('Register'),
             ),

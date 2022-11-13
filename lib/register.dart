@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'api/room.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -26,7 +29,7 @@ class _RegisterState extends State<Register> {
             padding: const EdgeInsets.only(left: 35, top: 30),
             child: const Text(
               'Create\nAccount',
-              style: const TextStyle(color: Colors.black, fontSize: 33),
+              style: TextStyle(color: Colors.black, fontSize: 33),
             ),
           ),
           SingleChildScrollView(
@@ -121,7 +124,7 @@ class _RegisterState extends State<Register> {
                           children: [
                             const Text(
                               'Sign Up',
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 27,
                                   fontWeight: FontWeight.w700),
@@ -194,10 +197,17 @@ class _RegisterState extends State<Register> {
 
     if (response.success) {
       await user.login();
-      //Navigator.pushNamed(context, '/welcome');
+
+      // If user registration is successful, keep them logged in
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      sharedPreferences.setString('email', email);
+      sharedPreferences.setString('pass', password);
+      sharedPreferences.setBool('loggedIn', true);
+
+
       Navigator.push(context,
         PageRouteBuilder(
-          transitionDuration: Duration(milliseconds: 400),
+          transitionDuration: const Duration(milliseconds: 400),
           transitionsBuilder: (context, animation, animationTime,child) {
             return ScaleTransition(
               alignment: Alignment.center,
@@ -207,7 +217,7 @@ class _RegisterState extends State<Register> {
             );
           },
           pageBuilder: (context, animation, animationTime){
-            return WelcomePage(false,null);
+            return WelcomePage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: ''));
           },
         ),
       );

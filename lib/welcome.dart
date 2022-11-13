@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:furnace_app/main.dart';
@@ -8,11 +6,15 @@ import 'package:furnace_app/scanner.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'api/room.dart';
+
+import 'api/room.dart';
+
 class WelcomePage extends StatefulWidget {
   bool checkedIn;
   DateTime? initTime;
-  WelcomePage(this.checkedIn, this.initTime, {Key? key}) : super(key: key);
-
+  Room room;
+  WelcomePage(this.checkedIn, this.initTime, this.room, {Key? key}) : super(key: key);
 
   @override
   WelcomePageState createState() => WelcomePageState();
@@ -51,7 +53,7 @@ class WelcomePageState extends State<WelcomePage> {
         title: const Text("The Furnace"),
         actions: <Widget>[
           TextButton(
-            style: TextButton.styleFrom(primary: Colors.white),
+            style: TextButton.styleFrom(foregroundColor: Colors.white),
             onPressed: () {
               logout();
             },
@@ -86,6 +88,8 @@ class WelcomePageState extends State<WelcomePage> {
               children: [
                 Text(
               widget.checkedIn ?  'Time Checked In: $loggedTime' : "",
+            Text(
+              widget.checkedIn ? '${widget.room.roomName}' : "",
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 FloatingActionButton.extended(
@@ -100,13 +104,27 @@ class WelcomePageState extends State<WelcomePage> {
 
               ],
             ),
-            // const Spacer(
-            //   flex: 1,
-            // ),
-
-            // const Spacer(
-            //   flex: 3,
-            // ),
+            const Spacer(
+              flex: 1,
+            ),
+            Text(
+              widget.checkedIn ?  'Checked In: $loggedTime' : "",
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+            ),
+            const Spacer(
+              flex: 1,
+            ),
+            FloatingActionButton.extended(
+              heroTag: "cameraButton",
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ScanPage(widget.checkedIn, widget.initTime, widget.room)));
+              },
+              label: Text(widget.checkedIn ? "QR Check Out" : "QR Check In"),
+              icon: const Icon(Icons.qr_code_scanner),
+            ),
+            const Spacer(
+              flex: 3,
             ),
           ],
 
@@ -124,6 +142,7 @@ class WelcomePageState extends State<WelcomePage> {
 
      sharedPreferences.setString('email', "empty");
      sharedPreferences.setString('pass', '');
+     sharedPreferences.setBool('loggedIn', false);
 
      print("This is " + sharedPreferences.get('email').toString());
 
