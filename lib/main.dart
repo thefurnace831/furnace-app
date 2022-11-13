@@ -1,3 +1,4 @@
+import 'package:marquee/marquee.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
@@ -108,30 +109,40 @@ class MyHomePage extends StatelessWidget {
           children: <Widget>[
             Column(
               children: [
+
                 Container(
                     padding: const EdgeInsets.all(1),
                     width: 300,
                     child: Column(
                         children: const [
                           Text("Welcome",
-                              textScaleFactor: 1.3,
-                              style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic,  fontFamily: 'Crunchy')
+                               textScaleFactor: 3.5,
+                               style: TextStyle(fontWeight: FontWeight.bold,  fontFamily: 'Creation', color: Colors.orange)
                           ),
 
                         ]
                     )
-                )
+                ),
+
               ],
             ),
 
-            const Spacer(
-              flex: 3,
+
+            //---------------------------------
+            Container(
+              child: Stack(
+                children: <Widget>[
+                  //Image.asset('assets/images/hallway.jpg', fit: BoxFit.fitHeight),
+                  Image.asset('assets/images/logo.png',
+                      height: 200, width: 300, fit: BoxFit.fitWidth),
+                ],
+              ),
             ),
-            Image.asset('assets/images/logo.png',
-                height: 200, width: 300, fit: BoxFit.fitWidth),
+
             const Spacer(
-              flex: 1,
+              flex: 4,
             ),
+
             FloatingActionButton.extended(
               heroTag: "loginMenuButton",
               onPressed:  () async {
