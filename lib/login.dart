@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'api/room.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -8,11 +12,15 @@ class LoginPage extends StatefulWidget {
   String password = "";
 
   _LoginPageState createState() => _LoginPageState();
+
+
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                   Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         width: 300,
                         margin: const EdgeInsets.all(10.0),
                         child: Column(
@@ -60,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         width: 300,
                         margin: const EdgeInsets.all(10),
                         child: Column(
@@ -91,7 +99,9 @@ class _LoginPageState extends State<LoginPage> {
                         width: 175.0,
                         height: 40.0,
                         child: ElevatedButton(
-                            onPressed: () { login(); },
+                            onPressed: () async {
+                              login();
+                            },
                             child: const Text('Submit')),
                           ),
                     ],
@@ -125,6 +135,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // Attempts to log the user in to Parse
   void login() async {
+
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
@@ -138,7 +149,28 @@ class _LoginPageState extends State<LoginPage> {
     var response = await user.login();
 
     if (response.success) {
-      Navigator.pushNamed(context, '/welcome');
+      // Code for persistent login
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      sharedPreferences.setString('email', _emailController.text);
+      sharedPreferences.setString('pass', _passwordController.text);
+      sharedPreferences.setBool('loggedIn', true);
+
+      Navigator.push(context,
+      PageRouteBuilder(
+          transitionDuration: const Duration(milliseconds: 400),
+      transitionsBuilder: (context, animation, animationTime,child) {
+        return ScaleTransition(
+          alignment: Alignment.center,
+          scale: animation,
+
+          child: child,
+        );
+      },
+        pageBuilder: (context, animation, animationTime){
+            return WelcomePage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: ''));
+        },
+          ),
+      );
     } else {
       showError(response.error!.message);
     }

@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
-
+import 'package:page_transition/page_transition.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
+
+import 'package:flutter/material.dart';
 import 'package:furnace_app/register.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/room.dart';
 import 'login.dart';
@@ -17,7 +20,15 @@ void main() async {
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, autoSendSessionId: true);
 
-  runApp(const MyApp());
+  runApp(
+    // Allows us to fetch sharedPreferences from build context (rendering only)
+    MultiProvider(
+      providers: [
+        Provider.value(value: await SharedPreferences.getInstance()),
+      ],
+      child: const MyApp()
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -26,13 +37,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final isLoggedIn = context.read<SharedPreferences>().getBool('loggedIn') ?? false;
+
     return MaterialApp(
         title: 'The Furnace',
         theme: ThemeData(
           // This is the theme of your application.
           primarySwatch: Colors.red,
         ),
-        initialRoute: '/',
+        initialRoute: isLoggedIn ? '/welcome' : '/',
         routes: {
           '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
           '/login': (context) => LoginPage(),
@@ -42,6 +55,7 @@ class MyApp extends StatelessWidget {
         });
   }
 }
+
 
 // This widget contains buttons for navigating to Login and Registration
 class MyHomePage extends StatelessWidget {
@@ -92,6 +106,24 @@ class MyHomePage extends StatelessWidget {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Column(
+              children: [
+                Container(
+                    padding: const EdgeInsets.all(1),
+                    width: 300,
+                    child: Column(
+                        children: const [
+                          Text("Welcome",
+                              textScaleFactor: 1.3,
+                              style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic,  fontFamily: 'Crunchy')
+                          ),
+
+                        ]
+                    )
+                )
+              ],
+            ),
+
             const Spacer(
               flex: 3,
             ),
@@ -102,8 +134,19 @@ class MyHomePage extends StatelessWidget {
             ),
             FloatingActionButton.extended(
               heroTag: "loginMenuButton",
-              onPressed: () {
-                Navigator.pushNamed(context, '/login');
+              onPressed:  () async {
+                // Code for persistent login
+                final SharedPreferences sharedPreferences = await SharedPreferences
+                    .getInstance();
+
+                if( sharedPreferences.get('email')== "empty") {
+                  //Navigator.pushNamed(context, '/login');
+                  Navigator.of(context).push(PageTransition(child: LoginPage(), type: PageTransitionType.topToBottom, duration: const Duration(milliseconds: 600)));
+                }
+                else{
+                  //Navigator.pushNamed(context, '/welcome');
+                  Navigator.of(context).push(PageTransition(child: WelcomePage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: '')), type: PageTransitionType.topToBottom, duration: const Duration(milliseconds: 600)));
+                }
               },
               label: const Text('Login'),
             ),
@@ -113,14 +156,16 @@ class MyHomePage extends StatelessWidget {
             FloatingActionButton.extended(
               heroTag: "registerMenuButton",
               onPressed: () {
-                Navigator.pushNamed(context, '/register');
+                Navigator.of(context).push(PageTransition(child: const Register(), type: PageTransitionType.topToBottom, duration: Duration(milliseconds: 600)));
               },
               label: const Text('Register'),
             ),
             const Spacer(
               flex: 3,
             ),
+
           ],
+
         ),
       ),
     );
