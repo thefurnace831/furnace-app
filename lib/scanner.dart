@@ -33,7 +33,7 @@ class _ScanState extends State<ScanPage> {
     // If widget removed while message was in flight then discard it
     if (!mounted) return;
 
-    if (scanned != false) {
+    if (scanned) {
       if (!widget.checkedIn) {
         // Don't retrieve room information again unless logged out of room
         widget.room = await parseRoom();
@@ -46,10 +46,9 @@ class _ScanState extends State<ScanPage> {
 
       if (scannedCode == widget.room.qrCheckoutValue) {
         createLog(widget.room.roomName, true);
-        widget.checkedIn = false;
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) =>
-                WelcomePage(false, null, widget.room)));
+                WelcomePage(widget.checkedIn = false, null, widget.room)));
         return;
       } else if (widget.checkedIn && scannedCode != widget.room.qrRoomValue) {
         showError("Checkout of ${widget.room.roomName} first!");
@@ -84,6 +83,7 @@ class _ScanState extends State<ScanPage> {
     final roomName = obj[0].get('roomName').toString();
     final qrRoomValue = obj[0].get('qrRoomValue').toString();
     final qrCheckoutValue = obj[0].get('qrCheckoutValue').toString();
+    widget.room.qrCheckoutValue = qrCheckoutValue;
 
     return Room(
         roomId: roomId,
