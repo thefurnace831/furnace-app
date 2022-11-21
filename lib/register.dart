@@ -199,25 +199,32 @@ class _RegisterState extends State<Register> {
       await user.login();
 
       // If user registration is successful, keep them logged in
-      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
       sharedPreferences.setString('email', email);
       sharedPreferences.setString('pass', password);
       sharedPreferences.setBool('loggedIn', true);
 
-
-      Navigator.push(context,
+      Navigator.push(
+        context,
         PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 400),
-          transitionsBuilder: (context, animation, animationTime,child) {
+          transitionsBuilder: (context, animation, animationTime, child) {
             return ScaleTransition(
               alignment: Alignment.center,
               scale: animation,
-
               child: child,
             );
           },
-          pageBuilder: (context, animation, animationTime){
-            return WelcomePage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: ''));
+          pageBuilder: (context, animation, animationTime) {
+            return WelcomePage(
+                false,
+                null,
+                Room(
+                    roomId: '',
+                    roomName: '',
+                    qrRoomValue: '',
+                    qrCheckoutValue: ''));
           },
         ),
       );

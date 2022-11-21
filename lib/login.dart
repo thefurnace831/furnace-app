@@ -11,24 +11,19 @@ class LoginPage extends StatefulWidget {
   String username = "";
   String password = "";
 
+  @override
   _LoginPageState createState() => _LoginPageState();
-
-
 }
 
 class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
           title: const Text("Furnace Login"),
         ),
         body: Column(
@@ -46,8 +41,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       textScaleFactor: 3,
                     ),
                   ),
-
-
                   Column(
                     children: [
                       Container(
@@ -56,7 +49,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                         margin: const EdgeInsets.all(10.0),
                         child: Column(
                           children: [
-                            // const Text("Email", textScaleFactor: 1.2),
                             TextField(
                               textAlign: TextAlign.center,
                               controller: _emailController,
@@ -75,10 +67,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                         margin: const EdgeInsets.all(10),
                         child: Column(
                           children: [
-                            // const Text(
-                            //   "Password",
-                            //   textScaleFactor: 1.2,
-                            // ),
                             TextField(
                               textAlign: TextAlign.center,
                               controller: _passwordController,
@@ -89,13 +77,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                 prefixIcon: Icon(Icons.lock),
                               ),
                             ),
-
                           ],
                         ),
-
-
                       ),
-                      const Padding(padding: EdgeInsets.symmetric(vertical: 20.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.0),
                       ),
                       SizedBox(
                         width: 175.0,
@@ -105,7 +91,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                               login();
                             },
                             child: const Text('Submit')),
-                          ),
+                      ),
                     ],
                   ),
                 ],
@@ -137,7 +123,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   // Attempts to log the user in to Parse
   void login() async {
-
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
@@ -152,26 +137,34 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
     if (response.success) {
       // Code for persistent login
-      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
       sharedPreferences.setString('email', _emailController.text);
       sharedPreferences.setString('pass', _passwordController.text);
       sharedPreferences.setBool('loggedIn', true);
 
-      Navigator.push(context,
-      PageRouteBuilder(
+      Navigator.push(
+        context,
+        PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 400),
-      transitionsBuilder: (context, animation, animationTime,child) {
-        return ScaleTransition(
-          alignment: Alignment.center,
-          scale: animation,
-
-          child: child,
-        );
-      },
-        pageBuilder: (context, animation, animationTime){
-            return WelcomePage(false, null, Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: ''));
-        },
-          ),
+          transitionsBuilder: (context, animation, animationTime, child) {
+            return ScaleTransition(
+              alignment: Alignment.center,
+              scale: animation,
+              child: child,
+            );
+          },
+          pageBuilder: (context, animation, animationTime) {
+            return WelcomePage(
+                false,
+                null,
+                Room(
+                    roomId: '',
+                    roomName: '',
+                    qrRoomValue: '',
+                    qrCheckoutValue: ''));
+          },
+        ),
       );
     } else {
       showError(response.error!.message);

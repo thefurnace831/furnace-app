@@ -12,7 +12,8 @@ class WelcomePage extends StatefulWidget {
   bool checkedIn;
   DateTime? initTime;
   Room room;
-  WelcomePage(this.checkedIn, this.initTime, this.room, {Key? key}) : super(key: key);
+  WelcomePage(this.checkedIn, this.initTime, this.room, {Key? key})
+      : super(key: key);
 
   @override
   WelcomePageState createState() => WelcomePageState();
@@ -43,7 +44,6 @@ class WelcomePageState extends State<WelcomePage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +61,6 @@ class WelcomePageState extends State<WelcomePage> {
       ),
       body: Center(
         child: Stack(
-          //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Spacer(
               flex: 3,
@@ -72,32 +71,35 @@ class WelcomePageState extends State<WelcomePage> {
             // Replace Image URL here to change the image
             Container(
               alignment: Alignment.center,
-              child: Image.asset('assets/images/hallway.jpg', fit: BoxFit.fitWidth, opacity: const AlwaysStoppedAnimation(0.6)),
+              child: Image.asset('assets/images/hallway.jpg',
+                  fit: BoxFit.fitWidth,
+                  opacity: const AlwaysStoppedAnimation(0.6)),
             ),
 
             Container(
               alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-              widget.checkedIn ?  'Time Checked In: $loggedTime' : ""),
-            Text(
-              widget.checkedIn ? '${widget.room.roomName}' : "",
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                FloatingActionButton.extended(
-                  heroTag: "cameraButton",
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ScanPage(widget.checkedIn, widget.initTime, widget.room)));
-                  },
-                  label: Text(widget.checkedIn ? "QR Check Out" : "QR Check In"),
-                  icon: const Icon(Icons.qr_code_scanner),
-                ),
-
-              ],
-            ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(widget.checkedIn ? 'Time Checked In: $loggedTime' : ""),
+                  Text(
+                    widget.checkedIn ? '${widget.room.roomName}' : "",
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  FloatingActionButton.extended(
+                    heroTag: "cameraButton",
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ScanPage(
+                              widget.checkedIn, widget.initTime, widget.room)));
+                    },
+                    label:
+                        Text(widget.checkedIn ? "QR Check Out" : "QR Check In"),
+                    icon: const Icon(Icons.qr_code_scanner),
+                  ),
+                ],
+              ),
             )
           ],
         ),
@@ -106,38 +108,30 @@ class WelcomePageState extends State<WelcomePage> {
   }
 
   void logout() async {
-
     // Code for persistent login
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    final user = ParseUser(sharedPreferences.get('email').toString(), sharedPreferences.get('pass').toString(), null);
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    final user = ParseUser(sharedPreferences.get('email').toString(),
+        sharedPreferences.get('pass').toString(), null);
 
-     sharedPreferences.setString('email', "empty");
-     sharedPreferences.setString('pass', '');
-     sharedPreferences.setBool('loggedIn', false);
-
-     print("This is " + sharedPreferences.get('email').toString());
-
-    //final user = await ParseUser.currentUser();
-    if (user == null) {
-      print("inside");
-      return;
-    }
+    sharedPreferences.setString('email', "empty");
+    sharedPreferences.setString('pass', '');
+    sharedPreferences.setBool('loggedIn', false);
 
     await user.logout();
 
-    //Navigator.pushNamed(context, "/");
-    Navigator.push(context,
+    Navigator.push(
+      context,
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 400),
-        transitionsBuilder: (context, animation, animationTime,child) {
+        transitionsBuilder: (context, animation, animationTime, child) {
           return ScaleTransition(
             alignment: Alignment.center,
             scale: animation,
-
             child: child,
           );
         },
-        pageBuilder: (context, animation, animationTime){
+        pageBuilder: (context, animation, animationTime) {
           return const MyHomePage(title: 'The Furnace Home Page');
         },
       ),

@@ -4,7 +4,11 @@ class Room {
   String? qrRoomValue;
   String? qrCheckoutValue;
 
-  Room({required this.roomId, required this.roomName, required this.qrRoomValue, required this.qrCheckoutValue});
+  Room(
+      {required this.roomId,
+      required this.roomName,
+      required this.qrRoomValue,
+      required this.qrCheckoutValue});
 
   factory Room.fromJson(Map<String, dynamic> responseData) {
     return Room(
@@ -13,5 +17,4 @@ class Room {
         qrRoomValue: responseData['qrRoomValue'],
         qrCheckoutValue: responseData['qrCheckoutValue']);
   }
-
 }

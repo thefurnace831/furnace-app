@@ -11,7 +11,8 @@ class ScanPage extends StatefulWidget {
   DateTime? initTime;
   Room room;
 
-  ScanPage(this.checkedIn, this.initTime, this.room, {Key? key}) : super(key: key);
+  ScanPage(this.checkedIn, this.initTime, this.room, {Key? key})
+      : super(key: key);
   @override
   _ScanState createState() => _ScanState();
 }
@@ -22,7 +23,8 @@ class _ScanState extends State<ScanPage> {
 
   _scanCode() async {
     try {
-      scannedCode = await FlutterBarcodeScanner.scanBarcode("#000000", "Cancel", true, ScanMode.QR);
+      scannedCode = await FlutterBarcodeScanner.scanBarcode(
+          "#000000", "Cancel", true, ScanMode.QR);
       scanned = true;
     } on PlatformException {
       scannedCode = "Failed";
@@ -32,7 +34,8 @@ class _ScanState extends State<ScanPage> {
     if (!mounted) return;
 
     if (scanned != false) {
-      if (!widget.checkedIn) { // Don't retrieve room information again unless logged out of room
+      if (!widget.checkedIn) {
+        // Don't retrieve room information again unless logged out of room
         widget.room = await parseRoom();
 
         if (widget.room.qrCheckoutValue == scannedCode) {
@@ -42,7 +45,11 @@ class _ScanState extends State<ScanPage> {
       }
 
       if (scannedCode == widget.room.qrCheckoutValue) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WelcomePage(widget.checkedIn = false, null, widget.room)));
+        createLog(widget.room.roomName, true);
+        widget.checkedIn = false;
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                WelcomePage(false, null, widget.room)));
         return;
       } else if (widget.checkedIn && scannedCode != widget.room.qrRoomValue) {
         showError("Checkout of ${widget.room.roomName} first!");
@@ -53,7 +60,8 @@ class _ScanState extends State<ScanPage> {
           return;
         }
         setState(() {
-          createLog(widget.room.roomName); // Create log with location from scanned qr code data
+          createLog(widget.room
+              .roomName, false); // Create log with location from scanned qr code data
         });
       } else {
         showError("Invalid QR Code!");
@@ -77,22 +85,26 @@ class _ScanState extends State<ScanPage> {
     final qrRoomValue = obj[0].get('qrRoomValue').toString();
     final qrCheckoutValue = obj[0].get('qrCheckoutValue').toString();
 
-    return Room(roomId: roomId, roomName: roomName, qrRoomValue: qrRoomValue, qrCheckoutValue: qrCheckoutValue);
+    return Room(
+        roomId: roomId,
+        roomName: roomName,
+        qrRoomValue: qrRoomValue,
+        qrCheckoutValue: qrCheckoutValue);
   }
 
   // Query database for row with same qrCodeValue
   Future<List<ParseObject>> fetchRoomFromDatabase() async {
     final QueryBuilder<ParseObject> parseQuery1 =
-      QueryBuilder<ParseObject>(ParseObject('Room'));
+        QueryBuilder<ParseObject>(ParseObject('Room'));
 
     final QueryBuilder<ParseObject> parseQuery2 =
-      QueryBuilder<ParseObject>(ParseObject('Room'));
+        QueryBuilder<ParseObject>(ParseObject('Room'));
 
     parseQuery1.whereEqualTo('qrRoomValue', scannedCode);
     parseQuery2.whereEqualTo('qrCheckoutValue', scannedCode);
 
-    QueryBuilder<ParseObject> mainQuery = QueryBuilder.or(
-      ParseObject('Room'), [parseQuery1, parseQuery2]);
+    QueryBuilder<ParseObject> mainQuery =
+        QueryBuilder.or(ParseObject('Room'), [parseQuery1, parseQuery2]);
 
     final ParseResponse apiResponse = await mainQuery.query();
 
@@ -104,19 +116,28 @@ class _ScanState extends State<ScanPage> {
   }
 
   // Create a log of which user checked into which location
-  void createLog(String? location) async {
-    ParseObject newLog = ParseObject("log");
+  void createLog(String? roomName, bool checkOut) async {
+    ParseObject timeLog = ParseObject("TimeLog");
     ParseUser? user = await ParseUser.currentUser() as ParseUser?;
-    newLog.set("location", location);
-    newLog.set("user", user);
+    timeLog.set("User", user);
+    timeLog.set("Room", roomName);
 
-    var response = await newLog.save();
+    if (!checkOut) {
+      timeLog.set('CheckInTime', DateTime.now());
+    } else {
+      timeLog.set('CheckOutTime', DateTime.now());
+    }
+
+    var response = await timeLog.save();
 
     if (response.success) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => WelcomePage(widget.checkedIn = true, widget.initTime, widget.room)));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => WelcomePage(
+              widget.checkedIn = true, widget.initTime, widget.room)));
     } else {
       widget.checkedIn = false;
-      widget.room = Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: '');
+      widget.room =
+          Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: '');
       showError(response.error!.message);
     }
   }
@@ -133,7 +154,9 @@ class _ScanState extends State<ScanPage> {
               child: const Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WelcomePage(widget.checkedIn, widget.initTime, widget.room)));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => WelcomePage(
+                        widget.checkedIn, widget.initTime, widget.room)));
               },
             ),
           ],
