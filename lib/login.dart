@@ -138,6 +138,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           await SharedPreferences.getInstance();
       sharedPreferences.setString('email', _emailController.text);
       sharedPreferences.setString('pass', _passwordController.text);
+      sharedPreferences.setString('fullName', user.get('fullName').toString());
       sharedPreferences.setBool('loggedIn', true);
 
       Navigator.push(

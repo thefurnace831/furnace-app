@@ -127,13 +127,15 @@ class _ScanState extends State<ScanPage> {
   void createLog(String? roomName) async {
     ParseObject timeLog = ParseObject("TimeLog");
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var email = sharedPreferences.get('email').toString();
+    var fullName = sharedPreferences.get('fullName').toString();
 
-    //ParseUser user = await ParseUser.currentUser() as ParseUser?;
-    //timeLog.set("User", user);
     timeLog.set("Room", roomName);
+
     // SET USER INFO ----------------------------------------------------------
-    //timeLog.set("Username", user.username);
-    timeLog.set("Email", sharedPreferences.get('email').toString());
+    // TODO: ParseUser object instead of using sharedPreferences!
+    timeLog.set("fullName", fullName);
+    timeLog.set("Email", email);
     // ------------------------------------------------------------------------
 
     // SET THE TIME -----------------------------------------------------------
