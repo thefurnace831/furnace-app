@@ -3,23 +3,27 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/room.dart';
 
 class ScanPage extends StatefulWidget {
-  bool checkedIn;
-  DateTime? initTime;
-  Room room;
+  final bool checkedIn;
+  final DateTime? checkInTime;
+  final Room savedRoom;
 
-  ScanPage(this.checkedIn, this.initTime, this.room, {Key? key})
+  const ScanPage(this.checkedIn, this.checkInTime, this.savedRoom, {Key? key})
       : super(key: key);
+
   @override
-  _ScanState createState() => _ScanState();
+  State<StatefulWidget> createState() => _ScanState();
 }
 
 class _ScanState extends State<ScanPage> {
   bool scanned = false;
   String scannedCode = "";
+  late Room roomInfo;
+  DateTime? checkInTime;
 
   _scanCode() async {
     try {
@@ -36,32 +40,37 @@ class _ScanState extends State<ScanPage> {
     if (scanned) {
       if (!widget.checkedIn) {
         // Don't retrieve room information again unless logged out of room
-        widget.room = await parseRoom();
+        roomInfo = await parseRoom();
 
-        if (widget.room.qrCheckoutValue == scannedCode) {
+        if (roomInfo.qrCheckoutValue == scannedCode) {
           showError("Check into a room first");
           return;
         }
+      } else {
+        roomInfo = widget.savedRoom;
       }
 
-      if (scannedCode == widget.room.qrCheckoutValue) {
-        createLog(widget.room.roomName, true);
+      checkInTime = DateTime.now();
+
+      if (scannedCode == roomInfo.qrCheckoutValue && widget.checkedIn) {
+        createLog(roomInfo.roomName);
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) =>
-                WelcomePage(widget.checkedIn = false, null, widget.room)));
+                WelcomePage(false, widget.checkInTime, roomInfo)));
         return;
-      } else if (widget.checkedIn && scannedCode != widget.room.qrRoomValue) {
-        showError("Checkout of ${widget.room.roomName} first!");
+      } else if (widget.checkedIn && scannedCode != roomInfo.qrRoomValue) {
+        checkInTime = widget.checkInTime;
+        showError("Checkout of ${roomInfo.roomName} first!");
         return;
-      } else if (scannedCode == widget.room.qrRoomValue) {
+      } else if (scannedCode == roomInfo.qrRoomValue) {
         if (widget.checkedIn) {
-          showError("Already checked into ${widget.room.roomName}!");
+          checkInTime = widget.checkInTime;
+          showError("Already checked into ${roomInfo.roomName}!");
           return;
         }
-        setState(() {
-          createLog(widget.room
-              .roomName, false); // Create log with location from scanned qr code data
-        });
+
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => WelcomePage(true, checkInTime, roomInfo)));
       } else {
         showError("Invalid QR Code!");
       }
@@ -83,7 +92,6 @@ class _ScanState extends State<ScanPage> {
     final roomName = obj[0].get('roomName').toString();
     final qrRoomValue = obj[0].get('qrRoomValue').toString();
     final qrCheckoutValue = obj[0].get('qrCheckoutValue').toString();
-    widget.room.qrCheckoutValue = qrCheckoutValue;
 
     return Room(
         roomId: roomId,
@@ -116,28 +124,40 @@ class _ScanState extends State<ScanPage> {
   }
 
   // Create a log of which user checked into which location
-  void createLog(String? roomName, bool checkOut) async {
+  void createLog(String? roomName) async {
     ParseObject timeLog = ParseObject("TimeLog");
-    ParseUser? user = await ParseUser.currentUser() as ParseUser?;
-    timeLog.set("User", user);
-    timeLog.set("Room", roomName);
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-    if (!checkOut) {
-      timeLog.set('CheckInTime', DateTime.now());
-    } else {
-      timeLog.set('CheckOutTime', DateTime.now());
-    }
+    //ParseUser user = await ParseUser.currentUser() as ParseUser?;
+    //timeLog.set("User", user);
+    timeLog.set("Room", roomName);
+    // SET USER INFO ----------------------------------------------------------
+    //timeLog.set("Username", user.username);
+    timeLog.set("Email", sharedPreferences.get('email').toString());
+    // ------------------------------------------------------------------------
+
+    // SET THE TIME -----------------------------------------------------------
+    DateTime currentTime = DateTime.now();
+
+    // Only create log when user checks out of room
+    timeLog.set('CheckInTime', widget.checkInTime);
+    timeLog.set('CheckOutTime', currentTime);
+
+    Duration totalTime = currentTime.difference(widget.checkInTime!);
+    String hours = totalTime.inHours.toString().padLeft(0, '2');
+    String minutes = totalTime.inMinutes.remainder(60).toString().padLeft(2, '0');
+    String seconds = totalTime.inSeconds.remainder(60).toString().padLeft(2, '0');
+
+    timeLog.set('TotalTime', "$hours:$minutes:$seconds");
+
+    //--------------------------------------------------------------------------
 
     var response = await timeLog.save();
 
     if (response.success) {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => WelcomePage(
-              widget.checkedIn = true, widget.initTime, widget.room)));
+          builder: (context) => WelcomePage(false, checkInTime, roomInfo)));
     } else {
-      widget.checkedIn = false;
-      widget.room =
-          Room(roomId: '', roomName: '', qrRoomValue: '', qrCheckoutValue: '');
       showError(response.error!.message);
     }
   }
@@ -155,8 +175,8 @@ class _ScanState extends State<ScanPage> {
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => WelcomePage(
-                        widget.checkedIn, widget.initTime, widget.room)));
+                    builder: (context) =>
+                        WelcomePage(widget.checkedIn, checkInTime, roomInfo)));
               },
             ),
           ],

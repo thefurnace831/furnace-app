@@ -1,4 +1,3 @@
-import 'package:marquee/marquee.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
@@ -47,7 +46,7 @@ class MyApp extends StatelessWidget {
         initialRoute: isLoggedIn ? '/welcome' : '/',
         routes: {
           '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
-          '/login': (context) => LoginPage(),
+          '/login': (context) => const LoginPage(),
           '/register': (context) => const Register(),
           '/welcome': (context) => WelcomePage(
               false,
@@ -96,7 +95,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(title),
+        title: Text("Home Page"),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -121,76 +120,58 @@ class MyHomePage extends StatelessWidget {
             Column(
               children: [
                 Container(
-                    padding: const EdgeInsets.all(1),
-                    width: 300,
-                    child: Column(children: const [
-                      Text("Welcome",
-                          textScaleFactor: 3.5,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Creation',
-                              color: Colors.orange)),
-                    ])),
+                    padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+                    child: Image.asset('assets/images/logo.png',
+                        height: 200, width: 300, fit: BoxFit.fitWidth)),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(0, 75, 0, 0),
+                  child: FloatingActionButton.extended(
+                    heroTag: "loginMenuButton",
+                    onPressed: () async {
+                      // Code for persistent login
+                      final SharedPreferences sharedPreferences =
+                          await SharedPreferences.getInstance();
+
+                      if (sharedPreferences.get('email') == "empty") {
+                        Navigator.of(context).push(PageTransition(
+                            child: const LoginPage(),
+                            type: PageTransitionType.topToBottom,
+                            duration: const Duration(milliseconds: 600)));
+                      } else {
+                        //Navigator.pushNamed(context, '/welcome');
+                        Navigator.of(context).push(PageTransition(
+                            child: WelcomePage(
+                                false,
+                                null,
+                                Room(
+                                    roomId: '',
+                                    roomName: '',
+                                    qrRoomValue: '',
+                                    qrCheckoutValue: '')),
+                            type: PageTransitionType.topToBottom,
+                            duration: const Duration(milliseconds: 600)));
+                      }
+                    },
+                    label: const Text('Login'),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(0, 75, 0, 0),
+                  child: FloatingActionButton.extended(
+                    heroTag: "registerMenuButton",
+                    onPressed: () {
+                      Navigator.of(context).push(PageTransition(
+                          child: const Register(),
+                          type: PageTransitionType.topToBottom,
+                          duration: const Duration(milliseconds: 600)));
+                    },
+                    label: const Text('Register'),
+                  ),
+                ),
               ],
-            ),
-
-            //---------------------------------
-            Stack(
-              children: <Widget>[
-                //Image.asset('assets/images/hallway.jpg', fit: BoxFit.fitHeight),
-                Image.asset('assets/images/logo.png',
-                    height: 200, width: 300, fit: BoxFit.fitWidth),
-              ],
-            ),
-
-            const Spacer(
-              flex: 4,
-            ),
-
-            FloatingActionButton.extended(
-              heroTag: "loginMenuButton",
-              onPressed: () async {
-                // Code for persistent login
-                final SharedPreferences sharedPreferences =
-                    await SharedPreferences.getInstance();
-
-                if (sharedPreferences.get('email') == "empty") {
-                  Navigator.of(context).push(PageTransition(
-                      child: LoginPage(),
-                      type: PageTransitionType.topToBottom,
-                      duration: const Duration(milliseconds: 600)));
-                } else {
-                  //Navigator.pushNamed(context, '/welcome');
-                  Navigator.of(context).push(PageTransition(
-                      child: WelcomePage(
-                          false,
-                          null,
-                          Room(
-                              roomId: '',
-                              roomName: '',
-                              qrRoomValue: '',
-                              qrCheckoutValue: '')),
-                      type: PageTransitionType.topToBottom,
-                      duration: const Duration(milliseconds: 600)));
-                }
-              },
-              label: const Text('Login'),
             ),
             const Spacer(
               flex: 1,
-            ),
-            FloatingActionButton.extended(
-              heroTag: "registerMenuButton",
-              onPressed: () {
-                Navigator.of(context).push(PageTransition(
-                    child: const Register(),
-                    type: PageTransitionType.topToBottom,
-                    duration: const Duration(milliseconds: 600)));
-              },
-              label: const Text('Register'),
-            ),
-            const Spacer(
-              flex: 3,
             ),
           ],
         ),

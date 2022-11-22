@@ -9,34 +9,40 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'api/room.dart';
 
 class WelcomePage extends StatefulWidget {
-  bool checkedIn;
-  DateTime? initTime;
-  Room room;
-  WelcomePage(this.checkedIn, this.initTime, this.room, {Key? key})
+  final bool checkedIn;
+  final DateTime? checkInTime;
+  final Room room;
+
+  const WelcomePage(this.checkedIn, this.checkInTime, this.room, {Key? key})
       : super(key: key);
 
   @override
-  WelcomePageState createState() => WelcomePageState();
+  State<StatefulWidget> createState() => WelcomePageState();
 }
 
 // The page of the app that is displayed a to logged-in user
 class WelcomePageState extends State<WelcomePage> {
   Timer? timer;
   String? loggedTime;
+  DateTime? logInTime;
 
   @override
   void initState() {
     super.initState();
     loggedTime = "";
 
-    if (widget.initTime == null && widget.checkedIn) {
-      widget.initTime = DateTime.now();
+    if (widget.checkInTime == null && widget.checkedIn) {
+      // Start timer
+      logInTime = DateTime.now();
+    } else if (widget.checkInTime != null && widget.checkedIn) {
+      // Timer was already started so resume
+      logInTime = widget.checkInTime;
     }
 
     if (widget.checkedIn) {
       timer = Timer.periodic(const Duration(seconds: 0), (timer) {
         setState(() {
-          loggedTime = getLoggedTime(widget.initTime!);
+          loggedTime = getLoggedTime(logInTime!);
         });
       });
     } else {
@@ -46,62 +52,88 @@ class WelcomePageState extends State<WelcomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("The Furnace"),
-        actions: <Widget>[
-          TextButton(
-            style: TextButton.styleFrom(foregroundColor: Colors.white),
-            onPressed: () {
-              logout();
-            },
-            child: const Text('Logout'),
-          )
-        ],
-      ),
-      body: Center(
-        child: Stack(
-          children: <Widget>[
-            const Spacer(
-              flex: 3,
-            ),
-            const Spacer(
-              flex: 1,
-            ),
-            // Replace Image URL here to change the image
-            Container(
-              alignment: Alignment.center,
-              child: Image.asset('assets/images/hallway.jpg',
-                  fit: BoxFit.fitWidth,
-                  opacity: const AlwaysStoppedAnimation(0.6)),
-            ),
-
-            Container(
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+    // Going back from welcomePage will delete check in status and timer information
+    // By wrapping widget contents in WillPopScope it disables the back button
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          // Disable appBar back button
+          automaticallyImplyLeading: false,
+          title: const Text("The Furnace"),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
+              onPressed: () {
+                logout();
+              },
+              child: const Text('Logout'),
+            )
+          ],
+        ),
+        body: Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Column(
                 children: [
-                  Text(widget.checkedIn ? 'Time Checked In: $loggedTime' : ""),
-                  Text(
-                    widget.checkedIn ? '${widget.room.roomName}' : "",
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  FloatingActionButton.extended(
-                    heroTag: "cameraButton",
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ScanPage(
-                              widget.checkedIn, widget.initTime, widget.room)));
-                    },
-                    label:
-                        Text(widget.checkedIn ? "QR Check Out" : "QR Check In"),
-                    icon: const Icon(Icons.qr_code_scanner),
+                  Container(
+                      padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+                      child: Image.asset('assets/images/logo.png',
+                          height: 200, width: 300, fit: BoxFit.fitWidth)),
+                  Container(
+                      padding: const EdgeInsets.fromLTRB(0, 35, 0, 0),
+                      width: 300,
+                      child: Column(children: const [
+                        Text("Welcome",
+                            textScaleFactor: 3.5,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Creation',
+                                color: Colors.orange)),
+                      ])),
+                  Container(
+                      padding: const EdgeInsets.all(1),
+                      width: 300,
+                      child: Column(children: [
+                        Container(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          child: Text(
+                            widget.checkedIn ? '${widget.room.roomName}' : "",
+                            style: const TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 30),
+                          child: Text(
+                              widget.checkedIn ? 'Timer: $loggedTime' : ""),
+                        ),
+                      ])),
+                  Container(
+                    child: FloatingActionButton.extended(
+                      heroTag: "cameraButton",
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ScanPage(
+                                widget.checkedIn, logInTime, widget.room)));
+                      },
+                      label: Text(
+                          widget.checkedIn ? "QR Check Out" : "QR Check In"),
+                      icon: const Icon(Icons.qr_code_scanner),
+                    ),
                   ),
                 ],
               ),
-            )
-          ],
+              const Spacer(
+                flex: 1,
+              ),
+            ],
+          ),
         ),
       ),
     );

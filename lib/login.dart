@@ -6,13 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'api/room.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
-
-  String username = "";
-  String password = "";
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<StatefulWidget> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
