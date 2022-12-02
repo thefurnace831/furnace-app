@@ -15,6 +15,16 @@ class _RegisterState extends State<Register> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _numberController = TextEditingController();
+  final TextEditingController _ethnicityController = TextEditingController();
+  final TextEditingController _schoolController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
+  final TextEditingController _birthdateController = TextEditingController();
+  final TextEditingController _EClastName = TextEditingController();
+  final TextEditingController _ECfirstName = TextEditingController();
+  final TextEditingController _ECrelation = TextEditingController();
+  final TextEditingController _ECphone = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -116,8 +126,214 @@ class _RegisterState extends State<Register> {
                                 borderRadius: BorderRadius.circular(10),
                               )),
                         ),
+                        TextField(
+                          controller: _numberController,
+                          style: const TextStyle(color: Colors.black),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              hintText: "Phone number",
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                        ),
+                        TextField(
+                          controller: _ethnicityController,
+                          style: const TextStyle(color: Colors.black),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              hintText: "Ethnicity",
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                        ),
                         const SizedBox(
                           height: 40,
+                        ),TextField(
+                          controller: _schoolController,
+                          style: const TextStyle(color: Colors.black),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              hintText: "school",
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                        ),
+                        TextField(
+                          controller: _genderController,
+                          style: const TextStyle(color: Colors.black),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              hintText: "Gender",
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                        ),
+                        TextField(
+                          controller: _birthdateController,
+                          style: const TextStyle(color: Colors.black),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              hintText: "Birthdate",
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                        ),
+                        TextField(
+                          controller: _ECfirstName,
+                          style: const TextStyle(color: Colors.black),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              hintText: "Emergency contact first name",
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                        ),
+                        TextField(
+                          controller: _EClastName,
+                          style: const TextStyle(color: Colors.black),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              hintText: "Emergency Contact Last Name",
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                        ),
+                        TextField(
+                          controller: _ECphone,
+                          style: const TextStyle(color: Colors.black),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              hintText: "Emergency Contact Phone Number",
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                        ),
+                        TextField(
+                          controller: _ECrelation,
+                          style: const TextStyle(color: Colors.black),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              hintText: "Emergency Contact Relation",
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,8 +400,22 @@ class _RegisterState extends State<Register> {
     final fullName = _nameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
+    final number = _numberController.text.trim();
+    final ethnicity = _ethnicityController.text.trim();
+    final school = _schoolController.text.trim();
+    final gender = _genderController.text.trim();
+    final birthday = _birthdateController.text.trim();
+    final ecLastname = _EClastName.text.trim();
+    final ecFirstName = _ECfirstName.text.trim();
+    final ecRelation = _ECrelation.text.trim();
+    final ecPhone = _ECphone.text.trim();
 
-    if (email.isEmpty || password.isEmpty || fullName.isEmpty) {
+    //Adds Validators to check if all fields are added before creating the user
+    //if (email.isEmpty || password.isEmpty || fullName.isEmpty) {
+    if (email.isEmpty || password.isEmpty || fullName.isEmpty
+    || number.isEmpty || ethnicity.isEmpty || school.isEmpty
+    || gender.isEmpty || birthday.isEmpty || ecLastname.isEmpty
+    || ecFirstName.isEmpty || ecRelation.isEmpty || ecPhone.isEmpty) {
       showError("All fields are required!");
       return;
     }
@@ -203,6 +433,14 @@ class _RegisterState extends State<Register> {
           await SharedPreferences.getInstance();
       sharedPreferences.setString('email', email);
       sharedPreferences.setString('pass', password);
+      sharedPreferences.setString("number", number);
+      sharedPreferences.setString("number", number);
+      sharedPreferences.setString("number", number);
+      sharedPreferences.setString("number", number);
+      sharedPreferences.setString("number", number);
+      sharedPreferences.setString("number", number);
+      sharedPreferences.setString("number", number);
+
       sharedPreferences.setBool('loggedIn', true);
 
       Navigator.push(
