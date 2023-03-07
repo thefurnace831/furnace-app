@@ -25,13 +25,12 @@ class _RegisterState extends State<Register> {
   final TextEditingController _ECrelation = TextEditingController();
   final TextEditingController _ECphone = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Furnace Registration"),
+        title: const Text("Furnace Registration Page"),
       ),
       body: Stack(
         children: [
@@ -129,7 +128,6 @@ class _RegisterState extends State<Register> {
                         TextField(
                           controller: _numberController,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -152,7 +150,6 @@ class _RegisterState extends State<Register> {
                         TextField(
                           controller: _ethnicityController,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -174,10 +171,10 @@ class _RegisterState extends State<Register> {
                         ),
                         const SizedBox(
                           height: 40,
-                        ),TextField(
+                        ),
+                        TextField(
                           controller: _schoolController,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -200,7 +197,6 @@ class _RegisterState extends State<Register> {
                         TextField(
                           controller: _genderController,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -223,7 +219,6 @@ class _RegisterState extends State<Register> {
                         TextField(
                           controller: _birthdateController,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -246,7 +241,6 @@ class _RegisterState extends State<Register> {
                         TextField(
                           controller: _ECfirstName,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -269,7 +263,6 @@ class _RegisterState extends State<Register> {
                         TextField(
                           controller: _EClastName,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -292,7 +285,6 @@ class _RegisterState extends State<Register> {
                         TextField(
                           controller: _ECphone,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -315,7 +307,6 @@ class _RegisterState extends State<Register> {
                         TextField(
                           controller: _ECrelation,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -412,10 +403,18 @@ class _RegisterState extends State<Register> {
 
     //Adds Validators to check if all fields are added before creating the user
     //if (email.isEmpty || password.isEmpty || fullName.isEmpty) {
-    if (email.isEmpty || password.isEmpty || fullName.isEmpty
-    || number.isEmpty || ethnicity.isEmpty || school.isEmpty
-    || gender.isEmpty || birthday.isEmpty || ecLastname.isEmpty
-    || ecFirstName.isEmpty || ecRelation.isEmpty || ecPhone.isEmpty) {
+    if (email.isEmpty ||
+        password.isEmpty ||
+        fullName.isEmpty ||
+        number.isEmpty ||
+        ethnicity.isEmpty ||
+        school.isEmpty ||
+        gender.isEmpty ||
+        birthday.isEmpty ||
+        ecLastname.isEmpty ||
+        ecFirstName.isEmpty ||
+        ecRelation.isEmpty ||
+        ecPhone.isEmpty) {
       showError("All fields are required!");
       return;
     }

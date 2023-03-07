@@ -1,5 +1,5 @@
 import 'package:page_transition/page_transition.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import 'package:flutter/material.dart';
 import 'package:furnace_app/register.dart';
@@ -92,97 +92,96 @@ class MyHomePage extends StatelessWidget {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return WillPopScope(
-        onWillPop: () async {
-          return false;
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Home Page"),
-          ),
-          body: Center(
-            // Center is a layout widget. It takes a single child and positions it
-            // in the middle of the parent.
-            child: Column(
-              // Column is also a layout widget. It takes a list of children and
-              // arranges them vertically. By default, it sizes itself to fit its
-              // children horizontally, and tries to be as tall as its parent.
-              //
-              // Invoke "debug painting" (press "p" in the console, choose the
-              // "Toggle Debug Paint" action from the Flutter Inspector in Android
-              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-              // to see the wireframe for each widget.
-              //
-              // Column has various properties to control how it sizes itself and
-              // how it positions its children. Here we use mainAxisAlignment to
-              // center the children vertically; the main axis here is the vertical
-              // axis because Columns are vertical (the cross axis would be
-              // horizontal).
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  children: [
-                    Container(
-                        padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
-                        child: Image.asset('assets/images/logo.png',
-                            height: 200, width: 300, fit: BoxFit.fitWidth)),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(0, 75, 0, 0),
-                      child: FloatingActionButton.extended(
-                        heroTag: "loginMenuButton",
-                        onPressed: () async {
-                          // Code for persistent login
-                          final SharedPreferences sharedPreferences =
-                          await SharedPreferences.getInstance();
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text("Home Page"),
+        ),
+        body: Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Column(
+            // Column is also a layout widget. It takes a list of children and
+            // arranges them vertically. By default, it sizes itself to fit its
+            // children horizontally, and tries to be as tall as its parent.
+            //
+            // Invoke "debug painting" (press "p" in the console, choose the
+            // "Toggle Debug Paint" action from the Flutter Inspector in Android
+            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+            // to see the wireframe for each widget.
+            //
+            // Column has various properties to control how it sizes itself and
+            // how it positions its children. Here we use mainAxisAlignment to
+            // center the children vertically; the main axis here is the vertical
+            // axis because Columns are vertical (the cross axis would be
+            // horizontal).
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Column(
+                children: [
+                  Container(
+                      padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+                      child: Image.asset('assets/images/logo.png',
+                          height: 200, width: 300, fit: BoxFit.fitWidth)),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(0, 75, 0, 0),
+                    child: FloatingActionButton.extended(
+                      heroTag: "loginMenuButton",
+                      onPressed: () async {
+                        // Code for persistent login
+                        final SharedPreferences sharedPreferences =
+                            await SharedPreferences.getInstance();
 
-                          if (sharedPreferences.get('email') == "empty") {
-                            Navigator.of(context).push(PageTransition(
-                                child: const LoginPage(),
-                                type: PageTransitionType.topToBottom,
-                                duration: const Duration(milliseconds: 600)));
-                          } else {
-                            //Navigator.pushNamed(context, '/welcome');
-                            Navigator.of(context).push(PageTransition(
-                                child: WelcomePage(
-                                    false,
-                                    null,
-                                    Room(
-                                        roomId: '',
-                                        roomName: '',
-                                        qrRoomValue: '',
-                                        qrCheckoutValue: '')),
-                                type: PageTransitionType.topToBottom,
-                                duration: const Duration(milliseconds: 600)));
-                          }
-                        },
-                        label: const Text('Login'),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(0, 75, 0, 0),
-                      child: FloatingActionButton.extended(
-                        heroTag: "registerMenuButton",
-                        onPressed: () {
+                        if (sharedPreferences.get('email') == "empty") {
                           Navigator.of(context).push(PageTransition(
-                              child: const Register(),
+                              child: const LoginPage(),
                               type: PageTransitionType.topToBottom,
                               duration: const Duration(milliseconds: 600)));
-                        },
-                        label: const Text('Register'),
-                      ),
+                        } else {
+                          //Navigator.pushNamed(context, '/welcome');
+                          Navigator.of(context).push(PageTransition(
+                              child: WelcomePage(
+                                  false,
+                                  null,
+                                  Room(
+                                      roomId: '',
+                                      roomName: '',
+                                      qrRoomValue: '',
+                                      qrCheckoutValue: '')),
+                              type: PageTransitionType.topToBottom,
+                              duration: const Duration(milliseconds: 600)));
+                        }
+                      },
+                      label: const Text('Login'),
                     ),
-                  ],
-                ),
-                const Spacer(
-                  flex: 1,
-                ),
-              ],
-            ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(0, 75, 0, 0),
+                    child: FloatingActionButton.extended(
+                      heroTag: "registerMenuButton",
+                      onPressed: () {
+                        Navigator.of(context).push(PageTransition(
+                            child: const Register(),
+                            type: PageTransitionType.topToBottom,
+                            duration: const Duration(milliseconds: 600)));
+                      },
+                      label: const Text('Register'),
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(
+                flex: 1,
+              ),
+            ],
           ),
         ),
+      ),
     );
-
   }
 }
