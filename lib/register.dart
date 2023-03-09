@@ -12,6 +12,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final TextEditingController _idController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -25,27 +26,25 @@ class _RegisterState extends State<Register> {
   final TextEditingController _ECrelation = TextEditingController();
   final TextEditingController _ECphone = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Furnace Registration"),
+        title: const Text("Furnace Registration Page"),
       ),
-      body: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 35, top: 30),
-            child: const Text(
-              'Create\nAccount',
-              style: TextStyle(color: Colors.black, fontSize: 33),
-            ),
-          ),
-          SingleChildScrollView(
-            child: Container(
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Container(
+                alignment: Alignment.topCenter,
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset('assets/images/logo.png',
+                    height: 150, width: 200, fit: BoxFit.fitWidth)),
+
+            Container(
               padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.28),
+                  top: MediaQuery.of(context).size.height * 0.25),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -53,6 +52,32 @@ class _RegisterState extends State<Register> {
                     margin: const EdgeInsets.only(left: 35, right: 35),
                     child: Column(
                       children: [
+                        TextField(
+                          controller: _idController,
+                          style: const TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              labelText: "Student Id Number",
+                              hintText: "StudentId",
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         TextField(
                           controller: _nameController,
                           style: const TextStyle(color: Colors.black),
@@ -69,6 +94,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "First & Last Name",
                               hintText: "First & Last Name",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
@@ -94,6 +120,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Email",
                               hintText: "Email",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
@@ -120,16 +147,19 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Password",
                               hintText: "Password",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               )),
                         ),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         TextField(
                           controller: _numberController,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -143,16 +173,19 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Phone number",
                               hintText: "Phone number",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               )),
                         ),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         TextField(
                           controller: _ethnicityController,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -166,6 +199,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Ethnicity",
                               hintText: "Ethnicity",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
@@ -174,10 +208,10 @@ class _RegisterState extends State<Register> {
                         ),
                         const SizedBox(
                           height: 40,
-                        ),TextField(
+                        ),
+                        TextField(
                           controller: _schoolController,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -191,16 +225,19 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "School name",
                               hintText: "school",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               )),
                         ),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         TextField(
                           controller: _genderController,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -214,16 +251,19 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Gender",
                               hintText: "Gender",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               )),
                         ),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         TextField(
                           controller: _birthdateController,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -237,16 +277,19 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Birthdate",
                               hintText: "Birthdate",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               )),
                         ),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         TextField(
                           controller: _ECfirstName,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -260,16 +303,19 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Emergency contact first name",
                               hintText: "Emergency contact first name",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               )),
                         ),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         TextField(
                           controller: _EClastName,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -283,16 +329,19 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Emergency Contact Last Name",
                               hintText: "Emergency Contact Last Name",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               )),
                         ),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         TextField(
                           controller: _ECphone,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -306,16 +355,19 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Emergency Contact Phone Number",
                               hintText: "Emergency Contact Phone Number",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               )),
                         ),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         TextField(
                           controller: _ECrelation,
                           style: const TextStyle(color: Colors.black),
-                          obscureText: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -329,35 +381,35 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Emergency Contact Relation",
                               hintText: "Emergency Contact Relation",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               )),
                         ),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'Sign Up',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 27,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundColor: const Color(0xff4c505b),
-                              child: IconButton(
-                                  color: Colors.black,
-                                  onPressed: () {
-                                    registerAccount();
-                                  },
-                                  icon: const Icon(
-                                    Icons.arrow_forward,
-                                  )),
-                            )
-                          ],
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              FilledButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                ),
+                                onPressed: () {
+                                  registerAccount();
+                                },
+                                child: const Text('Sign Up',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w700)),
+                              ),
+                            ]),
+                        const SizedBox(
+                          height: 30,
                         ),
                       ],
                     ),
@@ -365,8 +417,9 @@ class _RegisterState extends State<Register> {
                 ],
               ),
             ),
-          ),
-        ],
+            // ),
+          ],
+        ),
       ),
     );
   }
@@ -397,6 +450,7 @@ class _RegisterState extends State<Register> {
   This is to enforce unique emails and allow for duplicate names
   */
   void registerAccount() async {
+    final studentId = _idController.text.trim();
     final fullName = _nameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
@@ -412,10 +466,19 @@ class _RegisterState extends State<Register> {
 
     //Adds Validators to check if all fields are added before creating the user
     //if (email.isEmpty || password.isEmpty || fullName.isEmpty) {
-    if (email.isEmpty || password.isEmpty || fullName.isEmpty
-    || number.isEmpty || ethnicity.isEmpty || school.isEmpty
-    || gender.isEmpty || birthday.isEmpty || ecLastname.isEmpty
-    || ecFirstName.isEmpty || ecRelation.isEmpty || ecPhone.isEmpty) {
+    if (studentId.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        fullName.isEmpty ||
+        number.isEmpty ||
+        ethnicity.isEmpty ||
+        school.isEmpty ||
+        gender.isEmpty ||
+        birthday.isEmpty ||
+        ecLastname.isEmpty ||
+        ecFirstName.isEmpty ||
+        ecRelation.isEmpty ||
+        ecPhone.isEmpty) {
       showError("All fields are required!");
       return;
     }
