@@ -147,6 +147,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Password",
                               hintText: "Password",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
@@ -172,6 +173,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Phone number",
                               hintText: "Phone number",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
@@ -197,6 +199,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Ethnicity",
                               hintText: "Ethnicity",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
@@ -222,6 +225,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "School name",
                               hintText: "school",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
@@ -247,6 +251,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Gender",
                               hintText: "Gender",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
@@ -272,6 +277,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Birthdate",
                               hintText: "Birthdate",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
@@ -297,6 +303,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Emergency contact first name",
                               hintText: "Emergency contact first name",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
@@ -322,6 +329,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Emergency Contact Last Name",
                               hintText: "Emergency Contact Last Name",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
@@ -347,6 +355,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Emergency Contact Phone Number",
                               hintText: "Emergency Contact Phone Number",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
@@ -372,6 +381,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              labelText: "Emergency Contact Relation",
                               hintText: "Emergency Contact Relation",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: OutlineInputBorder(
@@ -382,28 +392,24 @@ class _RegisterState extends State<Register> {
                           height: 30,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'Sign Up',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 27,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundColor: const Color(0xff4c505b),
-                              child: IconButton(
-                                  color: Colors.black,
-                                  onPressed: () {
-                                    registerAccount();
-                                  },
-                                  icon: const Icon(
-                                    Icons.arrow_forward,
-                                  )),
-                            )
-                          ],
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              FilledButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                ),
+                                onPressed: () {
+                                  registerAccount();
+                                },
+                                child: const Text('Sign Up',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w700)),
+                              ),
+                            ]),
+                        const SizedBox(
+                          height: 30,
                         ),
                       ],
                     ),
