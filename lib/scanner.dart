@@ -22,20 +22,25 @@ class ScanPage extends StatefulWidget {
 class _ScanState extends State<ScanPage> {
   bool scanned = false;
   String scannedCode = "";
+  String scannedCodeResult = "";
   late Room roomInfo;
   DateTime? checkInTime;
 
-  _scanCode() async {
+  Future<void> scanQRCode() async {
     try {
-      scannedCode = await FlutterBarcodeScanner.scanBarcode(
+      scannedCodeResult = await FlutterBarcodeScanner.scanBarcode(
           "#000000", "Cancel", true, ScanMode.QR);
       scanned = true;
     } on PlatformException {
-      scannedCode = "Failed";
+      scannedCodeResult = "Failed";
       scanned = false;
     }
     // If widget removed while message was in flight then discard it
     if (!mounted) return;
+
+    setState(() {
+      scannedCode = scannedCodeResult;
+    });
 
     if (scanned) {
       if (!widget.checkedIn) {
@@ -80,7 +85,7 @@ class _ScanState extends State<ScanPage> {
   @override
   Widget build(BuildContext context) {
     if (!scanned) {
-      _scanCode();
+      scanQRCode();
     }
     return const Scaffold();
   }
@@ -126,7 +131,8 @@ class _ScanState extends State<ScanPage> {
   // Create a log of which user checked into which location
   void createLog(String? roomName) async {
     ParseObject timeLog = ParseObject("TimeLog");
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
     var email = sharedPreferences.get('email').toString();
     var fullName = sharedPreferences.get('fullName').toString();
 
@@ -147,8 +153,10 @@ class _ScanState extends State<ScanPage> {
 
     Duration totalTime = currentTime.difference(widget.checkInTime!);
     String hours = totalTime.inHours.toString().padLeft(0, '2');
-    String minutes = totalTime.inMinutes.remainder(60).toString().padLeft(2, '0');
-    String seconds = totalTime.inSeconds.remainder(60).toString().padLeft(2, '0');
+    String minutes =
+        totalTime.inMinutes.remainder(60).toString().padLeft(2, '0');
+    String seconds =
+        totalTime.inSeconds.remainder(60).toString().padLeft(2, '0');
 
     timeLog.set('TotalTime', "$hours:$minutes:$seconds");
 
