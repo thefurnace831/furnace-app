@@ -59,6 +59,9 @@ class _ScanState extends State<ScanPage> {
 
       if (scannedCode == roomInfo.qrCheckoutValue && widget.checkedIn) {
         createLog(roomInfo.roomName);
+
+        //mounted property must be checked after an asynchronous gap.
+        if (!mounted) return;
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) =>
                 WelcomePage(false, widget.checkInTime, roomInfo)));
@@ -74,6 +77,8 @@ class _ScanState extends State<ScanPage> {
           return;
         }
 
+        //mounted property must be checked after an asynchronous gap.
+        if (!mounted) return;
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => WelcomePage(true, checkInTime, roomInfo)));
       } else {
@@ -139,7 +144,7 @@ class _ScanState extends State<ScanPage> {
     timeLog.set("Room", roomName);
 
     // SET USER INFO ----------------------------------------------------------
-    // TODO: ParseUser object instead of using sharedPreferences!
+    // todo: ParseUser object instead of using sharedPreferences!
     timeLog.set("fullName", fullName);
     timeLog.set("Email", email);
     // ------------------------------------------------------------------------
@@ -165,6 +170,7 @@ class _ScanState extends State<ScanPage> {
     var response = await timeLog.save();
 
     if (response.success) {
+      if (!mounted) return;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => WelcomePage(false, checkInTime, roomInfo)));
     } else {
