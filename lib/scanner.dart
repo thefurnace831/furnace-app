@@ -54,6 +54,9 @@ class _ScanState extends State<ScanPage> {
 
       if (scannedCode == roomInfo.qrCheckoutValue && widget.checkedIn) {
         createLog(roomInfo.roomName);
+
+        //mounted property must be checked after an asynchronous gap.
+        if (!mounted) return;
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) =>
                 WelcomePage(false, widget.checkInTime, roomInfo)));
@@ -69,6 +72,8 @@ class _ScanState extends State<ScanPage> {
           return;
         }
 
+        //mounted property must be checked after an asynchronous gap.
+        if (!mounted) return;
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => WelcomePage(true, checkInTime, roomInfo)));
       } else {
@@ -126,14 +131,15 @@ class _ScanState extends State<ScanPage> {
   // Create a log of which user checked into which location
   void createLog(String? roomName) async {
     ParseObject timeLog = ParseObject("TimeLog");
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
     var email = sharedPreferences.get('email').toString();
     var fullName = sharedPreferences.get('fullName').toString();
 
     timeLog.set("Room", roomName);
 
     // SET USER INFO ----------------------------------------------------------
-    // TODO: ParseUser object instead of using sharedPreferences!
+    // todo: ParseUser object instead of using sharedPreferences!
     timeLog.set("fullName", fullName);
     timeLog.set("Email", email);
     // ------------------------------------------------------------------------
@@ -147,8 +153,10 @@ class _ScanState extends State<ScanPage> {
 
     Duration totalTime = currentTime.difference(widget.checkInTime!);
     String hours = totalTime.inHours.toString().padLeft(0, '2');
-    String minutes = totalTime.inMinutes.remainder(60).toString().padLeft(2, '0');
-    String seconds = totalTime.inSeconds.remainder(60).toString().padLeft(2, '0');
+    String minutes =
+        totalTime.inMinutes.remainder(60).toString().padLeft(2, '0');
+    String seconds =
+        totalTime.inSeconds.remainder(60).toString().padLeft(2, '0');
 
     timeLog.set('TotalTime', "$hours:$minutes:$seconds");
 
@@ -157,6 +165,7 @@ class _ScanState extends State<ScanPage> {
     var response = await timeLog.save();
 
     if (response.success) {
+      if (!mounted) return;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => WelcomePage(false, checkInTime, roomInfo)));
     } else {

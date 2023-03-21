@@ -21,10 +21,10 @@ class _RegisterState extends State<Register> {
   final TextEditingController _schoolController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _birthdateController = TextEditingController();
-  final TextEditingController _EClastName = TextEditingController();
-  final TextEditingController _ECfirstName = TextEditingController();
-  final TextEditingController _ECrelation = TextEditingController();
-  final TextEditingController _ECphone = TextEditingController();
+  final TextEditingController _eClastName = TextEditingController();
+  final TextEditingController _eCfirstName = TextEditingController();
+  final TextEditingController _eCrelation = TextEditingController();
+  final TextEditingController _eCphone = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -288,7 +288,7 @@ class _RegisterState extends State<Register> {
                           height: 30,
                         ),
                         TextField(
-                          controller: _ECfirstName,
+                          controller: _eCfirstName,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -314,7 +314,7 @@ class _RegisterState extends State<Register> {
                           height: 30,
                         ),
                         TextField(
-                          controller: _EClastName,
+                          controller: _eClastName,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -340,7 +340,7 @@ class _RegisterState extends State<Register> {
                           height: 30,
                         ),
                         TextField(
-                          controller: _ECphone,
+                          controller: _eCphone,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -366,7 +366,7 @@ class _RegisterState extends State<Register> {
                           height: 30,
                         ),
                         TextField(
-                          controller: _ECrelation,
+                          controller: _eCrelation,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -459,10 +459,10 @@ class _RegisterState extends State<Register> {
     final school = _schoolController.text.trim();
     final gender = _genderController.text.trim();
     final birthday = _birthdateController.text.trim();
-    final ecLastname = _EClastName.text.trim();
-    final ecFirstName = _ECfirstName.text.trim();
-    final ecRelation = _ECrelation.text.trim();
-    final ecPhone = _ECphone.text.trim();
+    final ecLastname = _eClastName.text.trim();
+    final ecFirstName = _eCfirstName.text.trim();
+    final ecRelation = _eCrelation.text.trim();
+    final ecPhone = _eCphone.text.trim();
 
     //Adds Validators to check if all fields are added before creating the user
     //if (email.isEmpty || password.isEmpty || fullName.isEmpty) {
@@ -506,6 +506,8 @@ class _RegisterState extends State<Register> {
 
       sharedPreferences.setBool('loggedIn', true);
 
+      // If widget removed while message was in flight then discard it
+      if (!mounted) return;
       Navigator.push(
         context,
         PageRouteBuilder(

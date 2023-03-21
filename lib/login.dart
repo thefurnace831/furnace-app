@@ -141,6 +141,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       sharedPreferences.setString('fullName', user.get('fullName').toString());
       sharedPreferences.setBool('loggedIn', true);
 
+      if (!mounted) return;
       Navigator.push(
         context,
         PageRouteBuilder(

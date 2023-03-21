@@ -101,7 +101,7 @@ class WelcomePageState extends State<WelcomePage> {
                       width: 300,
                       child: Column(children: [
                         Container(
-                          padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
                           child: Text(
                             widget.checkedIn ? '${widget.room.roomName}' : "",
                             style: const TextStyle(
@@ -109,7 +109,7 @@ class WelcomePageState extends State<WelcomePage> {
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.fromLTRB(0, 20, 0, 30),
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
                           child: Text(
                               widget.checkedIn ? 'Timer: $loggedTime' : ""),
                         ),
@@ -152,6 +152,7 @@ class WelcomePageState extends State<WelcomePage> {
 
     await user.logout();
 
+    if (!mounted) return;
     Navigator.push(
       context,
       PageRouteBuilder(

@@ -91,6 +91,7 @@ class MyHomePage extends StatelessWidget {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -137,6 +138,7 @@ class MyHomePage extends StatelessWidget {
                         final SharedPreferences sharedPreferences =
                             await SharedPreferences.getInstance();
 
+                        if (!context.mounted) return;
                         if (sharedPreferences.get('email') == "empty") {
                           Navigator.of(context).push(PageTransition(
                               child: const LoginPage(),
