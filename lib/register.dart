@@ -485,6 +485,16 @@ class _RegisterState extends State<Register> {
 
     final user = ParseUser.createUser(email, password, email);
     user.set('fullName', fullName);
+    user.set('studentId', studentId);
+    user.set('phoneNumber', number);
+    user.set('ethnicity', ethnicity);
+    user.set('schoolName', school);
+    user.set('gender', gender);
+    user.set('birthday', birthday);
+    user.set('ecLastname', ecLastname);
+    user.set('ecFirstName', ecFirstName);
+    user.set('ecRelation', ecRelation);
+    user.set('ecPhone', ecPhone);
 
     var response = await user.signUp();
 
@@ -535,4 +545,5 @@ class _RegisterState extends State<Register> {
       showError(response.error!.message);
     }
   }
+
 }
