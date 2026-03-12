@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:furnace_app/main.dart';
 import 'package:furnace_app/scanner.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/room.dart';
@@ -144,7 +144,7 @@ class WelcomePageState extends State<WelcomePage> {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
     final user = ParseUser(sharedPreferences.get('email').toString(),
-        sharedPreferences.get('pass').toString(), null);
+        sharedPreferences.get('pass').toString(), sharedPreferences.get('email').toString());
 
     sharedPreferences.setString('email', "empty");
     sharedPreferences.setString('pass', '');

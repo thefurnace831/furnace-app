@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furnace_app/welcome.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/room.dart';
@@ -483,7 +483,7 @@ class _RegisterState extends State<Register> {
       return;
     }
 
-    final user = ParseUser.createUser(email, password, email);
+    final user = ParseUser(email, password, email);
     user.set('fullName', fullName);
     user.set('studentId', studentId);
     user.set('phoneNumber', number);
