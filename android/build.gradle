@@ -1,20 +1,61 @@
-buildscript {
-    ext.kotlin_version = '1.6.10'
-    repositories {
-        google()
-        mavenCentral()
-    }
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
 
 allprojects {
     repositories {
         google()
         mavenCentral()
+    }
+}
+
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            if (project.android.namespace == null) {
+                switch (project.name) {
+                    case 'flutter_barcode_scanner':
+                        project.android.namespace = 'com.amolg.flutterbarcodescanner'
+                        project.android.compileSdkVersion 34
+                        
+                        // Inject dummy Registrar classes since they are missing in recent Flutter engines
+                        def dummyDir = project.file("src/main/java/io/flutter/plugin/common")
+                        if (!dummyDir.exists()) {
+                            dummyDir.mkdirs()
+                        }
+                        def dummyFile = project.file("src/main/java/io/flutter/plugin/common/PluginRegistry.java")
+                        dummyFile.text = """package io.flutter.plugin.common;
+import android.app.Activity;
+import android.content.Context;
+import io.flutter.plugin.common.BinaryMessenger;
+
+public interface PluginRegistry {
+    public interface Registrar {
+        public Registrar addActivityResultListener(ActivityResultListener listener);
+        public Activity activity();
+        public Context context();
+        public BinaryMessenger messenger();
+    }
+    public interface ActivityResultListener {
+        public boolean onActivityResult(int requestCode, int resultCode, android.content.Intent data);
+    }
+}"""
+                        break
+                    case 'connectivity_plus':
+                        project.android.namespace = 'dev.fluttercommunity.plus.connectivity'
+                        project.android.compileSdkVersion 34
+                        break
+                }
+            }
+
+            // AGP 8.0+ forbids the 'package' attribute in AndroidManifest.xml if 'namespace' is set in build.gradle.
+            // We strip it from the source file to satisfy the build.
+            def manifestFile = project.file("src/main/AndroidManifest.xml")
+            if (manifestFile.exists()) {
+                def content = manifestFile.text
+                if (content.contains('package=')) {
+                    manifestFile.text = content.replaceAll(/package="[^"]*"/, "")
+                }
+            }
+        }
     }
 }
 
@@ -26,6 +67,6 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register("clean", Delete) {
+    delete rootProject.layout.buildDirectory
 }
