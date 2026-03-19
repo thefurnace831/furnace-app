@@ -12,6 +12,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -25,6 +26,44 @@ class _RegisterState extends State<Register> {
   final TextEditingController _eCfirstName = TextEditingController();
   final TextEditingController _eCrelation = TextEditingController();
   final TextEditingController _eCphone = TextEditingController();
+
+  static final _emailRegex = RegExp(r'^[\w\.\-\+]+@[\w\.\-]+\.\w{2,}$');
+  static final _digitsOnly = RegExp(r'^\d+$');
+  static final _dateRegex = RegExp(r'^\d{2}/\d{2}/\d{4}$');
+
+  String? _requiredValidator(String? value, String fieldName) {
+    if (value == null || value.trim().isEmpty) {
+      return '$fieldName is required';
+    }
+    return null;
+  }
+
+  InputDecoration _inputDecoration(String label, {String? hint}) {
+    return InputDecoration(
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.black),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.grey),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.red),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.red),
+      ),
+      labelText: label,
+      hintText: hint ?? label,
+      hintStyle: const TextStyle(color: Colors.grey),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,374 +89,204 @@ class _RegisterState extends State<Register> {
                 children: [
                   Container(
                     margin: const EdgeInsets.only(left: 35, right: 35),
-                    child: Column(
-                      children: [
-                        TextField(
-                          controller: _idController,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
+                    child: Form(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _idController,
+                            style: const TextStyle(color: Colors.black),
+                            keyboardType: TextInputType.number,
+                            textInputAction: TextInputAction.next,
+                            decoration: _inputDecoration("Student Id Number", hint: "StudentId"),
+                            validator: (value) {
+                              final base = _requiredValidator(value, 'Student ID');
+                              if (base != null) return base;
+                              if (!_digitsOnly.hasMatch(value!.trim())) {
+                                return 'Student ID must contain only digits';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: _nameController,
+                            style: const TextStyle(color: Colors.black),
+                            textInputAction: TextInputAction.next,
+                            decoration: _inputDecoration("First & Last Name"),
+                            validator: (value) {
+                              final base = _requiredValidator(value, 'Name');
+                              if (base != null) return base;
+                              if (value!.trim().length < 2) {
+                                return 'Name must be at least 2 characters';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: _emailController,
+                            style: const TextStyle(color: Colors.black),
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            decoration: _inputDecoration("Email"),
+                            validator: (value) {
+                              final base = _requiredValidator(value, 'Email');
+                              if (base != null) return base;
+                              if (!_emailRegex.hasMatch(value!.trim())) {
+                                return 'Enter a valid email address';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: _passwordController,
+                            style: const TextStyle(color: Colors.black),
+                            obscureText: true,
+                            textInputAction: TextInputAction.next,
+                            decoration: _inputDecoration("Password"),
+                            validator: (value) {
+                              final base = _requiredValidator(value, 'Password');
+                              if (base != null) return base;
+                              if (value!.trim().length < 6) {
+                                return 'Password must be at least 6 characters';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: _numberController,
+                            style: const TextStyle(color: Colors.black),
+                            keyboardType: TextInputType.phone,
+                            textInputAction: TextInputAction.next,
+                            decoration: _inputDecoration("Phone number", hint: "1234567890"),
+                            validator: (value) {
+                              final base = _requiredValidator(value, 'Phone number');
+                              if (base != null) return base;
+                              final digits = value!.replaceAll(RegExp(r'\D'), '');
+                              if (digits.length != 10) {
+                                return 'Phone number must be 10 digits';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: _ethnicityController,
+                            style: const TextStyle(color: Colors.black),
+                            textInputAction: TextInputAction.next,
+                            decoration: _inputDecoration("Ethnicity"),
+                            validator: (value) => _requiredValidator(value, 'Ethnicity'),
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: _schoolController,
+                            style: const TextStyle(color: Colors.black),
+                            textInputAction: TextInputAction.next,
+                            decoration: _inputDecoration("School name", hint: "School"),
+                            validator: (value) => _requiredValidator(value, 'School name'),
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: _genderController,
+                            style: const TextStyle(color: Colors.black),
+                            textInputAction: TextInputAction.next,
+                            decoration: _inputDecoration("Gender"),
+                            validator: (value) => _requiredValidator(value, 'Gender'),
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: _birthdateController,
+                            style: const TextStyle(color: Colors.black),
+                            keyboardType: TextInputType.datetime,
+                            textInputAction: TextInputAction.next,
+                            decoration: _inputDecoration("Birthdate", hint: "MM/DD/YYYY"),
+                            validator: (value) {
+                              final base = _requiredValidator(value, 'Birthdate');
+                              if (base != null) return base;
+                              if (!_dateRegex.hasMatch(value!.trim())) {
+                                return 'Use format MM/DD/YYYY';
+                              }
+                              final parts = value.trim().split('/');
+                              final month = int.tryParse(parts[0]) ?? 0;
+                              final day = int.tryParse(parts[1]) ?? 0;
+                              final year = int.tryParse(parts[2]) ?? 0;
+                              if (month < 1 || month > 12 || day < 1 || day > 31 || year < 1900) {
+                                return 'Enter a valid date';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: _eCfirstName,
+                            style: const TextStyle(color: Colors.black),
+                            textInputAction: TextInputAction.next,
+                            decoration: _inputDecoration("Emergency contact first name"),
+                            validator: (value) => _requiredValidator(value, 'Emergency contact first name'),
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: _eClastName,
+                            style: const TextStyle(color: Colors.black),
+                            textInputAction: TextInputAction.next,
+                            decoration: _inputDecoration("Emergency Contact Last Name"),
+                            validator: (value) => _requiredValidator(value, 'Emergency contact last name'),
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: _eCphone,
+                            style: const TextStyle(color: Colors.black),
+                            keyboardType: TextInputType.phone,
+                            textInputAction: TextInputAction.next,
+                            decoration: _inputDecoration("Emergency Contact Phone Number", hint: "1234567890"),
+                            validator: (value) {
+                              final base = _requiredValidator(value, 'Emergency contact phone');
+                              if (base != null) return base;
+                              final digits = value!.replaceAll(RegExp(r'\D'), '');
+                              if (digits.length != 10) {
+                                return 'Phone number must be 10 digits';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: _eCrelation,
+                            style: const TextStyle(color: Colors.black),
+                            textInputAction: TextInputAction.done,
+                            decoration: _inputDecoration("Emergency Contact Relation"),
+                            validator: (value) => _requiredValidator(value, 'Emergency contact relation'),
+                          ),
+                          const SizedBox(height: 30),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                FilledButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    registerAccount();
+                                  },
+                                  child: const Text('Sign Up',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700)),
                                 ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              labelText: "Student Id Number",
-                              hintText: "StudentId",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        TextField(
-                          controller: _nameController,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              labelText: "First & Last Name",
-                              hintText: "First & Last Name",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        TextField(
-                          controller: _emailController,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              labelText: "Email",
-                              hintText: "Email",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        TextField(
-                          controller: _passwordController,
-                          style: const TextStyle(color: Colors.black),
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              labelText: "Password",
-                              hintText: "Password",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        TextField(
-                          controller: _numberController,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              labelText: "Phone number",
-                              hintText: "Phone number",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        TextField(
-                          controller: _ethnicityController,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              labelText: "Ethnicity",
-                              hintText: "Ethnicity",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        TextField(
-                          controller: _schoolController,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              labelText: "School name",
-                              hintText: "school",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        TextField(
-                          controller: _genderController,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              labelText: "Gender",
-                              hintText: "Gender",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        TextField(
-                          controller: _birthdateController,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              labelText: "Birthdate",
-                              hintText: "Birthdate",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        TextField(
-                          controller: _eCfirstName,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              labelText: "Emergency contact first name",
-                              hintText: "Emergency contact first name",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        TextField(
-                          controller: _eClastName,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              labelText: "Emergency Contact Last Name",
-                              hintText: "Emergency Contact Last Name",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        TextField(
-                          controller: _eCphone,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              labelText: "Emergency Contact Phone Number",
-                              hintText: "Emergency Contact Phone Number",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        TextField(
-                          controller: _eCrelation,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              labelText: "Emergency Contact Relation",
-                              hintText: "Emergency Contact Relation",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              FilledButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                ),
-                                onPressed: () {
-                                  registerAccount();
-                                },
-                                child: const Text('Sign Up',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w700)),
-                              ),
-                            ]),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                      ],
+                              ]),
+                          const SizedBox(height: 30),
+                        ],
+                      ),
                     ),
                   )
                 ],
               ),
             ),
-            // ),
           ],
         ),
       ),
@@ -450,6 +319,8 @@ class _RegisterState extends State<Register> {
   This is to enforce unique emails and allow for duplicate names
   */
   void registerAccount() async {
+    if (!_formKey.currentState!.validate()) return;
+
     final studentId = _idController.text.trim();
     final fullName = _nameController.text.trim();
     final email = _emailController.text.trim();
@@ -463,25 +334,6 @@ class _RegisterState extends State<Register> {
     final ecFirstName = _eCfirstName.text.trim();
     final ecRelation = _eCrelation.text.trim();
     final ecPhone = _eCphone.text.trim();
-
-    //Adds Validators to check if all fields are added before creating the user
-    //if (email.isEmpty || password.isEmpty || fullName.isEmpty) {
-    if (studentId.isEmpty ||
-        email.isEmpty ||
-        password.isEmpty ||
-        fullName.isEmpty ||
-        number.isEmpty ||
-        ethnicity.isEmpty ||
-        school.isEmpty ||
-        gender.isEmpty ||
-        birthday.isEmpty ||
-        ecLastname.isEmpty ||
-        ecFirstName.isEmpty ||
-        ecRelation.isEmpty ||
-        ecPhone.isEmpty) {
-      showError("All fields are required!");
-      return;
-    }
 
     final user = ParseUser(email, password, email);
     user.set('fullName', fullName);
@@ -501,22 +353,17 @@ class _RegisterState extends State<Register> {
     if (response.success) {
       await user.login();
 
-      // If user registration is successful, keep them logged in
       final SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       sharedPreferences.setString('email', email);
       sharedPreferences.setString('pass', password);
-      sharedPreferences.setString("number", number);
-      sharedPreferences.setString("number", number);
-      sharedPreferences.setString("number", number);
-      sharedPreferences.setString("number", number);
-      sharedPreferences.setString("number", number);
-      sharedPreferences.setString("number", number);
-      sharedPreferences.setString("number", number);
-
+      sharedPreferences.setString('fullName', fullName);
+      sharedPreferences.setString('number', number);
+      sharedPreferences.setString('studentId', studentId);
+      sharedPreferences.setString('ethnicity', ethnicity);
+      sharedPreferences.setString('school', school);
       sharedPreferences.setBool('loggedIn', true);
 
-      // If widget removed while message was in flight then discard it
       if (!mounted) return;
       Navigator.push(
         context,
@@ -545,5 +392,4 @@ class _RegisterState extends State<Register> {
       showError(response.error!.message);
     }
   }
-
 }
