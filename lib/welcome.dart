@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:furnace_app/main.dart';
 import 'package:furnace_app/scanner.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/room.dart';
 
@@ -140,17 +139,10 @@ class WelcomePageState extends State<WelcomePage> {
   }
 
   void logout() async {
-    // Code for persistent login
-    final SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
-    final user = ParseUser(sharedPreferences.get('email').toString(),
-        sharedPreferences.get('pass').toString(), sharedPreferences.get('email').toString());
-
-    sharedPreferences.setString('email', "empty");
-    sharedPreferences.setString('pass', '');
-    sharedPreferences.setBool('loggedIn', false);
-
-    await user.logout();
+    final currentUser = await ParseUser.currentUser() as ParseUser?;
+    if (currentUser != null) {
+      await currentUser.logout();
+    }
 
     if (!mounted) return;
     Navigator.push(

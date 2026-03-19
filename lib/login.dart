@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/room.dart';
 
@@ -133,14 +132,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     var response = await user.login();
 
     if (response.success) {
-      // Code for persistent login
-      final SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      sharedPreferences.setString('email', _emailController.text);
-      sharedPreferences.setString('pass', _passwordController.text);
-      sharedPreferences.setString('fullName', user.get('fullName').toString());
-      sharedPreferences.setBool('loggedIn', true);
-
       if (!mounted) return;
       Navigator.push(
         context,
