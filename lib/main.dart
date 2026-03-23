@@ -3,8 +3,6 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import 'package:flutter/material.dart';
 import 'package:furnace_app/register.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/room.dart';
 import 'login.dart';
@@ -20,27 +18,22 @@ void main() async {
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, autoSendSessionId: true);
 
-  runApp(
-    // Allows us to fetch sharedPreferences from build context (rendering only)
-    MultiProvider(providers: [
-      Provider.value(value: await SharedPreferences.getInstance()),
-    ], child: const MyApp()),
-  );
+  final currentUser = await ParseUser.currentUser() as ParseUser?;
+  final isLoggedIn = currentUser?.sessionToken != null;
+
+  runApp(MyApp(isLoggedIn: isLoggedIn));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final bool isLoggedIn;
 
-  // This widget is the root of your application.
+  const MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    final isLoggedIn =
-        context.read<SharedPreferences>().getBool('loggedIn') ?? false;
-
     return MaterialApp(
         title: 'The Furnace',
         theme: ThemeData(
-          // This is the theme of your application.
           primarySwatch: Colors.red,
         ),
         initialRoute: isLoggedIn ? '/welcome' : '/',
@@ -134,18 +127,17 @@ class MyHomePage extends StatelessWidget {
                     child: FloatingActionButton.extended(
                       heroTag: "loginMenuButton",
                       onPressed: () async {
-                        // Code for persistent login
-                        final SharedPreferences sharedPreferences =
-                            await SharedPreferences.getInstance();
+                        final currentUser =
+                            await ParseUser.currentUser() as ParseUser?;
 
                         if (!context.mounted) return;
-                        if (sharedPreferences.get('email') == "empty") {
+                        if (currentUser == null ||
+                            currentUser.sessionToken == null) {
                           Navigator.of(context).push(PageTransition(
                               child: const LoginPage(),
                               type: PageTransitionType.topToBottom,
                               duration: const Duration(milliseconds: 600)));
                         } else {
-                          //Navigator.pushNamed(context, '/welcome');
                           Navigator.of(context).push(PageTransition(
                               child: WelcomePage(
                                   false,

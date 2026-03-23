@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/room.dart';
 
@@ -136,15 +135,11 @@ class _ScanState extends State<ScanPage> {
   // Create a log of which user checked into which location
   void createLog(String? roomName) async {
     ParseObject timeLog = ParseObject("TimeLog");
-    final SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
-    var email = sharedPreferences.get('email').toString();
-    var fullName = sharedPreferences.get('fullName').toString();
+    final currentUser = await ParseUser.currentUser() as ParseUser?;
+    final email = currentUser?.username ?? '';
+    final fullName = currentUser?.get<String>('fullName') ?? '';
 
     timeLog.set("Room", roomName);
-
-    // SET USER INFO ----------------------------------------------------------
-    // todo: ParseUser object instead of using sharedPreferences!
     timeLog.set("fullName", fullName);
     timeLog.set("Email", email);
     // ------------------------------------------------------------------------
