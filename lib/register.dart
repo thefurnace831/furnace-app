@@ -122,7 +122,8 @@ class _RegisterState extends State<Register> {
   String? _phoneValidator(String? value, String fieldName) {
     final base = _requiredValidator(value, fieldName);
     if (base != null) return base;
-    return value!.trim().length == 10 ? null : 'Enter a 10-digit phone number';
+    final digits = value!.replaceAll(RegExp(r'\D'), '');
+    return digits.length == 10 ? null : 'Enter a 10-digit phone number';
   }
 
   String? _passwordValidator(String? value) {
@@ -336,16 +337,13 @@ class _RegisterState extends State<Register> {
                       autofillHints: const [
                         AutofillHints.telephoneNumberNational
                       ],
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(10),
-                      ],
+                      inputFormatters: [_UsPhoneFormatter()],
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) => _focusNext(_schoolFocus),
                       validator: (v) => _phoneValidator(v, 'Phone number'),
                       decoration: _inputDecoration(
                         'Phone number',
-                        hint: '1234567890',
+                        hint: '123-456-7890',
                         icon: Icons.phone_outlined,
                       ),
                     ),
@@ -453,17 +451,14 @@ class _RegisterState extends State<Register> {
                       focusNode: _eCphoneFocus,
                       style: const TextStyle(color: Colors.black),
                       keyboardType: TextInputType.phone,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(10),
-                      ],
+                      inputFormatters: [_UsPhoneFormatter()],
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
                       validator: (v) =>
                           _phoneValidator(v, 'Emergency contact phone'),
                       decoration: _inputDecoration(
                         'Phone Number',
-                        hint: '1234567890',
+                        hint: '123-456-7890',
                         icon: Icons.phone_outlined,
                       ),
                     ),
@@ -535,7 +530,8 @@ class _RegisterState extends State<Register> {
     final user = ParseUser(email, password, email);
     user.set('fullName', _nameController.text.trim());
     user.set('studentId', _idController.text.trim());
-    user.set('phoneNumber', _numberController.text.trim());
+    user.set(
+        'phoneNumber', _numberController.text.replaceAll(RegExp(r'\D'), ''));
     user.set('ethnicity', _ethnicity);
     user.set('schoolName', _schoolController.text.trim());
     user.set('gender', _gender);
@@ -543,7 +539,7 @@ class _RegisterState extends State<Register> {
     user.set('ecLastname', _eClastName.text.trim());
     user.set('ecFirstName', _eCfirstName.text.trim());
     user.set('ecRelation', _ecRelation);
-    user.set('ecPhone', _eCphone.text.trim());
+    user.set('ecPhone', _eCphone.text.replaceAll(RegExp(r'\D'), ''));
 
     try {
       final response = await user.signUp();
@@ -584,5 +580,24 @@ class _RegisterState extends State<Register> {
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
+  }
+}
+
+class _UsPhoneFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    final digits = newValue.text.replaceAll(RegExp(r'\D'), '');
+    final capped = digits.length > 10 ? digits.substring(0, 10) : digits;
+    final buffer = StringBuffer();
+    for (var i = 0; i < capped.length; i++) {
+      if (i == 3 || i == 6) buffer.write('-');
+      buffer.write(capped[i]);
+    }
+    final formatted = buffer.toString();
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: formatted.length),
+    );
   }
 }
