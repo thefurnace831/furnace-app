@@ -188,6 +188,8 @@ class _ScanState extends State<ScanPage> {
             TextButton(
               child: const Text("OK"),
               onPressed: () {
+                _processing = false;
+                _controller.start();
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
