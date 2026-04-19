@@ -191,9 +191,6 @@ class _ScanState extends State<ScanPage> {
                 _processing = false;
                 _controller.start();
                 Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        WelcomePage(widget.checkedIn, checkInTime, roomInfo)));
               },
             ),
           ],
