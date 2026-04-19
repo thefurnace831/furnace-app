@@ -157,7 +157,7 @@ class _ScanState extends State<ScanPage> {
     timeLog.set('CheckOutTime', currentTime);
 
     Duration totalTime = currentTime.difference(widget.checkInTime!);
-    String hours = totalTime.inHours.toString().padLeft(0, '2');
+    String hours = totalTime.inHours.toString().padLeft(2, '0');
     String minutes =
         totalTime.inMinutes.remainder(60).toString().padLeft(2, '0');
     String seconds =
