@@ -63,9 +63,9 @@ class _ScanState extends State<ScanPage> {
     checkInTime = DateTime.now();
 
     if (scannedCode == roomInfo.qrCheckoutValue && widget.checkedIn) {
-      createLog(roomInfo.roomName);
+      final saved = await createLog(roomInfo.roomName);
+      if (!saved || !mounted) return;
 
-      if (!mounted) return;
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) =>
               WelcomePage(false, widget.checkInTime, roomInfo)));
@@ -142,7 +142,7 @@ class _ScanState extends State<ScanPage> {
     }
   }
 
-  void createLog(String? roomName) async {
+  Future<bool> createLog(String? roomName) async {
     ParseObject timeLog = ParseObject("TimeLog");
     final currentUser = await ParseUser.currentUser() as ParseUser?;
     final email = currentUser?.username ?? '';
@@ -167,14 +167,10 @@ class _ScanState extends State<ScanPage> {
     timeLog.set('TotalTime', "$hours:$minutes:$seconds");
 
     var response = await timeLog.save();
-    if (!mounted) return;
+    if (response.success) return true;
 
-    if (response.success) {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => WelcomePage(false, checkInTime, roomInfo)));
-    } else {
-      showError(response.error!.message);
-    }
+    if (mounted) showError(response.error!.message);
+    return false;
   }
 
   void showError(String? errorMessage) {
