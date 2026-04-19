@@ -45,6 +45,7 @@ class _ScanState extends State<ScanPage> {
   Future<void> _processCode(String scannedCode) async {
     if (!widget.checkedIn) {
       final parsed = await _parseRoom(scannedCode);
+      if (!mounted) return;
       if (parsed == null) {
         showError("Invalid QR Code!");
         return;
@@ -166,9 +167,9 @@ class _ScanState extends State<ScanPage> {
     timeLog.set('TotalTime', "$hours:$minutes:$seconds");
 
     var response = await timeLog.save();
+    if (!mounted) return;
 
     if (response.success) {
-      if (!mounted) return;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => WelcomePage(false, checkInTime, roomInfo)));
     } else {
