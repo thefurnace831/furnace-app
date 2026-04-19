@@ -66,7 +66,7 @@ class _ScanState extends State<ScanPage> {
       createLog(roomInfo.roomName);
 
       if (!mounted) return;
-      Navigator.of(context).push(MaterialPageRoute(
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) =>
               WelcomePage(false, widget.checkInTime, roomInfo)));
       return;
@@ -82,7 +82,7 @@ class _ScanState extends State<ScanPage> {
       }
 
       if (!mounted) return;
-      Navigator.of(context).push(MaterialPageRoute(
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => WelcomePage(true, checkInTime, roomInfo)));
     } else {
       showError("Invalid QR Code!");
@@ -170,7 +170,7 @@ class _ScanState extends State<ScanPage> {
     if (!mounted) return;
 
     if (response.success) {
-      Navigator.of(context).push(MaterialPageRoute(
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => WelcomePage(false, checkInTime, roomInfo)));
     } else {
       showError(response.error!.message);
