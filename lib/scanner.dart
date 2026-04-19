@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
@@ -19,84 +18,88 @@ class ScanPage extends StatefulWidget {
 }
 
 class _ScanState extends State<ScanPage> {
-  bool scanned = false;
-  String scannedCode = "";
-  String scannedCodeResult = "";
+  bool _processing = false;
   late Room roomInfo;
   DateTime? checkInTime;
+  final MobileScannerController _controller = MobileScannerController();
 
-  Future<void> scanQRCode() async {
-    try {
-      scannedCodeResult = await FlutterBarcodeScanner.scanBarcode(
-          "#000000", "Cancel", true, ScanMode.QR);
-      scanned = true;
-    } on PlatformException {
-      scannedCodeResult = "Failed";
-      scanned = false;
-    }
-    // If widget removed while message was in flight then discard it
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _onDetect(BarcodeCapture capture) async {
+    if (_processing) return;
+    final barcode = capture.barcodes.firstOrNull;
+    if (barcode?.rawValue == null) return;
+
+    _processing = true;
+    final scannedCode = barcode!.rawValue!;
+    await _controller.stop();
+
     if (!mounted) return;
+    await _processCode(scannedCode);
+  }
 
-    setState(() {
-      scannedCode = scannedCodeResult;
-    });
+  Future<void> _processCode(String scannedCode) async {
+    if (!widget.checkedIn) {
+      roomInfo = await _parseRoom(scannedCode);
 
-    if (scanned) {
-      if (!widget.checkedIn) {
-        // Don't retrieve room information again unless logged out of room
-        roomInfo = await parseRoom();
-
-        if (roomInfo.qrCheckoutValue == scannedCode) {
-          showError("Check into a room first");
-          return;
-        }
-      } else {
-        roomInfo = widget.savedRoom;
-      }
-
-      checkInTime = DateTime.now();
-
-      if (scannedCode == roomInfo.qrCheckoutValue && widget.checkedIn) {
-        createLog(roomInfo.roomName);
-
-        //mounted property must be checked after an asynchronous gap.
-        if (!mounted) return;
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                WelcomePage(false, widget.checkInTime, roomInfo)));
+      if (roomInfo.qrCheckoutValue == scannedCode) {
+        showError("Check into a room first");
         return;
-      } else if (widget.checkedIn && scannedCode != roomInfo.qrRoomValue) {
+      }
+    } else {
+      roomInfo = widget.savedRoom;
+    }
+
+    checkInTime = DateTime.now();
+
+    if (scannedCode == roomInfo.qrCheckoutValue && widget.checkedIn) {
+      createLog(roomInfo.roomName);
+
+      if (!mounted) return;
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              WelcomePage(false, widget.checkInTime, roomInfo)));
+      return;
+    } else if (widget.checkedIn && scannedCode != roomInfo.qrRoomValue) {
+      checkInTime = widget.checkInTime;
+      showError("Checkout of ${roomInfo.roomName} first!");
+      return;
+    } else if (scannedCode == roomInfo.qrRoomValue) {
+      if (widget.checkedIn) {
         checkInTime = widget.checkInTime;
-        showError("Checkout of ${roomInfo.roomName} first!");
+        showError("Already checked into ${roomInfo.roomName}!");
         return;
-      } else if (scannedCode == roomInfo.qrRoomValue) {
-        if (widget.checkedIn) {
-          checkInTime = widget.checkInTime;
-          showError("Already checked into ${roomInfo.roomName}!");
-          return;
-        }
-
-        //mounted property must be checked after an asynchronous gap.
-        if (!mounted) return;
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => WelcomePage(true, checkInTime, roomInfo)));
-      } else {
-        showError("Invalid QR Code!");
       }
+
+      if (!mounted) return;
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => WelcomePage(true, checkInTime, roomInfo)));
+    } else {
+      showError("Invalid QR Code!");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!scanned) {
-      scanQRCode();
-    }
-    return const Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Scan QR Code'),
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+      ),
+      body: MobileScanner(
+        controller: _controller,
+        onDetect: _onDetect,
+      ),
+    );
   }
 
-  // Convert ParseObject to RoomObject
-  Future<Room> parseRoom() async {
-    var obj = await fetchRoomFromDatabase();
+  Future<Room> _parseRoom(String scannedCode) async {
+    var obj = await _fetchRoomFromDatabase(scannedCode);
     final roomId = obj[0].get('objectId').toString();
     final roomName = obj[0].get('roomName').toString();
     final qrRoomValue = obj[0].get('qrRoomValue').toString();
@@ -109,8 +112,7 @@ class _ScanState extends State<ScanPage> {
         qrCheckoutValue: qrCheckoutValue);
   }
 
-  // Query database for row with same qrCodeValue
-  Future<List<ParseObject>> fetchRoomFromDatabase() async {
+  Future<List<ParseObject>> _fetchRoomFromDatabase(String scannedCode) async {
     final QueryBuilder<ParseObject> parseQuery1 =
         QueryBuilder<ParseObject>(ParseObject('Room'));
 
@@ -132,7 +134,6 @@ class _ScanState extends State<ScanPage> {
     }
   }
 
-  // Create a log of which user checked into which location
   void createLog(String? roomName) async {
     ParseObject timeLog = ParseObject("TimeLog");
     final currentUser = await ParseUser.currentUser() as ParseUser?;
@@ -142,12 +143,9 @@ class _ScanState extends State<ScanPage> {
     timeLog.set("Room", roomName);
     timeLog.set("fullName", fullName);
     timeLog.set("Email", email);
-    // ------------------------------------------------------------------------
 
-    // SET THE TIME -----------------------------------------------------------
     DateTime currentTime = DateTime.now();
 
-    // Only create log when user checks out of room
     timeLog.set('CheckInTime', widget.checkInTime);
     timeLog.set('CheckOutTime', currentTime);
 
@@ -159,8 +157,6 @@ class _ScanState extends State<ScanPage> {
         totalTime.inSeconds.remainder(60).toString().padLeft(2, '0');
 
     timeLog.set('TotalTime', "$hours:$minutes:$seconds");
-
-    //--------------------------------------------------------------------------
 
     var response = await timeLog.save();
 
