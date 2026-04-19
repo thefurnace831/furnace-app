@@ -44,7 +44,12 @@ class _ScanState extends State<ScanPage> {
 
   Future<void> _processCode(String scannedCode) async {
     if (!widget.checkedIn) {
-      roomInfo = await _parseRoom(scannedCode);
+      final parsed = await _parseRoom(scannedCode);
+      if (parsed == null) {
+        showError("Invalid QR Code!");
+        return;
+      }
+      roomInfo = parsed;
 
       if (roomInfo.qrCheckoutValue == scannedCode) {
         showError("Check into a room first");
@@ -98,8 +103,10 @@ class _ScanState extends State<ScanPage> {
     );
   }
 
-  Future<Room> _parseRoom(String scannedCode) async {
+  Future<Room?> _parseRoom(String scannedCode) async {
     var obj = await _fetchRoomFromDatabase(scannedCode);
+    if (obj.isEmpty) return null;
+
     final roomId = obj[0].get('objectId').toString();
     final roomName = obj[0].get('roomName').toString();
     final qrRoomValue = obj[0].get('qrRoomValue').toString();
