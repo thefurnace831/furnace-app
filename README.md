@@ -2,6 +2,25 @@
 
 A mobile app for the Furnace Teen Center that allows for scanning QR codes to log information into a database. 
 
+## Send check-in data to Google Sheets
+
+1. Create a Google Sheet and open `Extensions -> Apps Script`.
+2. Copy code from `scripts/google_sheets_webhook.gs` into the script editor.
+3. Set `SECRET` in that script.
+4. Deploy as a Web App (`Deploy -> New deployment -> Web app`) with access set so your app can POST to it.
+5. Copy the deployment URL.
+
+Run Flutter with your webhook settings:
+
+```zsh
+cd /Users/anthony/AndroidStudioProjects/furnace-app
+/Users/anthony/AndroidStudioProjects/sdk/flutter/bin/flutter run -d android \
+  --dart-define=SHEETS_WEBHOOK_URL="<YOUR_APPS_SCRIPT_WEBAPP_URL>" \
+  --dart-define=SHEETS_WEBHOOK_SECRET="<YOUR_SECRET>"
+```
+
+Check-in and check-out events are posted from `lib/scanner.dart` and include user profile data from Parse plus room/QR/time values.
+
 ## Mockup
 ![Screenshot from 2022-03-08 10-10-15](https://user-images.githubusercontent.com/70172259/157299673-d72c1228-e09f-4747-8b78-b442f4f799bd.png)
 

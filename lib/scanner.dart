@@ -5,6 +5,7 @@ import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import 'api/room.dart';
+import 'services/google_sheets_sync.dart';
 
 class ScanPage extends StatefulWidget {
   final bool checkedIn;
@@ -57,13 +58,7 @@ class _ScanState extends State<ScanPage> {
       checkInTime = DateTime.now();
 
       if (scannedCode == roomInfo.qrCheckoutValue && widget.checkedIn) {
-        createLog(roomInfo.roomName);
-
-        //mounted property must be checked after an asynchronous gap.
-        if (!mounted) return;
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                WelcomePage(false, widget.checkInTime, roomInfo)));
+        await createLog(roomInfo.roomName);
         return;
       } else if (widget.checkedIn && scannedCode != roomInfo.qrRoomValue) {
         checkInTime = widget.checkInTime;
@@ -75,6 +70,31 @@ class _ScanState extends State<ScanPage> {
           showError("Already checked into ${roomInfo.roomName}!");
           return;
         }
+
+        final currentUser = await ParseUser.currentUser() as ParseUser?;
+        await GoogleSheetsSync.sendEvent(
+          eventType: 'check_in',
+          data: {
+            'eventTime': checkInTime?.toUtc().toIso8601String(),
+            'email': currentUser?.username ?? '',
+            'fullName': currentUser?.get<String>('fullName') ?? '',
+            'studentId': currentUser?.get<String>('studentId') ?? '',
+            'phoneNumber': currentUser?.get<String>('phoneNumber') ?? '',
+            'ethnicity': currentUser?.get<String>('ethnicity') ?? '',
+            'schoolName': currentUser?.get<String>('schoolName') ?? '',
+            'gender': currentUser?.get<String>('gender') ?? '',
+            'birthday': currentUser?.get<String>('birthday') ?? '',
+            'ecFirstName': currentUser?.get<String>('ecFirstName') ?? '',
+            'ecLastName': currentUser?.get<String>('ecLastname') ?? '',
+            'ecRelation': currentUser?.get<String>('ecRelation') ?? '',
+            'ecPhone': currentUser?.get<String>('ecPhone') ?? '',
+            'roomId': roomInfo.roomId,
+            'roomName': roomInfo.roomName,
+            'qrRoomValue': roomInfo.qrRoomValue,
+            'qrCheckoutValue': roomInfo.qrCheckoutValue,
+            'scannedCode': scannedCode,
+          },
+        );
 
         //mounted property must be checked after an asynchronous gap.
         if (!mounted) return;
@@ -133,7 +153,7 @@ class _ScanState extends State<ScanPage> {
   }
 
   // Create a log of which user checked into which location
-  void createLog(String? roomName) async {
+  Future<void> createLog(String? roomName) async {
     ParseObject timeLog = ParseObject("TimeLog");
     final currentUser = await ParseUser.currentUser() as ParseUser?;
     final email = currentUser?.username ?? '';
@@ -158,13 +178,41 @@ class _ScanState extends State<ScanPage> {
     String seconds =
         totalTime.inSeconds.remainder(60).toString().padLeft(2, '0');
 
-    timeLog.set('TotalTime', "$hours:$minutes:$seconds");
+    final totalTimeText = "$hours:$minutes:$seconds";
+    timeLog.set('TotalTime', totalTimeText);
 
     //--------------------------------------------------------------------------
 
     var response = await timeLog.save();
 
     if (response.success) {
+      await GoogleSheetsSync.sendEvent(
+        eventType: 'check_out',
+        data: {
+          'eventTime': currentTime.toUtc().toIso8601String(),
+          'email': email,
+          'fullName': fullName,
+          'studentId': currentUser?.get<String>('studentId') ?? '',
+          'phoneNumber': currentUser?.get<String>('phoneNumber') ?? '',
+          'ethnicity': currentUser?.get<String>('ethnicity') ?? '',
+          'schoolName': currentUser?.get<String>('schoolName') ?? '',
+          'gender': currentUser?.get<String>('gender') ?? '',
+          'birthday': currentUser?.get<String>('birthday') ?? '',
+          'ecFirstName': currentUser?.get<String>('ecFirstName') ?? '',
+          'ecLastName': currentUser?.get<String>('ecLastname') ?? '',
+          'ecRelation': currentUser?.get<String>('ecRelation') ?? '',
+          'ecPhone': currentUser?.get<String>('ecPhone') ?? '',
+          'roomId': roomInfo.roomId,
+          'roomName': roomInfo.roomName,
+          'qrRoomValue': roomInfo.qrRoomValue,
+          'qrCheckoutValue': roomInfo.qrCheckoutValue,
+          'scannedCode': scannedCode,
+          'checkInTime': widget.checkInTime?.toUtc().toIso8601String(),
+          'checkOutTime': currentTime.toUtc().toIso8601String(),
+          'totalTime': totalTimeText,
+        },
+      );
+
       if (!mounted) return;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => WelcomePage(false, checkInTime, roomInfo)));
