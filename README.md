@@ -13,8 +13,8 @@ A mobile app for the Furnace Teen Center that allows for scanning QR codes to lo
 Run Flutter with your webhook settings:
 
 ```zsh
-cd /Users/anthony/AndroidStudioProjects/furnace-app
-/Users/anthony/AndroidStudioProjects/sdk/flutter/bin/flutter run -d android \
+cd /path/to/furnace-app
+flutter run -d android \
   --dart-define=SHEETS_WEBHOOK_URL="<YOUR_APPS_SCRIPT_WEBAPP_URL>" \
   --dart-define=SHEETS_WEBHOOK_SECRET="<YOUR_SECRET>"
 ```
