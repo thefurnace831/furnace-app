@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:furnace_app/account.dart';
 import 'package:furnace_app/main.dart';
 import 'package:furnace_app/scanner.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
@@ -62,15 +63,47 @@ class WelcomePageState extends State<WelcomePage> {
           // Disable appBar back button
           automaticallyImplyLeading: false,
           title: const Text("The Furnace"),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(foregroundColor: Colors.white),
-              onPressed: () {
-                logout();
-              },
-              child: const Text('Logout'),
-            )
-          ],
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+              tooltip: 'Menu',
+            ),
+          ),
+        ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(color: Colors.red),
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    'Menu',
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.person),
+                title: const Text('Account'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const AccountPage()));
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text('Logout'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  logout();
+                },
+              ),
+            ],
+          ),
         ),
         body: Center(
           // Center is a layout widget. It takes a single child and positions it

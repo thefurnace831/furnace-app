@@ -52,8 +52,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _numberController = TextEditingController();
   final TextEditingController _schoolController = TextEditingController();
   final TextEditingController _birthdateController = TextEditingController();
-  final TextEditingController _eCfirstName = TextEditingController();
-  final TextEditingController _eClastName = TextEditingController();
+  final TextEditingController _eCname = TextEditingController();
   final TextEditingController _eCphone = TextEditingController();
 
   final FocusNode _idFocus = FocusNode();
@@ -63,8 +62,7 @@ class _RegisterState extends State<Register> {
   final FocusNode _confirmPasswordFocus = FocusNode();
   final FocusNode _numberFocus = FocusNode();
   final FocusNode _schoolFocus = FocusNode();
-  final FocusNode _eCfirstNameFocus = FocusNode();
-  final FocusNode _eClastNameFocus = FocusNode();
+  final FocusNode _eCnameFocus = FocusNode();
   final FocusNode _eCphoneFocus = FocusNode();
 
   String? _gender;
@@ -86,8 +84,7 @@ class _RegisterState extends State<Register> {
     _numberController.dispose();
     _schoolController.dispose();
     _birthdateController.dispose();
-    _eCfirstName.dispose();
-    _eClastName.dispose();
+    _eCname.dispose();
     _eCphone.dispose();
 
     _idFocus.dispose();
@@ -97,8 +94,7 @@ class _RegisterState extends State<Register> {
     _confirmPasswordFocus.dispose();
     _numberFocus.dispose();
     _schoolFocus.dispose();
-    _eCfirstNameFocus.dispose();
-    _eClastNameFocus.dispose();
+    _eCnameFocus.dispose();
     _eCphoneFocus.dispose();
     super.dispose();
   }
@@ -369,7 +365,7 @@ class _RegisterState extends State<Register> {
                       style: const TextStyle(color: Colors.black),
                       textCapitalization: TextCapitalization.words,
                       textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) => _focusNext(_eCfirstNameFocus),
+                      onFieldSubmitted: (_) => _focusNext(_eCnameFocus),
                       validator: (v) => _requiredValidator(v, 'School name'),
                       decoration: _inputDecoration(
                         'School name',
@@ -417,31 +413,23 @@ class _RegisterState extends State<Register> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
-                      controller: _eCfirstName,
-                      focusNode: _eCfirstNameFocus,
-                      style: const TextStyle(color: Colors.black),
-                      textCapitalization: TextCapitalization.words,
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) => _focusNext(_eClastNameFocus),
-                      validator: (v) => _requiredValidator(
-                          v, 'Emergency contact first name'),
-                      decoration: _inputDecoration(
-                        'First Name',
-                        icon: Icons.person_outline,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _eClastName,
-                      focusNode: _eClastNameFocus,
+                      controller: _eCname,
+                      focusNode: _eCnameFocus,
                       style: const TextStyle(color: Colors.black),
                       textCapitalization: TextCapitalization.words,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) => _focusNext(_eCphoneFocus),
-                      validator: (v) =>
-                          _requiredValidator(v, 'Emergency contact last name'),
+                      validator: (v) {
+                        final base = _requiredValidator(
+                            v, 'Emergency contact name');
+                        if (base != null) return base;
+                        if (v!.trim().length < 2) {
+                          return 'Name must be at least 2 characters';
+                        }
+                        return null;
+                      },
                       decoration: _inputDecoration(
-                        'Last Name',
+                        'First & Last Name',
                         icon: Icons.person_outline,
                       ),
                     ),
@@ -536,8 +524,10 @@ class _RegisterState extends State<Register> {
     user.set('schoolName', _schoolController.text.trim());
     user.set('gender', _gender);
     user.set('birthday', _birthdateController.text);
-    user.set('ecLastname', _eClastName.text.trim());
-    user.set('ecFirstName', _eCfirstName.text.trim());
+    final ecParts = _eCname.text.trim().split(RegExp(r'\s+'));
+    user.set('ecFirstName', ecParts.first);
+    user.set(
+        'ecLastname', ecParts.length > 1 ? ecParts.sublist(1).join(' ') : '');
     user.set('ecRelation', _ecRelation);
     user.set('ecPhone', _eCphone.text.replaceAll(RegExp(r'\D'), ''));
 
