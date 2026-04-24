@@ -27,7 +27,7 @@ A mobile app for the Furnace Teen Center that allows for scanning QR codes to lo
 ## Packages
 - [Parse Server Sdk Flutter](https://pub.dev/packages/parse_server_sdk_flutter)
 - [Camera](https://pub.dev/packages/camera)
-- [Flutter Barcode Scanner](https://pub.dev/packages/flutter_barcode_scanner)
+- [Mobile Scanner]([https://pub.dev/packages/flutter_barcode_scanner](https://pub.dev/packages/mobile_scanner))
 
 
 ## Flutter Resources
