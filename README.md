@@ -11,10 +11,21 @@ A mobile app for the Furnace Teen Center that allows for scanning QR codes to lo
 
 #### User (See [ParseUser](https://pub.dev/documentation/flutter_parse/latest/flutter_parse/ParseUser-class.html) for full details, below are the most relevant properties)
 
-| Property | Type               | Description                           |
-| -------- | ------------------ | ------------------------------------- |
-| username  | String | The email used as the identfying username for the user |
-| fullName     | String             | The user's full real name |
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| username | String | The email used as the identifying username for the user |
+| emailAddress | String | The user's email — also used for password reset |
+| fullName | String | The user's full real name |
+| studentId | String | The user's school-issued student ID |
+| phoneNumber | String | The user's phone number, stored as digits only |
+| schoolName | String | The name of the school the user attends |
+| birthday | String | The user's date of birth (formatted string from the registration form) |
+| gender | String | Selected from the gender dropdown on registration |
+| ethnicity | String | Selected from the ethnicity dropdown on registration |
+| ecFirstName | String | Emergency contact's first name |
+| ecLastname | String | Emergency contact's last name |
+| ecRelation | String | Emergency contact's relationship to the user |
+| ecPhone | String | Emergency contact's phone number, stored as digits only |
 
 #### Log 
 
