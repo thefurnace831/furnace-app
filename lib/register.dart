@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:furnace_app/furnace_ui.dart';
 import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
@@ -133,9 +134,7 @@ class _RegisterState extends State<Register> {
 
   String? _confirmPasswordValidator(String? value) {
     if (value == null || value.isEmpty) return 'Please confirm your password';
-    return value == _passwordController.text
-        ? null
-        : 'Passwords do not match';
+    return value == _passwordController.text ? null : 'Passwords do not match';
   }
 
   InputDecoration _inputDecoration(
@@ -149,33 +148,14 @@ class _RegisterState extends State<Register> {
       labelText: label,
       hintText: hint,
       helperText: helper,
-      hintStyle: const TextStyle(color: Colors.grey),
       prefixIcon: icon == null ? null : Icon(icon),
       suffixIcon: suffix,
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Colors.black),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Colors.grey),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Colors.red),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Colors.red),
-      ),
     );
   }
 
   void _focusNext(FocusNode next) => FocusScope.of(context).requestFocus(next);
 
-  String _formatDate(DateTime d) =>
-      '${d.year.toString().padLeft(4, '0')}-'
+  String _formatDate(DateTime d) => '${d.year.toString().padLeft(4, '0')}-'
       '${d.month.toString().padLeft(2, '0')}-'
       '${d.day.toString().padLeft(2, '0')}';
 
@@ -206,293 +186,290 @@ class _RegisterState extends State<Register> {
     return PopScope(
       canPop: !_submitting,
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(title: const Text('Furnace Registration Page')),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+        appBar: AppBar(title: const Text('Create account')),
+        body: FurnaceBackground(
+          pattern: true,
+          child: FurnaceContent(
+            maxWidth: 720,
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 36),
             child: AutofillGroup(
-              child: Form(
-                key: _formKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Center(
-                      child: Image.asset(
-                        'assets/images/logo.png',
-                        height: 120,
-                        fit: BoxFit.fitWidth,
+              child: FurnacePanel(
+                padding: const EdgeInsets.all(24),
+                child: Form(
+                  key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const FurnaceBrandHeader(
+                        title: 'New Member Registration',
+                        subtitle: 'The Furnace',
+                        logoWidth: 220,
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _idController,
-                      focusNode: _idFocus,
-                      style: const TextStyle(color: Colors.black),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) => _focusNext(_nameFocus),
-                      validator: (v) => _requiredValidator(v, 'Student ID'),
-                      decoration: _inputDecoration(
-                        'Student ID Number',
-                        hint: 'StudentId',
-                        icon: Icons.badge_outlined,
+                      const SizedBox(height: 24),
+                      const FurnaceSectionHeader(
+                        title: 'Student details',
+                        icon: Icons.assignment_ind_outlined,
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _nameController,
-                      focusNode: _nameFocus,
-                      style: const TextStyle(color: Colors.black),
-                      textCapitalization: TextCapitalization.words,
-                      autofillHints: const [AutofillHints.name],
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) => _focusNext(_emailFocus),
-                      validator: (v) {
-                        final base = _requiredValidator(v, 'Name');
-                        if (base != null) return base;
-                        if (v!.trim().length < 2) {
-                          return 'Name must be at least 2 characters';
-                        }
-                        return null;
-                      },
-                      decoration: _inputDecoration(
-                        'First & Last Name',
-                        icon: Icons.person_outline,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _emailController,
-                      focusNode: _emailFocus,
-                      style: const TextStyle(color: Colors.black),
-                      keyboardType: TextInputType.emailAddress,
-                      autofillHints: const [AutofillHints.email],
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) => _focusNext(_passwordFocus),
-                      validator: _emailValidator,
-                      decoration: _inputDecoration(
-                        'Email',
-                        icon: Icons.email_outlined,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _passwordController,
-                      focusNode: _passwordFocus,
-                      style: const TextStyle(color: Colors.black),
-                      obscureText: !_passwordVisible,
-                      autofillHints: const [AutofillHints.newPassword],
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) =>
-                          _focusNext(_confirmPasswordFocus),
-                      validator: _passwordValidator,
-                      decoration: _inputDecoration(
-                        'Password',
-                        icon: Icons.lock_outline,
-                        helper: 'Min 8 characters, 1 uppercase, 1 number',
-                        suffix: IconButton(
-                          icon: Icon(_passwordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () => setState(
-                              () => _passwordVisible = !_passwordVisible),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _idController,
+                        focusNode: _idFocus,
+                        style: const TextStyle(color: Colors.black),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) => _focusNext(_nameFocus),
+                        validator: (v) => _requiredValidator(v, 'Student ID'),
+                        decoration: _inputDecoration(
+                          'Student ID Number',
+                          hint: 'StudentId',
+                          icon: Icons.badge_outlined,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _confirmPasswordController,
-                      focusNode: _confirmPasswordFocus,
-                      style: const TextStyle(color: Colors.black),
-                      obscureText: !_confirmPasswordVisible,
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) => _focusNext(_numberFocus),
-                      validator: _confirmPasswordValidator,
-                      decoration: _inputDecoration(
-                        'Confirm Password',
-                        icon: Icons.lock_outline,
-                        suffix: IconButton(
-                          icon: Icon(_confirmPasswordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () => setState(() =>
-                              _confirmPasswordVisible =
-                                  !_confirmPasswordVisible),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _nameController,
+                        focusNode: _nameFocus,
+                        style: const TextStyle(color: Colors.black),
+                        textCapitalization: TextCapitalization.words,
+                        autofillHints: const [AutofillHints.name],
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) => _focusNext(_emailFocus),
+                        validator: (v) {
+                          final base = _requiredValidator(v, 'Name');
+                          if (base != null) return base;
+                          if (v!.trim().length < 2) {
+                            return 'Name must be at least 2 characters';
+                          }
+                          return null;
+                        },
+                        decoration: _inputDecoration(
+                          'First & Last Name',
+                          icon: Icons.person_outline,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _numberController,
-                      focusNode: _numberFocus,
-                      style: const TextStyle(color: Colors.black),
-                      keyboardType: TextInputType.phone,
-                      autofillHints: const [
-                        AutofillHints.telephoneNumberNational
-                      ],
-                      inputFormatters: [_UsPhoneFormatter()],
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) => _focusNext(_schoolFocus),
-                      validator: (v) => _phoneValidator(v, 'Phone number'),
-                      decoration: _inputDecoration(
-                        'Phone number',
-                        hint: '123-456-7890',
-                        icon: Icons.phone_outlined,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    DropdownButtonFormField<String>(
-                      initialValue: _ethnicity,
-                      isExpanded: true,
-                      validator: (v) => _requiredValidator(v, 'Ethnicity'),
-                      items: _ethnicityOptions
-                          .map((e) =>
-                              DropdownMenuItem(value: e, child: Text(e)))
-                          .toList(),
-                      onChanged: (v) => setState(() => _ethnicity = v),
-                      decoration: _inputDecoration(
-                        'Ethnicity',
-                        icon: Icons.groups_outlined,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _schoolController,
-                      focusNode: _schoolFocus,
-                      style: const TextStyle(color: Colors.black),
-                      textCapitalization: TextCapitalization.words,
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) => _focusNext(_eCnameFocus),
-                      validator: (v) => _requiredValidator(v, 'School name'),
-                      decoration: _inputDecoration(
-                        'School name',
-                        hint: 'School',
-                        icon: Icons.school_outlined,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    DropdownButtonFormField<String>(
-                      initialValue: _gender,
-                      isExpanded: true,
-                      validator: (v) => _requiredValidator(v, 'Gender'),
-                      items: _genderOptions
-                          .map((g) =>
-                              DropdownMenuItem(value: g, child: Text(g)))
-                          .toList(),
-                      onChanged: (v) => setState(() => _gender = v),
-                      decoration: _inputDecoration(
-                        'Gender',
-                        icon: Icons.wc_outlined,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _birthdateController,
-                      readOnly: true,
-                      onTap: _pickBirthdate,
-                      style: const TextStyle(color: Colors.black),
-                      validator: (v) => _requiredValidator(v, 'Birthdate'),
-                      decoration: _inputDecoration(
-                        'Birthdate',
-                        icon: Icons.cake_outlined,
-                        suffix: const Icon(Icons.calendar_today),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    const Divider(),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Emergency Contact',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _eCname,
-                      focusNode: _eCnameFocus,
-                      style: const TextStyle(color: Colors.black),
-                      textCapitalization: TextCapitalization.words,
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) => _focusNext(_eCphoneFocus),
-                      validator: (v) {
-                        final base = _requiredValidator(
-                            v, 'Emergency contact name');
-                        if (base != null) return base;
-                        if (v!.trim().length < 2) {
-                          return 'Name must be at least 2 characters';
-                        }
-                        return null;
-                      },
-                      decoration: _inputDecoration(
-                        'First & Last Name',
-                        icon: Icons.person_outline,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _eCphone,
-                      focusNode: _eCphoneFocus,
-                      style: const TextStyle(color: Colors.black),
-                      keyboardType: TextInputType.phone,
-                      inputFormatters: [_UsPhoneFormatter()],
-                      textInputAction: TextInputAction.done,
-                      onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
-                      validator: (v) =>
-                          _phoneValidator(v, 'Emergency contact phone'),
-                      decoration: _inputDecoration(
-                        'Phone Number',
-                        hint: '123-456-7890',
-                        icon: Icons.phone_outlined,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    DropdownButtonFormField<String>(
-                      initialValue: _ecRelation,
-                      isExpanded: true,
-                      validator: (v) => _requiredValidator(v, 'Relation'),
-                      items: _relationOptions
-                          .map((r) =>
-                              DropdownMenuItem(value: r, child: Text(r)))
-                          .toList(),
-                      onChanged: (v) => setState(() => _ecRelation = v),
-                      decoration: _inputDecoration(
-                        'Relation',
-                        icon: Icons.family_restroom_outlined,
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    SizedBox(
-                      height: 48,
-                      child: FilledButton(
-                        style: FilledButton.styleFrom(
-                          backgroundColor: Colors.red,
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _emailController,
+                        focusNode: _emailFocus,
+                        style: const TextStyle(color: Colors.black),
+                        keyboardType: TextInputType.emailAddress,
+                        autofillHints: const [AutofillHints.email],
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) => _focusNext(_passwordFocus),
+                        validator: _emailValidator,
+                        decoration: _inputDecoration(
+                          'Email',
+                          icon: Icons.email_outlined,
                         ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _passwordController,
+                        focusNode: _passwordFocus,
+                        style: const TextStyle(color: Colors.black),
+                        obscureText: !_passwordVisible,
+                        autofillHints: const [AutofillHints.newPassword],
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) =>
+                            _focusNext(_confirmPasswordFocus),
+                        validator: _passwordValidator,
+                        decoration: _inputDecoration(
+                          'Password',
+                          icon: Icons.lock_outline,
+                          helper: 'Min 8 characters, 1 uppercase, 1 number',
+                          suffix: IconButton(
+                            icon: Icon(_passwordVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility),
+                            onPressed: () => setState(
+                                () => _passwordVisible = !_passwordVisible),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _confirmPasswordController,
+                        focusNode: _confirmPasswordFocus,
+                        style: const TextStyle(color: Colors.black),
+                        obscureText: !_confirmPasswordVisible,
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) => _focusNext(_numberFocus),
+                        validator: _confirmPasswordValidator,
+                        decoration: _inputDecoration(
+                          'Confirm Password',
+                          icon: Icons.lock_outline,
+                          suffix: IconButton(
+                            icon: Icon(_confirmPasswordVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility),
+                            onPressed: () => setState(() =>
+                                _confirmPasswordVisible =
+                                    !_confirmPasswordVisible),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _numberController,
+                        focusNode: _numberFocus,
+                        style: const TextStyle(color: Colors.black),
+                        keyboardType: TextInputType.phone,
+                        autofillHints: const [
+                          AutofillHints.telephoneNumberNational
+                        ],
+                        inputFormatters: [_UsPhoneFormatter()],
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) => _focusNext(_schoolFocus),
+                        validator: (v) => _phoneValidator(v, 'Phone number'),
+                        decoration: _inputDecoration(
+                          'Phone number',
+                          hint: '123-456-7890',
+                          icon: Icons.phone_outlined,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      DropdownButtonFormField<String>(
+                        initialValue: _ethnicity,
+                        isExpanded: true,
+                        validator: (v) => _requiredValidator(v, 'Ethnicity'),
+                        items: _ethnicityOptions
+                            .map((e) =>
+                                DropdownMenuItem(value: e, child: Text(e)))
+                            .toList(),
+                        onChanged: (v) => setState(() => _ethnicity = v),
+                        decoration: _inputDecoration(
+                          'Ethnicity',
+                          icon: Icons.groups_outlined,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _schoolController,
+                        focusNode: _schoolFocus,
+                        style: const TextStyle(color: Colors.black),
+                        textCapitalization: TextCapitalization.words,
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) => _focusNext(_eCnameFocus),
+                        validator: (v) => _requiredValidator(v, 'School name'),
+                        decoration: _inputDecoration(
+                          'School name',
+                          hint: 'School',
+                          icon: Icons.school_outlined,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      DropdownButtonFormField<String>(
+                        initialValue: _gender,
+                        isExpanded: true,
+                        validator: (v) => _requiredValidator(v, 'Gender'),
+                        items: _genderOptions
+                            .map((g) =>
+                                DropdownMenuItem(value: g, child: Text(g)))
+                            .toList(),
+                        onChanged: (v) => setState(() => _gender = v),
+                        decoration: _inputDecoration(
+                          'Gender',
+                          icon: Icons.wc_outlined,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _birthdateController,
+                        readOnly: true,
+                        onTap: _pickBirthdate,
+                        style: const TextStyle(color: Colors.black),
+                        validator: (v) => _requiredValidator(v, 'Birthdate'),
+                        decoration: _inputDecoration(
+                          'Birthdate',
+                          icon: Icons.cake_outlined,
+                          suffix: const Icon(Icons.calendar_today),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      const Divider(),
+                      const SizedBox(height: 18),
+                      const FurnaceSectionHeader(
+                        title: 'Emergency contact',
+                        icon: Icons.health_and_safety_outlined,
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _eCname,
+                        focusNode: _eCnameFocus,
+                        style: const TextStyle(color: Colors.black),
+                        textCapitalization: TextCapitalization.words,
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) => _focusNext(_eCphoneFocus),
+                        validator: (v) {
+                          final base =
+                              _requiredValidator(v, 'Emergency contact name');
+                          if (base != null) return base;
+                          if (v!.trim().length < 2) {
+                            return 'Name must be at least 2 characters';
+                          }
+                          return null;
+                        },
+                        decoration: _inputDecoration(
+                          'First & Last Name',
+                          icon: Icons.person_outline,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _eCphone,
+                        focusNode: _eCphoneFocus,
+                        style: const TextStyle(color: Colors.black),
+                        keyboardType: TextInputType.phone,
+                        inputFormatters: [_UsPhoneFormatter()],
+                        textInputAction: TextInputAction.done,
+                        onFieldSubmitted: (_) =>
+                            FocusScope.of(context).unfocus(),
+                        validator: (v) =>
+                            _phoneValidator(v, 'Emergency contact phone'),
+                        decoration: _inputDecoration(
+                          'Phone Number',
+                          hint: '123-456-7890',
+                          icon: Icons.phone_outlined,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      DropdownButtonFormField<String>(
+                        initialValue: _ecRelation,
+                        isExpanded: true,
+                        validator: (v) => _requiredValidator(v, 'Relation'),
+                        items: _relationOptions
+                            .map((r) =>
+                                DropdownMenuItem(value: r, child: Text(r)))
+                            .toList(),
+                        onChanged: (v) => setState(() => _ecRelation = v),
+                        decoration: _inputDecoration(
+                          'Relation',
+                          icon: Icons.family_restroom_outlined,
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      FilledButton.icon(
                         onPressed: _submitting ? null : registerAccount,
-                        child: _submitting
+                        icon: _submitting
                             ? const SizedBox(
-                                width: 20,
-                                height: 20,
+                                width: 18,
+                                height: 18,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
                                   color: Colors.white,
                                 ),
                               )
-                            : const Text(
-                                'Sign Up',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
+                            : const Icon(Icons.person_add_alt_1_rounded),
+                        label: Text(
+                          _submitting ? 'Creating account' : 'Create account',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -549,8 +526,7 @@ class _RegisterState extends State<Register> {
         context,
         PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 400),
-          transitionsBuilder: (context, animation, _, child) =>
-              ScaleTransition(
+          transitionsBuilder: (context, animation, _, child) => ScaleTransition(
             alignment: Alignment.center,
             scale: animation,
             child: child,
