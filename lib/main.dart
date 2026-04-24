@@ -96,83 +96,62 @@ class MyHomePage extends StatelessWidget {
           // the App.build method, and use it to set our appbar title.
           title: const Text("Home Page"),
         ),
-        body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: Column(
-            // Column is also a layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Invoke "debug painting" (press "p" in the console, choose the
-            // "Toggle Debug Paint" action from the Flutter Inspector in Android
-            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-            // to see the wireframe for each widget.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                children: [
-                  Container(
-                      padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
-                      child: Image.asset('assets/images/logo.png',
-                          height: 200, width: 300, fit: BoxFit.fitWidth)),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(0, 75, 0, 0),
-                    child: FloatingActionButton.extended(
-                      heroTag: "loginMenuButton",
-                      onPressed: () async {
-                        final currentUser =
-                            await ParseUser.currentUser() as ParseUser?;
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                    padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+                    child: Image.asset('assets/images/logo.png',
+                        height: 200, width: 300, fit: BoxFit.fitWidth)),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
+                  child: FloatingActionButton.extended(
+                    heroTag: "loginMenuButton",
+                    onPressed: () async {
+                      final currentUser =
+                          await ParseUser.currentUser() as ParseUser?;
 
-                        if (!context.mounted) return;
-                        if (currentUser == null ||
-                            currentUser.sessionToken == null) {
-                          Navigator.of(context).push(PageTransition(
-                              child: const LoginPage(),
-                              type: PageTransitionType.topToBottom,
-                              duration: const Duration(milliseconds: 600)));
-                        } else {
-                          Navigator.of(context).push(PageTransition(
-                              child: WelcomePage(
-                                  false,
-                                  null,
-                                  Room(
-                                      roomId: '',
-                                      roomName: '',
-                                      qrRoomValue: '',
-                                      qrCheckoutValue: '')),
-                              type: PageTransitionType.topToBottom,
-                              duration: const Duration(milliseconds: 600)));
-                        }
-                      },
-                      label: const Text('Login'),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(0, 75, 0, 0),
-                    child: FloatingActionButton.extended(
-                      heroTag: "registerMenuButton",
-                      onPressed: () {
+                      if (!context.mounted) return;
+                      if (currentUser == null ||
+                          currentUser.sessionToken == null) {
                         Navigator.of(context).push(PageTransition(
-                            child: const Register(),
+                            child: const LoginPage(),
                             type: PageTransitionType.topToBottom,
                             duration: const Duration(milliseconds: 600)));
-                      },
-                      label: const Text('Register'),
-                    ),
+                      } else {
+                        Navigator.of(context).push(PageTransition(
+                            child: WelcomePage(
+                                false,
+                                null,
+                                Room(
+                                    roomId: '',
+                                    roomName: '',
+                                    qrRoomValue: '',
+                                    qrCheckoutValue: '')),
+                            type: PageTransitionType.topToBottom,
+                            duration: const Duration(milliseconds: 600)));
+                      }
+                    },
+                    label: const Text('Login'),
                   ),
-                ],
-              ),
-              const Spacer(
-                flex: 1,
-              ),
-            ],
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
+                  child: FloatingActionButton.extended(
+                    heroTag: "registerMenuButton",
+                    onPressed: () {
+                      Navigator.of(context).push(PageTransition(
+                          child: const Register(),
+                          type: PageTransitionType.topToBottom,
+                          duration: const Duration(milliseconds: 600)));
+                    },
+                    label: const Text('Register'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

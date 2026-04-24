@@ -105,66 +105,60 @@ class WelcomePageState extends State<WelcomePage> {
             ],
           ),
         ),
-        body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                children: [
-                  Container(
-                      padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
-                      child: Image.asset('assets/images/logo.png',
-                          height: 200, width: 300, fit: BoxFit.fitWidth)),
-                  Container(
-                      padding: const EdgeInsets.fromLTRB(0, 35, 0, 0),
-                      width: 300,
-                      child: Column(children: const [
-                        Text("Welcome",
-                            textScaleFactor: 3.5,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Creation',
-                                color: Colors.orange)),
-                      ])),
-                  Container(
-                      padding: const EdgeInsets.all(1),
-                      width: 300,
-                      child: Column(children: [
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                          child: Text(
-                            widget.checkedIn ? '${widget.room.roomName}' : "",
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold),
-                          ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                    padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+                    child: Image.asset('assets/images/logo.png',
+                        height: 200, width: 300, fit: BoxFit.fitWidth)),
+                Container(
+                    padding: const EdgeInsets.fromLTRB(0, 35, 0, 0),
+                    width: 300,
+                    child: Column(children: const [
+                      Text("Welcome",
+                          textScaleFactor: 3.5,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Creation',
+                              color: Colors.orange)),
+                    ])),
+                Container(
+                    padding: const EdgeInsets.all(1),
+                    width: 300,
+                    child: Column(children: [
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                        child: Text(
+                          widget.checkedIn ? '${widget.room.roomName}' : "",
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
                         ),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
-                          child: Text(
-                              widget.checkedIn ? 'Timer: $loggedTime' : ""),
-                        ),
-                      ])),
-                  Container(
-                    child: FloatingActionButton.extended(
-                      heroTag: "cameraButton",
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ScanPage(
-                                widget.checkedIn, logInTime, widget.room)));
-                      },
-                      label: Text(
-                          widget.checkedIn ? "QR Check Out" : "QR Check In"),
-                      icon: const Icon(Icons.qr_code_scanner),
-                    ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
+                        child: Text(
+                            widget.checkedIn ? 'Timer: $loggedTime' : ""),
+                      ),
+                    ])),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 24),
+                  child: FloatingActionButton.extended(
+                    heroTag: "cameraButton",
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ScanPage(
+                              widget.checkedIn, logInTime, widget.room)));
+                    },
+                    label: Text(
+                        widget.checkedIn ? "QR Check Out" : "QR Check In"),
+                    icon: const Icon(Icons.qr_code_scanner),
                   ),
-                ],
-              ),
-              const Spacer(
-                flex: 1,
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
