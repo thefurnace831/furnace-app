@@ -3,7 +3,7 @@
 A mobile app for the Furnace Teen Center that allows for scanning QR codes to log information into a database. 
 
 ## Mockup
-![Screenshot from 2022-03-08 10-10-15](https://user-images.githubusercontent.com/70172259/157299673-d72c1228-e09f-4747-8b78-b442f4f799bd.png)
+![App flow mockup](assets/images/mockup.svg)
 
 ## Schema (Parse back4app)
 ### Models

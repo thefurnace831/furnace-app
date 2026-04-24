@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 740" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#111"/>
+    </marker>
+  </defs>
+
+  <rect width="1020" height="740" fill="#e5e5e5"/>
+
+  <!-- =================== LANDING =================== -->
+  <text x="110" y="185" text-anchor="middle" font-size="22" font-weight="bold">LANDING</text>
+  <rect x="40" y="200" width="140" height="330" rx="18" fill="#a9c1f7"/>
+  <text x="110" y="290" text-anchor="middle" font-size="18" font-weight="bold" fill="#4a148c">The Furnace</text>
+  <rect x="60" y="360" width="100" height="32" rx="16" fill="#1fc2a0"/>
+  <text x="110" y="381" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Login</text>
+  <rect x="60" y="410" width="100" height="32" rx="16" fill="#1fc2a0"/>
+  <text x="110" y="431" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Sign Up</text>
+
+  <!-- =================== LOGIN =================== -->
+  <text x="330" y="45" text-anchor="middle" font-size="22" font-weight="bold">LOGIN</text>
+  <rect x="260" y="60" width="140" height="280" rx="18" fill="#a9c1f7"/>
+  <text x="280" y="130" font-size="11">Email</text>
+  <line x1="280" y1="138" x2="380" y2="138" stroke="#111" stroke-width="1"/>
+  <text x="280" y="185" font-size="11">Password</text>
+  <line x1="280" y1="193" x2="380" y2="193" stroke="#111" stroke-width="1"/>
+  <rect x="285" y="265" width="90" height="30" rx="15" fill="#1fc2a0"/>
+  <text x="330" y="285" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Login</text>
+
+  <!-- =================== CREATE ACCOUNT =================== -->
+  <text x="330" y="385" text-anchor="middle" font-size="22" font-weight="bold">Create Account</text>
+  <rect x="260" y="400" width="140" height="305" rx="18" fill="#a9c1f7"/>
+  <g font-size="10" fill="#111">
+    <text x="280" y="430">Full Name</text>
+    <line x1="280" y1="437" x2="380" y2="437" stroke="#111" stroke-width="1"/>
+    <text x="280" y="460">Email</text>
+    <line x1="280" y1="467" x2="380" y2="467" stroke="#111" stroke-width="1"/>
+    <text x="280" y="490">Password</text>
+    <line x1="280" y1="497" x2="380" y2="497" stroke="#111" stroke-width="1"/>
+    <text x="280" y="520">Phone</text>
+    <line x1="280" y1="527" x2="380" y2="527" stroke="#111" stroke-width="1"/>
+    <text x="280" y="550">Student ID</text>
+    <line x1="280" y1="557" x2="380" y2="557" stroke="#111" stroke-width="1"/>
+    <text x="280" y="580">Birthdate</text>
+    <line x1="280" y1="587" x2="380" y2="587" stroke="#111" stroke-width="1"/>
+    <text x="280" y="610" font-style="italic" fill="#555">+ school, gender,</text>
+    <text x="280" y="623" font-style="italic" fill="#555">emergency contact…</text>
+  </g>
+  <rect x="285" y="650" width="90" height="30" rx="15" fill="#1fc2a0"/>
+  <text x="330" y="670" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Sign Up</text>
+
+  <!-- LANDING -> LOGIN -->
+  <line x1="182" y1="290" x2="256" y2="190" stroke="#111" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <!-- LANDING -> CREATE ACCOUNT -->
+  <line x1="182" y1="440" x2="256" y2="540" stroke="#111" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- =================== HOME =================== -->
+  <text x="560" y="185" text-anchor="middle" font-size="22" font-weight="bold">HOME</text>
+  <rect x="490" y="200" width="140" height="330" rx="18" fill="#a9c1f7"/>
+  <!-- hamburger icon -->
+  <g stroke="#111" stroke-width="2">
+    <line x1="505" y1="222" x2="522" y2="222"/>
+    <line x1="505" y1="228" x2="522" y2="228"/>
+    <line x1="505" y1="234" x2="522" y2="234"/>
+  </g>
+  <text x="560" y="230" text-anchor="middle" font-size="10" font-weight="bold">The Furnace</text>
+  <text x="560" y="310" text-anchor="middle" font-size="13" font-weight="bold" fill="#ed6c02">Welcome</text>
+  <text x="560" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="#111">Room name</text>
+  <text x="560" y="370" text-anchor="middle" font-size="10" fill="#333">Timer: 00:00:00</text>
+  <rect x="500" y="450" width="120" height="34" rx="17" fill="#1fc2a0"/>
+  <text x="560" y="471" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">QR Check In</text>
+
+  <!-- LOGIN -> HOME -->
+  <line x1="402" y1="200" x2="486" y2="300" stroke="#111" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <!-- CREATE ACCOUNT -> HOME -->
+  <line x1="402" y1="470" x2="486" y2="400" stroke="#111" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- =================== CAMERA VIEW =================== -->
+  <text x="790" y="45" text-anchor="middle" font-size="22" font-weight="bold">CAMERA VIEW</text>
+  <rect x="720" y="60" width="140" height="280" rx="18" fill="#a9c1f7"/>
+  <!-- viewfinder corners -->
+  <g stroke="#fff" stroke-width="3" fill="none">
+    <path d="M750,160 L750,140 L770,140"/>
+    <path d="M810,140 L830,140 L830,160"/>
+    <path d="M750,240 L750,260 L770,260"/>
+    <path d="M810,260 L830,260 L830,240"/>
+  </g>
+  <!-- QR square in center -->
+  <rect x="770" y="170" width="40" height="40" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+  <!-- HOME <-> CAMERA VIEW (bidirectional) -->
+  <line x1="632" y1="300" x2="716" y2="200" stroke="#111" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <line x1="716" y1="220" x2="632" y2="320" stroke="#111" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- =================== ACCOUNT =================== -->
+  <text x="790" y="385" text-anchor="middle" font-size="22" font-weight="bold">ACCOUNT</text>
+  <rect x="720" y="400" width="140" height="305" rx="18" fill="#a9c1f7"/>
+  <g font-size="10" fill="#111">
+    <text x="740" y="430">Student ID</text>
+    <line x1="740" y1="437" x2="840" y2="437" stroke="#111" stroke-width="1"/>
+    <text x="740" y="460">Name</text>
+    <line x1="740" y1="467" x2="840" y2="467" stroke="#111" stroke-width="1"/>
+    <text x="740" y="490">Email</text>
+    <line x1="740" y1="497" x2="840" y2="497" stroke="#111" stroke-width="1"/>
+    <text x="740" y="520">Phone</text>
+    <line x1="740" y1="527" x2="840" y2="527" stroke="#111" stroke-width="1"/>
+    <text x="740" y="550">School</text>
+    <line x1="740" y1="557" x2="840" y2="557" stroke="#111" stroke-width="1"/>
+    <text x="740" y="580">Birthdate</text>
+    <line x1="740" y1="587" x2="840" y2="587" stroke="#111" stroke-width="1"/>
+    <text x="740" y="610" font-style="italic" fill="#555">Emergency contact…</text>
+  </g>
+  <!-- edit FAB -->
+  <circle cx="840" cy="680" r="15" fill="#d32f2f"/>
+  <text x="840" y="685" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">✎</text>
+
+  <!-- HOME -> ACCOUNT via menu -->
+  <path d="M560,530 L560,620 L716,620" stroke="#111" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+  <text x="638" y="612" text-anchor="middle" font-size="11" font-style="italic" fill="#333">via ≡ menu</text>
+</svg>
