@@ -251,3 +251,5 @@ lib/generated_plugin_registrant.dart
 # Support for Project snippet scope
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,dart,flutter
+# Environment secrets
+.env

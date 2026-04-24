@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
@@ -12,9 +13,11 @@ import 'scanner.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  const keyApplicationId = 'q5fW7bzeVL9PnFWUoWt8l9tGl3HxHVvFOLQKe8G5';
-  const keyClientKey = '3XYTD8qj1WVOkzZmyDng5Mdi1e3YLGuiQamD2yrv';
-  const keyParseServerUrl = 'https://parseapi.back4app.com';
+  await dotenv.load(fileName: '.env');
+
+  final keyApplicationId = dotenv.env['PARSE_APP_ID']!;
+  final keyClientKey = dotenv.env['PARSE_CLIENT_KEY']!;
+  final keyParseServerUrl = dotenv.env['PARSE_SERVER_URL']!;
 
   await Parse().initialize(
     keyApplicationId,
