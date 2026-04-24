@@ -34,6 +34,7 @@ dependencies:
   path: ^1.8.0
   path_provider: ^2.0.9
   shared_preferences:
+  flutter_secure_storage: ^9.2.2
   marquee: ^2.2.3
 
   mobile_scanner: ^6.0.0

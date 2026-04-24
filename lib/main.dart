@@ -6,6 +6,7 @@ import 'package:furnace_app/register.dart';
 
 import 'api/room.dart';
 import 'login.dart';
+import 'secure_core_store.dart';
 import 'welcome.dart';
 import 'scanner.dart';
 
@@ -15,8 +16,13 @@ void main() async {
   const keyClientKey = '3XYTD8qj1WVOkzZmyDng5Mdi1e3YLGuiQamD2yrv';
   const keyParseServerUrl = 'https://parseapi.back4app.com';
 
-  await Parse().initialize(keyApplicationId, keyParseServerUrl,
-      clientKey: keyClientKey, autoSendSessionId: true);
+  await Parse().initialize(
+    keyApplicationId,
+    keyParseServerUrl,
+    clientKey: keyClientKey,
+    autoSendSessionId: true,
+    coreStore: await SecureCoreStore.getInstance(),
+  );
 
   final currentUser = await ParseUser.currentUser() as ParseUser?;
   final isLoggedIn = currentUser?.sessionToken != null;
