@@ -82,6 +82,12 @@ flutter:
     - .env
 
   fonts:
+    - family: FurnaceDisplay
+      fonts:
+        - asset: assets/Fonts/Cunchy.ttf
+    - family: FurnaceScript
+      fonts:
+        - asset: assets/Fonts/Creation.otf
     - family: Creation
       fonts:
         - asset: assets/Fonts/Cunchy.ttf

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furnace_app/furnace_ui.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
@@ -10,8 +11,7 @@ class ScanPage extends StatefulWidget {
   final DateTime? checkInTime;
   final Room savedRoom;
 
-  const ScanPage(this.checkedIn, this.checkInTime, this.savedRoom, {Key? key})
-      : super(key: key);
+  const ScanPage(this.checkedIn, this.checkInTime, this.savedRoom, {super.key});
 
   @override
   State<StatefulWidget> createState() => _ScanState();
@@ -34,7 +34,7 @@ class _ScanState extends State<ScanPage> {
     final barcode = capture.barcodes.firstOrNull;
     if (barcode?.rawValue == null) return;
 
-    _processing = true;
+    setState(() => _processing = true);
     final scannedCode = barcode!.rawValue!;
     await _controller.stop();
 
@@ -91,15 +91,100 @@ class _ScanState extends State<ScanPage> {
 
   @override
   Widget build(BuildContext context) {
+    final mode = widget.checkedIn ? 'Check out' : 'Check in';
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Scan QR Code'),
-        backgroundColor: Colors.black,
+        title: Text('$mode QR code'),
+        backgroundColor: FurnaceColors.ink,
         foregroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
       ),
-      body: MobileScanner(
-        controller: _controller,
-        onDetect: _onDetect,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          MobileScanner(
+            controller: _controller,
+            onDetect: _onDetect,
+          ),
+          IgnorePointer(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  center: Alignment.center,
+                  radius: 0.78,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withAlpha(52),
+                    Colors.black.withAlpha(185),
+                  ],
+                  stops: const [0.38, 0.58, 1],
+                ),
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(22, 22, 22, 28),
+              child: Column(
+                children: [
+                  _buildStatusBanner(mode),
+                  const Spacer(),
+                  const _ScannerFrame(),
+                  const Spacer(),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 180),
+                    child: _processing
+                        ? const _ProcessingBanner()
+                        : const SizedBox(height: 48),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatusBanner(String mode) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: FurnaceColors.ink.withAlpha(216),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.white.withAlpha(50)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        child: Row(
+          children: [
+            Container(
+              width: 34,
+              height: 34,
+              decoration: BoxDecoration(
+                color: FurnaceColors.amber.withAlpha(42),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.qr_code_scanner_rounded,
+                color: FurnaceColors.amber,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                '$mode at The Furnace',
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -184,7 +269,7 @@ class _ScanState extends State<ScanPage> {
             TextButton(
               child: const Text("OK"),
               onPressed: () {
-                _processing = false;
+                setState(() => _processing = false);
                 _controller.start();
                 Navigator.of(context).pop();
               },
@@ -192,6 +277,123 @@ class _ScanState extends State<ScanPage> {
           ],
         );
       },
+    );
+  }
+}
+
+class _ScannerFrame extends StatelessWidget {
+  const _ScannerFrame();
+
+  @override
+  Widget build(BuildContext context) {
+    final size = (MediaQuery.of(context).size.width - 88).clamp(220.0, 300.0);
+    const corners = [
+      Alignment.topLeft,
+      Alignment.topRight,
+      Alignment.bottomLeft,
+      Alignment.bottomRight,
+    ];
+
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.white.withAlpha(210)),
+              ),
+            ),
+          ),
+          for (final alignment in corners)
+            Align(
+              alignment: alignment,
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: alignment == Alignment.topLeft
+                        ? const Radius.circular(8)
+                        : Radius.zero,
+                    topRight: alignment == Alignment.topRight
+                        ? const Radius.circular(8)
+                        : Radius.zero,
+                    bottomLeft: alignment == Alignment.bottomLeft
+                        ? const Radius.circular(8)
+                        : Radius.zero,
+                    bottomRight: alignment == Alignment.bottomRight
+                        ? const Radius.circular(8)
+                        : Radius.zero,
+                  ),
+                  border: Border(
+                    top: alignment.y < 0
+                        ? const BorderSide(
+                            color: FurnaceColors.amber,
+                            width: 5,
+                          )
+                        : BorderSide.none,
+                    bottom: alignment.y > 0
+                        ? const BorderSide(
+                            color: FurnaceColors.amber,
+                            width: 5,
+                          )
+                        : BorderSide.none,
+                    left: alignment.x < 0
+                        ? const BorderSide(
+                            color: FurnaceColors.amber,
+                            width: 5,
+                          )
+                        : BorderSide.none,
+                    right: alignment.x > 0
+                        ? const BorderSide(
+                            color: FurnaceColors.amber,
+                            width: 5,
+                          )
+                        : BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ProcessingBanner extends StatelessWidget {
+  const _ProcessingBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: FurnaceColors.paper,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+            SizedBox(width: 10),
+            Text(
+              'Reading code',
+              style: TextStyle(
+                color: FurnaceColors.ink,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
