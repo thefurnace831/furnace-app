@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:furnace_app/forgot_password.dart';
 import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import 'api/room.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<StatefulWidget> createState() => _LoginPageState();
@@ -17,6 +18,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   final TextEditingController _passwordController = TextEditingController();
 
   static final _emailRegex = RegExp(r'^[\w\.\-\+]+@[\w\.\-]+\.\w{2,}$');
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +42,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   child: Center(
                     child: Text(
                       "Login",
-                      textScaleFactor: 3,
+                      style: TextStyle(fontSize: 42),
                     ),
                   ),
                 ),
@@ -110,6 +118,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                 child: const Text('Submit')),
                           ),
                         ),
+                        TextButton(
+                          onPressed: _openPasswordReset,
+                          child: const Text('Forgot password?'),
+                        ),
                       ],
                     ),
                   ),
@@ -118,6 +130,16 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             ),
           ),
         ));
+  }
+
+  void _openPasswordReset() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ForgotPasswordPage(
+          initialEmail: _emailController.text,
+        ),
+      ),
+    );
   }
 
   void showError(String errorMessage) {
