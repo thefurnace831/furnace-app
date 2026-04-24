@@ -107,53 +107,60 @@ class MyHomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Container(
-                    padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+                  child: Center(
                     child: Image.asset('assets/images/logo.png',
-                        height: 200, width: 300, fit: BoxFit.fitWidth)),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
-                  child: FloatingActionButton.extended(
-                    heroTag: "loginMenuButton",
-                    onPressed: () async {
-                      final currentUser =
-                          await ParseUser.currentUser() as ParseUser?;
-
-                      if (!context.mounted) return;
-                      if (currentUser == null ||
-                          currentUser.sessionToken == null) {
-                        Navigator.of(context).push(PageTransition(
-                            child: const LoginPage(),
-                            type: PageTransitionType.topToBottom,
-                            duration: const Duration(milliseconds: 600)));
-                      } else {
-                        Navigator.of(context).push(PageTransition(
-                            child: WelcomePage(
-                                false,
-                                null,
-                                Room(
-                                    roomId: '',
-                                    roomName: '',
-                                    qrRoomValue: '',
-                                    qrCheckoutValue: '')),
-                            type: PageTransitionType.topToBottom,
-                            duration: const Duration(milliseconds: 600)));
-                      }
-                    },
-                    label: const Text('Login'),
+                        height: 200, width: 300, fit: BoxFit.fitWidth),
                   ),
                 ),
-                Container(
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
+                  child: Center(
+                    child: FloatingActionButton.extended(
+                      heroTag: "loginMenuButton",
+                      onPressed: () async {
+                        final currentUser =
+                            await ParseUser.currentUser() as ParseUser?;
+
+                        if (!context.mounted) return;
+                        if (currentUser == null ||
+                            currentUser.sessionToken == null) {
+                          Navigator.of(context).push(PageTransition(
+                              child: const LoginPage(),
+                              type: PageTransitionType.topToBottom,
+                              duration: const Duration(milliseconds: 600)));
+                        } else {
+                          Navigator.of(context).push(PageTransition(
+                              child: WelcomePage(
+                                  false,
+                                  null,
+                                  Room(
+                                      roomId: '',
+                                      roomName: '',
+                                      qrRoomValue: '',
+                                      qrCheckoutValue: '')),
+                              type: PageTransitionType.topToBottom,
+                              duration: const Duration(milliseconds: 600)));
+                        }
+                      },
+                      label: const Text('Login'),
+                    ),
+                  ),
+                ),
+                Padding(
                   padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
-                  child: FloatingActionButton.extended(
-                    heroTag: "registerMenuButton",
-                    onPressed: () {
-                      Navigator.of(context).push(PageTransition(
-                          child: const Register(),
-                          type: PageTransitionType.topToBottom,
-                          duration: const Duration(milliseconds: 600)));
-                    },
-                    label: const Text('Register'),
+                  child: Center(
+                    child: FloatingActionButton.extended(
+                      heroTag: "registerMenuButton",
+                      onPressed: () {
+                        Navigator.of(context).push(PageTransition(
+                            child: const Register(),
+                            type: PageTransitionType.topToBottom,
+                            duration: const Duration(milliseconds: 600)));
+                      },
+                      label: const Text('Register'),
+                    ),
                   ),
                 ),
               ],
