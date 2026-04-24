@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furnace_app/forgot_password.dart';
 import 'package:furnace_app/furnace_ui.dart';
 import 'package:furnace_app/welcome.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
@@ -98,6 +99,10 @@ class _LoginPageState extends State<LoginPage> {
                         label: const Text('Log in'),
                       ),
                       const SizedBox(height: 6),
+                      TextButton(
+                        onPressed: _openPasswordReset,
+                        child: const Text('Forgot password?'),
+                      ),
                       TextButton.icon(
                         onPressed: () =>
                             Navigator.of(context).pushNamed('/register'),
@@ -110,6 +115,16 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  void _openPasswordReset() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ForgotPasswordPage(
+          initialEmail: _emailController.text,
         ),
       ),
     );
