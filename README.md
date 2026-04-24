@@ -25,8 +25,16 @@ A mobile app for the Furnace Teen Center that allows for scanning QR codes to lo
 | user     | Pointer to Object         | A pointer to the user who created the log|
 
 ## Packages
-- [Parse Server Sdk Flutter](https://pub.dev/packages/parse_server_sdk_flutter)
-- [Mobile Scanner](https://pub.dev/packages/mobile_scanner)
+- [parse_server_sdk_flutter](https://pub.dev/packages/parse_server_sdk_flutter) — Parse/Back4App client
+- [mobile_scanner](https://pub.dev/packages/mobile_scanner) — QR/barcode scanning
+- [flutter_dotenv](https://pub.dev/packages/flutter_dotenv) — loads Parse credentials from `.env`
+- [flutter_secure_storage](https://pub.dev/packages/flutter_secure_storage) — backs the encrypted session-token store (`SecureCoreStore`)
+- [shared_preferences](https://pub.dev/packages/shared_preferences) — lightweight key/value storage
+- [path_provider](https://pub.dev/packages/path_provider) / [path](https://pub.dev/packages/path) — filesystem paths
+- [http](https://pub.dev/packages/http) — HTTP client
+- [provider](https://pub.dev/packages/provider) — state management
+- [page_transition](https://pub.dev/packages/page_transition) — animated route transitions
+- [marquee](https://pub.dev/packages/marquee) — scrolling text widget
 
 
 ## Flutter Resources
