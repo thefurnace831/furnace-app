@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
@@ -12,9 +13,11 @@ import 'scanner.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  const keyApplicationId = 'q5fW7bzeVL9PnFWUoWt8l9tGl3HxHVvFOLQKe8G5';
-  const keyClientKey = '3XYTD8qj1WVOkzZmyDng5Mdi1e3YLGuiQamD2yrv';
-  const keyParseServerUrl = 'https://parseapi.back4app.com';
+  await dotenv.load(fileName: '.env');
+
+  final keyApplicationId = dotenv.env['PARSE_APP_ID']!;
+  final keyClientKey = dotenv.env['PARSE_CLIENT_KEY']!;
+  final keyParseServerUrl = dotenv.env['PARSE_SERVER_URL']!;
 
   await Parse().initialize(
     keyApplicationId,
@@ -107,53 +110,60 @@ class MyHomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Container(
-                    padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+                  child: Center(
                     child: Image.asset('assets/images/logo.png',
-                        height: 200, width: 300, fit: BoxFit.fitWidth)),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
-                  child: FloatingActionButton.extended(
-                    heroTag: "loginMenuButton",
-                    onPressed: () async {
-                      final currentUser =
-                          await ParseUser.currentUser() as ParseUser?;
-
-                      if (!context.mounted) return;
-                      if (currentUser == null ||
-                          currentUser.sessionToken == null) {
-                        Navigator.of(context).push(PageTransition(
-                            child: const LoginPage(),
-                            type: PageTransitionType.topToBottom,
-                            duration: const Duration(milliseconds: 600)));
-                      } else {
-                        Navigator.of(context).push(PageTransition(
-                            child: WelcomePage(
-                                false,
-                                null,
-                                Room(
-                                    roomId: '',
-                                    roomName: '',
-                                    qrRoomValue: '',
-                                    qrCheckoutValue: '')),
-                            type: PageTransitionType.topToBottom,
-                            duration: const Duration(milliseconds: 600)));
-                      }
-                    },
-                    label: const Text('Login'),
+                        height: 200, width: 300, fit: BoxFit.fitWidth),
                   ),
                 ),
-                Container(
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
+                  child: Center(
+                    child: FloatingActionButton.extended(
+                      heroTag: "loginMenuButton",
+                      onPressed: () async {
+                        final currentUser =
+                            await ParseUser.currentUser() as ParseUser?;
+
+                        if (!context.mounted) return;
+                        if (currentUser == null ||
+                            currentUser.sessionToken == null) {
+                          Navigator.of(context).push(PageTransition(
+                              child: const LoginPage(),
+                              type: PageTransitionType.topToBottom,
+                              duration: const Duration(milliseconds: 600)));
+                        } else {
+                          Navigator.of(context).push(PageTransition(
+                              child: WelcomePage(
+                                  false,
+                                  null,
+                                  Room(
+                                      roomId: '',
+                                      roomName: '',
+                                      qrRoomValue: '',
+                                      qrCheckoutValue: '')),
+                              type: PageTransitionType.topToBottom,
+                              duration: const Duration(milliseconds: 600)));
+                        }
+                      },
+                      label: const Text('Login'),
+                    ),
+                  ),
+                ),
+                Padding(
                   padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
-                  child: FloatingActionButton.extended(
-                    heroTag: "registerMenuButton",
-                    onPressed: () {
-                      Navigator.of(context).push(PageTransition(
-                          child: const Register(),
-                          type: PageTransitionType.topToBottom,
-                          duration: const Duration(milliseconds: 600)));
-                    },
-                    label: const Text('Register'),
+                  child: Center(
+                    child: FloatingActionButton.extended(
+                      heroTag: "registerMenuButton",
+                      onPressed: () {
+                        Navigator.of(context).push(PageTransition(
+                            child: const Register(),
+                            type: PageTransitionType.topToBottom,
+                            duration: const Duration(milliseconds: 600)));
+                      },
+                      label: const Text('Register'),
+                    ),
                   ),
                 ),
               ],

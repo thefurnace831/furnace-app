@@ -31,87 +31,87 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               children: <Widget>[
                 const Padding(
                   padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
-                  child: Text(
-                    "Login",
-                    textScaleFactor: 3,
+                  child: Center(
+                    child: Text(
+                      "Login",
+                      textScaleFactor: 3,
+                    ),
                   ),
                 ),
-                Form(
-                  key: _formKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(20),
-                        width: 300,
-                        margin: const EdgeInsets.all(10.0),
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              textAlign: TextAlign.center,
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              textInputAction: TextInputAction.next,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: "Email",
-                                prefixIcon: Icon(Icons.email),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
-                                  return 'Email is required';
-                                }
-                                if (!_emailRegex.hasMatch(value.trim())) {
-                                  return 'Enter a valid email address';
-                                }
-                                return null;
-                              },
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(20),
-                        width: 300,
-                        margin: const EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              textAlign: TextAlign.center,
-                              controller: _passwordController,
-                              obscureText: true,
-                              textInputAction: TextInputAction.done,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: "Password",
-                                prefixIcon: Icon(Icons.lock),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
-                                  return 'Password is required';
-                                }
-                                if (value.trim().length < 6) {
-                                  return 'Must be at least 6 characters';
-                                }
-                                return null;
-                              },
+                Center(
+                  child: Form(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          width: 300,
+                          margin: const EdgeInsets.all(10.0),
+                          child: TextFormField(
+                            textAlign: TextAlign.center,
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: "Email",
+                              prefixIcon: Icon(Icons.email),
                             ),
-                          ],
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20.0),
-                      ),
-                      SizedBox(
-                        width: 175.0,
-                        height: 40.0,
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              login();
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Email is required';
+                              }
+                              if (!_emailRegex.hasMatch(value.trim())) {
+                                return 'Enter a valid email address';
+                              }
+                              return null;
                             },
-                            child: const Text('Submit')),
-                      ),
-                    ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          width: 300,
+                          margin: const EdgeInsets.all(10),
+                          child: TextFormField(
+                            textAlign: TextAlign.center,
+                            controller: _passwordController,
+                            obscureText: true,
+                            textInputAction: TextInputAction.done,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: "Password",
+                              prefixIcon: Icon(Icons.lock),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Password is required';
+                              }
+                              if (value.trim().length < 6) {
+                                return 'Must be at least 6 characters';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20.0),
+                        ),
+                        Center(
+                          child: SizedBox(
+                            width: 175.0,
+                            height: 40.0,
+                            child: ElevatedButton(
+                                onPressed: () async {
+                                  login();
+                                },
+                                child: const Text('Submit')),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
