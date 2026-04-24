@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:furnace_app/furnace_ui.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 class AccountPage extends StatefulWidget {
@@ -102,14 +103,11 @@ class _AccountPageState extends State<AccountPage> {
     _schoolController.text = user.get<String>('schoolName') ?? '';
     final ecFirst = user.get<String>('ecFirstName') ?? '';
     final ecLast = user.get<String>('ecLastname') ?? '';
-    _eCname.text = [ecFirst, ecLast]
-        .where((s) => s.trim().isNotEmpty)
-        .join(' ')
-        .trim();
+    _eCname.text =
+        [ecFirst, ecLast].where((s) => s.trim().isNotEmpty).join(' ').trim();
     _eCphone.text = _formatPhoneForDisplay(user.get<String>('ecPhone') ?? '');
 
-    _gender =
-        _safeDropdownValue(user.get<String>('gender'), _genderOptions);
+    _gender = _safeDropdownValue(user.get<String>('gender'), _genderOptions);
     _ethnicity =
         _safeDropdownValue(user.get<String>('ethnicity'), _ethnicityOptions);
     _ecRelation =
@@ -156,8 +154,7 @@ class _AccountPageState extends State<AccountPage> {
     return null;
   }
 
-  String _formatDate(DateTime d) =>
-      '${d.year.toString().padLeft(4, '0')}-'
+  String _formatDate(DateTime d) => '${d.year.toString().padLeft(4, '0')}-'
       '${d.month.toString().padLeft(2, '0')}-'
       '${d.day.toString().padLeft(2, '0')}';
 
@@ -212,33 +209,9 @@ class _AccountPageState extends State<AccountPage> {
     return InputDecoration(
       labelText: label,
       hintText: hint,
-      hintStyle: const TextStyle(color: Colors.grey),
       prefixIcon: icon == null ? null : Icon(icon),
       suffixIcon: suffix,
-      filled: !_editing,
-      fillColor: _editing ? null : Colors.grey.shade100,
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(
-            color: _editing ? Colors.black : Colors.grey.shade400),
-      ),
-      disabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(color: Colors.grey.shade400),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Colors.grey),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Colors.red),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Colors.red),
-      ),
+      fillColor: _editing ? Colors.white : FurnaceColors.smoke.withAlpha(90),
     );
   }
 
@@ -246,14 +219,15 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     if (_loading) {
       return Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(title: const Text('Account')),
-        body: const Center(child: CircularProgressIndicator()),
+        body: const FurnaceBackground(
+          pattern: true,
+          child: Center(child: CircularProgressIndicator()),
+        ),
       );
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Account'),
         actions: [
@@ -265,213 +239,211 @@ class _AccountPageState extends State<AccountPage> {
             ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(24, 16, 24, 100),
-        child: Form(
-          key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextFormField(
-                controller: _idController,
-                readOnly: !_editing,
-                style: const TextStyle(color: Colors.black),
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                textInputAction: TextInputAction.next,
-                validator: (v) => _requiredValidator(v, 'Student ID'),
-                decoration: _inputDecoration(
-                  'Student ID Number',
-                  hint: 'StudentId',
-                  icon: Icons.badge_outlined,
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _nameController,
-                readOnly: !_editing,
-                style: const TextStyle(color: Colors.black),
-                textCapitalization: TextCapitalization.words,
-                textInputAction: TextInputAction.next,
-                validator: (v) {
-                  final base = _requiredValidator(v, 'Name');
-                  if (base != null) return base;
-                  if (v!.trim().length < 2) {
-                    return 'Name must be at least 2 characters';
-                  }
-                  return null;
-                },
-                decoration: _inputDecoration(
-                  'First & Last Name',
-                  icon: Icons.person_outline,
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _emailController,
-                readOnly: !_editing,
-                style: const TextStyle(color: Colors.black),
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                validator: (v) {
-                  final base = _requiredValidator(v, 'Email');
-                  if (base != null) return base;
-                  if (!_emailRegex.hasMatch(v!.trim())) {
-                    return 'Enter a valid email address';
-                  }
-                  return null;
-                },
-                decoration: _inputDecoration(
-                  'Email',
-                  icon: Icons.email_outlined,
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _numberController,
-                readOnly: !_editing,
-                style: const TextStyle(color: Colors.black),
-                keyboardType: TextInputType.phone,
-                inputFormatters: [_UsPhoneFormatter()],
-                textInputAction: TextInputAction.next,
-                validator: (v) => _phoneValidator(v, 'Phone number'),
-                decoration: _inputDecoration(
-                  'Phone number',
-                  hint: '123-456-7890',
-                  icon: Icons.phone_outlined,
-                ),
-              ),
-              const SizedBox(height: 16),
-              _buildDropdown(
-                label: 'Ethnicity',
-                icon: Icons.groups_outlined,
-                value: _ethnicity,
-                options: _ethnicityOptions,
-                onChanged: (v) => setState(() => _ethnicity = v),
-                validator: (v) => _requiredValidator(v, 'Ethnicity'),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _schoolController,
-                readOnly: !_editing,
-                style: const TextStyle(color: Colors.black),
-                textCapitalization: TextCapitalization.words,
-                textInputAction: TextInputAction.next,
-                validator: (v) => _requiredValidator(v, 'School name'),
-                decoration: _inputDecoration(
-                  'School name',
-                  hint: 'School',
-                  icon: Icons.school_outlined,
-                ),
-              ),
-              const SizedBox(height: 16),
-              _buildDropdown(
-                label: 'Gender',
-                icon: Icons.wc_outlined,
-                value: _gender,
-                options: _genderOptions,
-                onChanged: (v) => setState(() => _gender = v),
-                validator: (v) => _requiredValidator(v, 'Gender'),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _birthdateController,
-                readOnly: true,
-                onTap: _editing ? _pickBirthdate : null,
-                style: const TextStyle(color: Colors.black),
-                validator: (v) => _requiredValidator(v, 'Birthdate'),
-                decoration: _inputDecoration(
-                  'Birthdate',
-                  icon: Icons.cake_outlined,
-                  suffix: const Icon(Icons.calendar_today),
-                ),
-              ),
-              const SizedBox(height: 24),
-              const Divider(),
-              const SizedBox(height: 8),
-              const Text(
-                'Emergency Contact',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _eCname,
-                readOnly: !_editing,
-                style: const TextStyle(color: Colors.black),
-                textCapitalization: TextCapitalization.words,
-                textInputAction: TextInputAction.next,
-                validator: (v) {
-                  final base =
-                      _requiredValidator(v, 'Emergency contact name');
-                  if (base != null) return base;
-                  if (v!.trim().length < 2) {
-                    return 'Name must be at least 2 characters';
-                  }
-                  return null;
-                },
-                decoration: _inputDecoration(
-                  'First & Last Name',
-                  icon: Icons.person_outline,
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _eCphone,
-                readOnly: !_editing,
-                style: const TextStyle(color: Colors.black),
-                keyboardType: TextInputType.phone,
-                inputFormatters: [_UsPhoneFormatter()],
-                textInputAction: TextInputAction.done,
-                validator: (v) =>
-                    _phoneValidator(v, 'Emergency contact phone'),
-                decoration: _inputDecoration(
-                  'Phone Number',
-                  hint: '123-456-7890',
-                  icon: Icons.phone_outlined,
-                ),
-              ),
-              const SizedBox(height: 16),
-              _buildDropdown(
-                label: 'Relation',
-                icon: Icons.family_restroom_outlined,
-                value: _ecRelation,
-                options: _relationOptions,
-                onChanged: (v) => setState(() => _ecRelation = v),
-                validator: (v) => _requiredValidator(v, 'Relation'),
-              ),
-              const SizedBox(height: 32),
-              const Divider(),
-              const SizedBox(height: 16),
-              OutlinedButton.icon(
-                onPressed: _saving ? null : _showChangePasswordDialog,
-                icon: const Icon(Icons.lock_outline, color: Colors.red),
-                label: const Text(
-                  'Change password',
-                  style: TextStyle(
-                      color: Colors.red, fontWeight: FontWeight.w600),
-                ),
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Colors.red),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+      body: FurnaceBackground(
+        pattern: true,
+        child: FurnaceContent(
+          maxWidth: 760,
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 112),
+          child: FurnacePanel(
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: _formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildAccountHeader(),
+                  const SizedBox(height: 24),
+                  const FurnaceSectionHeader(
+                    title: 'Student details',
+                    icon: Icons.assignment_ind_outlined,
                   ),
-                ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _idController,
+                    readOnly: !_editing,
+                    style: const TextStyle(color: Colors.black),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    textInputAction: TextInputAction.next,
+                    validator: (v) => _requiredValidator(v, 'Student ID'),
+                    decoration: _inputDecoration(
+                      'Student ID Number',
+                      hint: 'StudentId',
+                      icon: Icons.badge_outlined,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _nameController,
+                    readOnly: !_editing,
+                    style: const TextStyle(color: Colors.black),
+                    textCapitalization: TextCapitalization.words,
+                    textInputAction: TextInputAction.next,
+                    validator: (v) {
+                      final base = _requiredValidator(v, 'Name');
+                      if (base != null) return base;
+                      if (v!.trim().length < 2) {
+                        return 'Name must be at least 2 characters';
+                      }
+                      return null;
+                    },
+                    decoration: _inputDecoration(
+                      'First & Last Name',
+                      icon: Icons.person_outline,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _emailController,
+                    readOnly: !_editing,
+                    style: const TextStyle(color: Colors.black),
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    validator: (v) {
+                      final base = _requiredValidator(v, 'Email');
+                      if (base != null) return base;
+                      if (!_emailRegex.hasMatch(v!.trim())) {
+                        return 'Enter a valid email address';
+                      }
+                      return null;
+                    },
+                    decoration: _inputDecoration(
+                      'Email',
+                      icon: Icons.email_outlined,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _numberController,
+                    readOnly: !_editing,
+                    style: const TextStyle(color: Colors.black),
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: [_UsPhoneFormatter()],
+                    textInputAction: TextInputAction.next,
+                    validator: (v) => _phoneValidator(v, 'Phone number'),
+                    decoration: _inputDecoration(
+                      'Phone number',
+                      hint: '123-456-7890',
+                      icon: Icons.phone_outlined,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildDropdown(
+                    label: 'Ethnicity',
+                    icon: Icons.groups_outlined,
+                    value: _ethnicity,
+                    options: _ethnicityOptions,
+                    onChanged: (v) => setState(() => _ethnicity = v),
+                    validator: (v) => _requiredValidator(v, 'Ethnicity'),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _schoolController,
+                    readOnly: !_editing,
+                    style: const TextStyle(color: Colors.black),
+                    textCapitalization: TextCapitalization.words,
+                    textInputAction: TextInputAction.next,
+                    validator: (v) => _requiredValidator(v, 'School name'),
+                    decoration: _inputDecoration(
+                      'School name',
+                      hint: 'School',
+                      icon: Icons.school_outlined,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildDropdown(
+                    label: 'Gender',
+                    icon: Icons.wc_outlined,
+                    value: _gender,
+                    options: _genderOptions,
+                    onChanged: (v) => setState(() => _gender = v),
+                    validator: (v) => _requiredValidator(v, 'Gender'),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _birthdateController,
+                    readOnly: true,
+                    onTap: _editing ? _pickBirthdate : null,
+                    style: const TextStyle(color: Colors.black),
+                    validator: (v) => _requiredValidator(v, 'Birthdate'),
+                    decoration: _inputDecoration(
+                      'Birthdate',
+                      icon: Icons.cake_outlined,
+                      suffix: const Icon(Icons.calendar_today),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  const Divider(),
+                  const SizedBox(height: 18),
+                  const FurnaceSectionHeader(
+                    title: 'Emergency contact',
+                    icon: Icons.health_and_safety_outlined,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _eCname,
+                    readOnly: !_editing,
+                    style: const TextStyle(color: Colors.black),
+                    textCapitalization: TextCapitalization.words,
+                    textInputAction: TextInputAction.next,
+                    validator: (v) {
+                      final base =
+                          _requiredValidator(v, 'Emergency contact name');
+                      if (base != null) return base;
+                      if (v!.trim().length < 2) {
+                        return 'Name must be at least 2 characters';
+                      }
+                      return null;
+                    },
+                    decoration: _inputDecoration(
+                      'First & Last Name',
+                      icon: Icons.person_outline,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _eCphone,
+                    readOnly: !_editing,
+                    style: const TextStyle(color: Colors.black),
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: [_UsPhoneFormatter()],
+                    textInputAction: TextInputAction.done,
+                    validator: (v) =>
+                        _phoneValidator(v, 'Emergency contact phone'),
+                    decoration: _inputDecoration(
+                      'Phone Number',
+                      hint: '123-456-7890',
+                      icon: Icons.phone_outlined,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildDropdown(
+                    label: 'Relation',
+                    icon: Icons.family_restroom_outlined,
+                    value: _ecRelation,
+                    options: _relationOptions,
+                    onChanged: (v) => setState(() => _ecRelation = v),
+                    validator: (v) => _requiredValidator(v, 'Relation'),
+                  ),
+                  const SizedBox(height: 32),
+                  const Divider(),
+                  const SizedBox(height: 16),
+                  OutlinedButton.icon(
+                    onPressed: _saving ? null : _showChangePasswordDialog,
+                    icon: const Icon(Icons.lock_outline),
+                    label: const Text('Change password'),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.red,
-        foregroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton.extended(
         tooltip: _editing ? 'Save changes' : 'Edit',
         onPressed: _saving ? null : _onFabPressed,
-        child: _saving
+        icon: _saving
             ? const SizedBox(
                 width: 22,
                 height: 22,
@@ -480,7 +452,80 @@ class _AccountPageState extends State<AccountPage> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : Icon(_editing ? Icons.check : Icons.edit),
+            : Icon(_editing ? Icons.check_rounded : Icons.edit_outlined),
+        label: Text(_editing ? 'Save' : 'Edit'),
+      ),
+    );
+  }
+
+  Widget _buildAccountHeader() {
+    final displayName = _nameController.text.trim().isEmpty
+        ? 'Account profile'
+        : _nameController.text.trim();
+    final email = _emailController.text.trim();
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: FurnaceColors.ink,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 46,
+                  height: 46,
+                  decoration: BoxDecoration(
+                    color: FurnaceColors.amber.withAlpha(42),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.person_outline,
+                    color: FurnaceColors.amber,
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        displayName,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      if (email.isNotEmpty) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          email,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            FurnaceStatusPill(
+              label: _editing ? 'Editing' : 'View only',
+              icon: _editing ? Icons.edit_outlined : Icons.visibility_outlined,
+              active: _editing,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -576,9 +621,9 @@ class _AccountPageState extends State<AccountPage> {
     final dialogFormKey = GlobalKey<FormState>();
     bool submitting = false;
 
-    OutlineInputBorder roundedBorder({Color color = Colors.black}) {
+    OutlineInputBorder roundedBorder({Color color = FurnaceColors.smoke}) {
       return OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: color),
       );
     }
@@ -649,10 +694,12 @@ class _AccountPageState extends State<AccountPage> {
                     child: const Text('Cancel'),
                   ),
                   FilledButton(
-                    style: TextButton.styleFrom(backgroundColor: Colors.red),
                     onPressed: submitting
                         ? null
                         : () async {
+                            final dialogNavigator = Navigator.of(dialogContext);
+                            final messenger = ScaffoldMessenger.of(context);
+
                             if (!dialogFormKey.currentState!.validate()) {
                               return;
                             }
@@ -666,8 +713,8 @@ class _AccountPageState extends State<AccountPage> {
                             setDialogState(() => submitting = false);
 
                             if (response.success) {
-                              Navigator.of(dialogContext).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
+                              dialogNavigator.pop();
+                              messenger.showSnackBar(
                                 const SnackBar(
                                     content: Text('Password updated')),
                               );
@@ -689,8 +736,9 @@ class _AccountPageState extends State<AccountPage> {
                         : const Text(
                             'Update',
                             style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700),
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                   ),
                 ],

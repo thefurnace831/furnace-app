@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:furnace_app/account.dart';
+import 'package:furnace_app/furnace_ui.dart';
 import 'package:furnace_app/main.dart';
 import 'package:furnace_app/scanner.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
@@ -13,8 +14,7 @@ class WelcomePage extends StatefulWidget {
   final DateTime? checkInTime;
   final Room room;
 
-  const WelcomePage(this.checkedIn, this.checkInTime, this.room, {Key? key})
-      : super(key: key);
+  const WelcomePage(this.checkedIn, this.checkInTime, this.room, {super.key});
 
   @override
   State<StatefulWidget> createState() => WelcomePageState();
@@ -40,7 +40,8 @@ class WelcomePageState extends State<WelcomePage> {
     }
 
     if (widget.checkedIn) {
-      timer = Timer.periodic(const Duration(seconds: 0), (timer) {
+      loggedTime = getLoggedTime(logInTime!);
+      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         setState(() {
           loggedTime = getLoggedTime(logInTime!);
         });
@@ -51,18 +52,19 @@ class WelcomePageState extends State<WelcomePage> {
   }
 
   @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Going back from welcomePage will delete check in status and timer information
-    // By wrapping widget contents in WillPopScope it disables the back button
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         appBar: AppBar(
-          // Disable appBar back button
           automaticallyImplyLeading: false,
-          title: const Text("The Furnace"),
+          title: const Text('The Furnace'),
           leading: Builder(
             builder: (context) => IconButton(
               icon: const Icon(Icons.menu),
@@ -71,105 +73,54 @@ class WelcomePageState extends State<WelcomePage> {
             ),
           ),
         ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(color: Colors.red),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    'Menu',
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.person),
-                title: const Text('Account'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const AccountPage()));
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Logout'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  logout();
-                },
-              ),
-            ],
-          ),
-        ),
-        body: SafeArea(
-          child: SingleChildScrollView(
+        drawer: _buildDrawer(context),
+        body: FurnaceBackground(
+          pattern: true,
+          child: FurnaceContent(
+            maxWidth: 560,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-                  child: Center(
-                    child: Image.asset('assets/images/logo.png',
-                        height: 200, width: 300, fit: BoxFit.fitWidth),
-                  ),
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const FurnaceBrandHeader(
+                  title: 'Check-In Dashboard',
+                  subtitle: 'The Furnace',
+                  logoWidth: 220,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 35, 0, 0),
-                  child: Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        Text("Welcome",
-                            textScaleFactor: 3.5,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Creation',
-                                color: Colors.orange)),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(1),
-                  child: Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                          child: Text(
-                            widget.checkedIn ? '${widget.room.roomName}' : "",
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold),
-                          ),
+                const SizedBox(height: 22),
+                FurnacePanel(
+                  padding: const EdgeInsets.all(22),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      FurnaceSectionHeader(
+                        title: widget.checkedIn
+                            ? 'Current session'
+                            : 'Ready for your next session',
+                        icon: widget.checkedIn
+                            ? Icons.local_fire_department_rounded
+                            : Icons.qr_code_scanner_rounded,
+                      ),
+                      const SizedBox(height: 18),
+                      _buildSessionSummary(context),
+                      const SizedBox(height: 22),
+                      FilledButton.icon(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ScanPage(
+                                widget.checkedIn,
+                                logInTime,
+                                widget.room,
+                              ),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.qr_code_scanner_rounded),
+                        label: Text(
+                          widget.checkedIn ? 'QR check out' : 'QR check in',
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
-                          child: Text(
-                              widget.checkedIn ? 'Timer: $loggedTime' : ""),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  child: Center(
-                    child: FloatingActionButton.extended(
-                      heroTag: "cameraButton",
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ScanPage(
-                                widget.checkedIn, logInTime, widget.room)));
-                      },
-                      label: Text(
-                          widget.checkedIn ? "QR Check Out" : "QR Check In"),
-                      icon: const Icon(Icons.qr_code_scanner),
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -177,6 +128,167 @@ class WelcomePageState extends State<WelcomePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  FurnaceColors.coal,
+                  FurnaceColors.ember,
+                ],
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(
+                    'assets/images/logo.png',
+                    height: 70,
+                    width: 150,
+                    fit: BoxFit.contain,
+                    alignment: Alignment.bottomLeft,
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Menu',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.person_outline),
+            title: const Text('Account'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const AccountPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout_rounded),
+            title: const Text('Logout'),
+            onTap: () {
+              Navigator.of(context).pop();
+              logout();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSessionSummary(BuildContext context) {
+    if (!widget.checkedIn) {
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          color: FurnaceColors.teal.withAlpha(18),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: FurnaceColors.teal.withAlpha(55)),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.all(18),
+          child: Row(
+            children: [
+              Icon(
+                Icons.verified_outlined,
+                color: FurnaceColors.teal,
+                size: 28,
+              ),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'No active room session',
+                  style: TextStyle(
+                    color: FurnaceColors.ink,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          widget.room.roomName ?? 'Current room',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+        const SizedBox(height: 14),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: FurnaceColors.ink,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+            child: Row(
+              children: [
+                Container(
+                  width: 42,
+                  height: 42,
+                  decoration: BoxDecoration(
+                    color: FurnaceColors.amber.withAlpha(42),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.timer_outlined,
+                    color: FurnaceColors.amber,
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Time logged',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        loggedTime ?? '0:00:00',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontFeatures: [FontFeature.tabularFigures()],
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
