@@ -3,6 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import 'package:flutter/material.dart';
+import 'package:furnace_app/furnace_ui.dart';
 import 'package:furnace_app/register.dart';
 
 import 'api/room.dart';
@@ -42,9 +43,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'The Furnace',
-        theme: ThemeData(
-          primarySwatch: Colors.red,
-        ),
+        theme: FurnaceTheme.build(),
         initialRoute: isLoggedIn ? '/welcome' : '/',
         routes: {
           '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
@@ -70,100 +69,46 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// This widget contains buttons for navigating to Login and Registration
 class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    return PopScope(
+      canPop: false,
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: const Text("Home Page"),
-        ),
-        body: SafeArea(
-          child: SingleChildScrollView(
+        body: FurnaceBackground(
+          pattern: true,
+          child: FurnaceContent(
+            maxWidth: 440,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-                  child: Center(
-                    child: Image.asset('assets/images/logo.png',
-                        height: 200, width: 300, fit: BoxFit.fitWidth),
-                  ),
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const FurnaceBrandHeader(
+                  title: 'The Furnace',
+                  subtitle: 'Check in',
+                  logoWidth: 260,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
-                  child: Center(
-                    child: FloatingActionButton.extended(
-                      heroTag: "loginMenuButton",
-                      onPressed: () async {
-                        final currentUser =
-                            await ParseUser.currentUser() as ParseUser?;
-
-                        if (!context.mounted) return;
-                        if (currentUser == null ||
-                            currentUser.sessionToken == null) {
-                          Navigator.of(context).push(PageTransition(
-                              child: const LoginPage(),
-                              type: PageTransitionType.topToBottom,
-                              duration: const Duration(milliseconds: 600)));
-                        } else {
-                          Navigator.of(context).push(PageTransition(
-                              child: WelcomePage(
-                                  false,
-                                  null,
-                                  Room(
-                                      roomId: '',
-                                      roomName: '',
-                                      qrRoomValue: '',
-                                      qrCheckoutValue: '')),
-                              type: PageTransitionType.topToBottom,
-                              duration: const Duration(milliseconds: 600)));
-                        }
-                      },
-                      label: const Text('Login'),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
-                  child: Center(
-                    child: FloatingActionButton.extended(
-                      heroTag: "registerMenuButton",
-                      onPressed: () {
-                        Navigator.of(context).push(PageTransition(
-                            child: const Register(),
-                            type: PageTransitionType.topToBottom,
-                            duration: const Duration(milliseconds: 600)));
-                      },
-                      label: const Text('Register'),
-                    ),
+                const SizedBox(height: 22),
+                FurnacePanel(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      FilledButton.icon(
+                        onPressed: () => _goToLogin(context),
+                        icon: const Icon(Icons.login_rounded),
+                        label: const Text('Log in'),
+                      ),
+                      const SizedBox(height: 12),
+                      OutlinedButton.icon(
+                        onPressed: () => _goToRegister(context),
+                        icon: const Icon(Icons.person_add_alt_1_rounded),
+                        label: const Text('Create account'),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -172,5 +117,36 @@ class MyHomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _goToLogin(BuildContext context) async {
+    final currentUser = await ParseUser.currentUser() as ParseUser?;
+    if (!context.mounted) return;
+
+    if (currentUser == null || currentUser.sessionToken == null) {
+      Navigator.of(context).push(PageTransition(
+          child: const LoginPage(),
+          type: PageTransitionType.topToBottom,
+          duration: const Duration(milliseconds: 600)));
+    } else {
+      Navigator.of(context).push(PageTransition(
+          child: WelcomePage(
+              false,
+              null,
+              Room(
+                  roomId: '',
+                  roomName: '',
+                  qrRoomValue: '',
+                  qrCheckoutValue: '')),
+          type: PageTransitionType.topToBottom,
+          duration: const Duration(milliseconds: 600)));
+    }
+  }
+
+  void _goToRegister(BuildContext context) {
+    Navigator.of(context).push(PageTransition(
+        child: const Register(),
+        type: PageTransitionType.topToBottom,
+        duration: const Duration(milliseconds: 600)));
   }
 }
