@@ -88,7 +88,7 @@ class MyHomePage extends StatelessWidget {
               children: [
                 const FurnaceBrandHeader(
                   title: 'The Furnace',
-                  subtitle: 'Check in. Keep the shift moving.',
+                  subtitle: 'Check in',
                   logoWidth: 260,
                 ),
                 const SizedBox(height: 22),
