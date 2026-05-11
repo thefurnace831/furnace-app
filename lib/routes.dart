@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 
+import 'admin/admin_home/admin_home_screen.dart';
 import 'api/room.dart';
 import 'login.dart';
 import 'main.dart';
@@ -90,7 +91,7 @@ class AppRouter {
           path: '/admin-home',
           name: 'adminHome',
           builder: (context, state) {
-            return const Register();
+            return AdminHomePage();
           },
         ),
       ],

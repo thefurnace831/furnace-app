@@ -32,8 +32,9 @@ void main() async {
 
   final currentUser = await ParseUser.currentUser() as ParseUser?;
   final isLoggedIn = currentUser?.sessionToken != null;
-  // In the future, we should be checking the user's role to decide if they are an admin or not
-  // For now, we are just hard coding an admin email for testing the admin view
+  // In the future, we should be checking the user's role in the
+  // database to decide if they are an admin or not.
+  // For now, we are just hard coding an admin email for testing the admin view.
   final isAdmin = currentUser?.emailAddress == adminEmail;
 
   runApp(MyApp(isLoggedIn: isLoggedIn, isAdmin: isAdmin,));
