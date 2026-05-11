@@ -5,6 +5,13 @@ A mobile app for the Furnace Teen Center that allows for scanning QR codes to lo
 ## Mockup
 ![App flow mockup](assets/images/mockup.svg)
 
+## Features
+- QR code scanning for student check-in/check-out
+- Secure user authentication and registration
+- Student profile management
+- Real-time logging of attendance data
+- Backend powered by Parse (Back4App)
+
 ## Schema (Parse back4app)
 ### Models
 
