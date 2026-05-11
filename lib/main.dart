@@ -1,4 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:furnace_app/routes.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
@@ -30,42 +31,23 @@ void main() async {
 
   final currentUser = await ParseUser.currentUser() as ParseUser?;
   final isLoggedIn = currentUser?.sessionToken != null;
+  final isAdmin = currentUser?.emailAddress == "cody.hopkins108@gmail.com";
 
-  runApp(MyApp(isLoggedIn: isLoggedIn));
+  runApp(MyApp(isLoggedIn: isLoggedIn, isAdmin: isAdmin,));
 }
 
 class MyApp extends StatelessWidget {
   final bool isLoggedIn;
+  final bool isAdmin;
 
-  const MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
+  const MyApp({Key? key, required this.isLoggedIn, required this.isAdmin}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
         title: 'The Furnace',
         theme: FurnaceTheme.build(),
-        initialRoute: isLoggedIn ? '/welcome' : '/',
-        routes: {
-          '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
-          '/login': (context) => const LoginPage(),
-          '/register': (context) => const Register(),
-          '/welcome': (context) => WelcomePage(
-              false,
-              null,
-              Room(
-                  roomId: '',
-                  roomName: '',
-                  qrRoomValue: '',
-                  qrCheckoutValue: '')),
-          '/scanner': (context) => ScanPage(
-              false,
-              null,
-              Room(
-                  roomId: '',
-                  roomName: '',
-                  qrRoomValue: '',
-                  qrCheckoutValue: ''))
-        });
+        routerConfig: AppRouter.router(isLoggedIn: isLoggedIn, isAdmin: isAdmin));
   }
 }
 
