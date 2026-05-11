@@ -7,6 +7,7 @@ import 'main.dart';
 import 'register.dart';
 import 'welcome.dart';
 import 'scanner.dart';
+import 'admin/admin_home/admin_home_screen_viewmodel.dart';
 
 class AppRouter {
   static GoRouter router({
@@ -91,7 +92,7 @@ class AppRouter {
           path: '/admin-home',
           name: 'adminHome',
           builder: (context, state) {
-            return AdminHomePage();
+            return AdminHomePage(viewModel: AdminHomeScreenViewmodel(),);
           },
         ),
       ],

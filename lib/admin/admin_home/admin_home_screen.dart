@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:furnace_app/admin/admin_home/admin_home_screen_viewmodel.dart';
 import 'package:furnace_app/furnace_ui.dart';
 import 'package:furnace_app/widgets/dashboard_card.dart';
 
 class AdminHomePage extends StatelessWidget {
-  const AdminHomePage({super.key});
+  const AdminHomePage({super.key, required this.viewModel});
+
+  final AdminHomeScreenViewmodel viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +25,8 @@ class AdminHomePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const FurnaceBrandHeader(
-                      title: "Admin Dashboard",
+                    FurnaceBrandHeader(
+                      title: viewModel.title,
                       subtitle: "",
                       logoWidth: 220,
                     ),
