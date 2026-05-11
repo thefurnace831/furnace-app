@@ -6,7 +6,7 @@ import 'package:furnace_app/main.dart';
 
 void main() {
   testWidgets('shows logged-out entry actions', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp(isLoggedIn: false));
+    await tester.pumpWidget(const MyApp(isLoggedIn: false, isAdmin: false));
 
     expect(find.text('Teen Center Check-In'), findsOneWidget);
     expect(find.text('Log in'), findsOneWidget);
@@ -15,7 +15,7 @@ void main() {
 
   testWidgets('starts on dashboard when logged in',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp(isLoggedIn: true));
+    await tester.pumpWidget(const MyApp(isLoggedIn: true, isAdmin: false));
 
     expect(find.text('Check-In Dashboard'), findsOneWidget);
     expect(find.text('QR check in'), findsOneWidget);

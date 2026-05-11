@@ -1,4 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:furnace_app/routes.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
@@ -19,6 +20,7 @@ void main() async {
   final keyApplicationId = dotenv.env['PARSE_APP_ID']!;
   final keyClientKey = dotenv.env['PARSE_CLIENT_KEY']!;
   final keyParseServerUrl = dotenv.env['PARSE_SERVER_URL']!;
+  final adminEmail = dotenv.env['ADMIN_TEST_EMAIL'];
 
   await Parse().initialize(
     keyApplicationId,
@@ -30,42 +32,26 @@ void main() async {
 
   final currentUser = await ParseUser.currentUser() as ParseUser?;
   final isLoggedIn = currentUser?.sessionToken != null;
+  // In the future, we should be checking the user's role in the
+  // database to decide if they are an admin or not.
+  // For now, we are just hard coding an admin email for testing the admin view.
+  final isAdmin = currentUser?.emailAddress == adminEmail;
 
-  runApp(MyApp(isLoggedIn: isLoggedIn));
+  runApp(MyApp(isLoggedIn: isLoggedIn, isAdmin: isAdmin,));
 }
 
 class MyApp extends StatelessWidget {
   final bool isLoggedIn;
+  final bool isAdmin;
 
-  const MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
+  const MyApp({Key? key, required this.isLoggedIn, required this.isAdmin}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
         title: 'The Furnace',
         theme: FurnaceTheme.build(),
-        initialRoute: isLoggedIn ? '/welcome' : '/',
-        routes: {
-          '/': (context) => const MyHomePage(title: 'The Furnace Home Page'),
-          '/login': (context) => const LoginPage(),
-          '/register': (context) => const Register(),
-          '/welcome': (context) => WelcomePage(
-              false,
-              null,
-              Room(
-                  roomId: '',
-                  roomName: '',
-                  qrRoomValue: '',
-                  qrCheckoutValue: '')),
-          '/scanner': (context) => ScanPage(
-              false,
-              null,
-              Room(
-                  roomId: '',
-                  roomName: '',
-                  qrRoomValue: '',
-                  qrCheckoutValue: ''))
-        });
+        routerConfig: AppRouter.router(isLoggedIn: isLoggedIn, isAdmin: isAdmin));
   }
 }
 
