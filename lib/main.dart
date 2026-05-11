@@ -20,6 +20,7 @@ void main() async {
   final keyApplicationId = dotenv.env['PARSE_APP_ID']!;
   final keyClientKey = dotenv.env['PARSE_CLIENT_KEY']!;
   final keyParseServerUrl = dotenv.env['PARSE_SERVER_URL']!;
+  final adminEmail = dotenv.env['ADMIN_TEST_EMAIL'];
 
   await Parse().initialize(
     keyApplicationId,
@@ -31,7 +32,9 @@ void main() async {
 
   final currentUser = await ParseUser.currentUser() as ParseUser?;
   final isLoggedIn = currentUser?.sessionToken != null;
-  final isAdmin = currentUser?.emailAddress == "cody.hopkins108@gmail.com";
+  // In the future, we should be checking the user's role to decide if they are an admin or not
+  // For now, we are just hard coding an admin email for testing the admin view
+  final isAdmin = currentUser?.emailAddress == adminEmail;
 
   runApp(MyApp(isLoggedIn: isLoggedIn, isAdmin: isAdmin,));
 }
