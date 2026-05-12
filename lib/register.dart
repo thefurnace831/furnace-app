@@ -510,6 +510,14 @@ class _RegisterState extends State<Register> {
 
     try {
       final response = await user.signUp();
+
+      // Allow admins to view/edit info
+      final acl = ParseACL();
+      acl.setReadAccess(userId: "role:Admin", allowed: true);
+      acl.setWriteAccess(userId: "role:Admin", allowed: true);
+      user.setACL(acl);
+      await user.save();
+
       if (!mounted) return;
 
       if (!response.success) {

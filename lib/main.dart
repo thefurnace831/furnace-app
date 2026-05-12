@@ -1,5 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:furnace_app/data/repositories/student/student_repository_remote.dart';
 import 'package:furnace_app/routes.dart';
+import 'package:furnace_app/utils/result.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
@@ -8,10 +10,10 @@ import 'package:furnace_app/furnace_ui.dart';
 import 'package:furnace_app/register.dart';
 
 import 'api/room.dart';
+import 'api/user.dart';
 import 'login.dart';
 import 'secure_core_store.dart';
 import 'welcome.dart';
-import 'scanner.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +39,20 @@ void main() async {
   // For now, we are just hard coding an admin email for testing the admin view.
   final isAdmin = currentUser?.emailAddress == adminEmail;
 
+  final result = await StudentRepositoryRemote().getAllStudents();
+
+  switch (result) {
+    case Ok<List<User>>():
+      final students = result.value;
+
+      for (final student in students) {
+        print(student.email);
+      }
+
+    case Error<List<User>>():
+      print(result.error);
+  }
+
   runApp(MyApp(isLoggedIn: isLoggedIn, isAdmin: isAdmin,));
 }
 
@@ -44,7 +60,7 @@ class MyApp extends StatelessWidget {
   final bool isLoggedIn;
   final bool isAdmin;
 
-  const MyApp({Key? key, required this.isLoggedIn, required this.isAdmin}) : super(key: key);
+  const MyApp({super.key, required this.isLoggedIn, required this.isAdmin});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +72,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
