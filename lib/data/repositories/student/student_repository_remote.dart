@@ -18,33 +18,3 @@ class StudentRepositoryRemote extends StudentRepository {
       );
   }
 }
-
-/*
-Future<List<User>> getAllStudents() async {
-  final query = QueryBuilder<ParseObject>(
-    ParseObject('_User'),
-  );
-
-  final response = await query.query();
-
-  print('success: ${response.success}');
-  print('error: ${response.error?.message}');
-  print('count: ${response.count}');
-  print('results: ${response.results}');
-
-  if (!response.success) {
-    throw Exception(response.error?.message ?? 'Failed to load students');
-  }
-
-  final results = response.results;
-
-  if (results == null) {
-    return [];
-  }
-
-  return results
-      .cast<ParseObject>()
-      .map(User.fromParseObject)
-      .toList();
-}
- */

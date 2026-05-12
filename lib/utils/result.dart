@@ -19,6 +19,7 @@
 ///   }
 /// }
 /// ```
+library;
 
 sealed class Result<T> {
   const Result();

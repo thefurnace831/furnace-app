@@ -14,7 +14,6 @@ import 'api/user.dart';
 import 'login.dart';
 import 'secure_core_store.dart';
 import 'welcome.dart';
-import 'scanner.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,9 +23,6 @@ void main() async {
   final keyClientKey = dotenv.env['PARSE_CLIENT_KEY']!;
   final keyParseServerUrl = dotenv.env['PARSE_SERVER_URL']!;
   final adminEmail = dotenv.env['ADMIN_TEST_EMAIL'];
-  final masterKey = dotenv.env['MASTER_KEY'];
-
-  StudentRepositoryRemote repo = StudentRepositoryRemote();
 
   await Parse().initialize(
     keyApplicationId,
@@ -64,7 +60,7 @@ class MyApp extends StatelessWidget {
   final bool isLoggedIn;
   final bool isAdmin;
 
-  const MyApp({Key? key, required this.isLoggedIn, required this.isAdmin}) : super(key: key);
+  const MyApp({super.key, required this.isLoggedIn, required this.isAdmin});
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +72,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
