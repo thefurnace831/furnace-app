@@ -1,5 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:furnace_app/data/repositories/student/student_repository_remote.dart';
 import 'package:furnace_app/routes.dart';
+import 'package:furnace_app/utils/result.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
@@ -8,6 +10,7 @@ import 'package:furnace_app/furnace_ui.dart';
 import 'package:furnace_app/register.dart';
 
 import 'api/room.dart';
+import 'api/user.dart';
 import 'login.dart';
 import 'secure_core_store.dart';
 import 'welcome.dart';
@@ -21,6 +24,9 @@ void main() async {
   final keyClientKey = dotenv.env['PARSE_CLIENT_KEY']!;
   final keyParseServerUrl = dotenv.env['PARSE_SERVER_URL']!;
   final adminEmail = dotenv.env['ADMIN_TEST_EMAIL'];
+  final masterKey = dotenv.env['MASTER_KEY'];
+
+  StudentRepositoryRemote repo = StudentRepositoryRemote();
 
   await Parse().initialize(
     keyApplicationId,
@@ -36,6 +42,20 @@ void main() async {
   // database to decide if they are an admin or not.
   // For now, we are just hard coding an admin email for testing the admin view.
   final isAdmin = currentUser?.emailAddress == adminEmail;
+
+  final result = await StudentRepositoryRemote().getAllStudents();
+
+  switch (result) {
+    case Ok<List<User>>():
+      final students = result.value;
+
+      for (final student in students) {
+        print(student.email);
+      }
+
+    case Error<List<User>>():
+      print(result.error);
+  }
 
   runApp(MyApp(isLoggedIn: isLoggedIn, isAdmin: isAdmin,));
 }
