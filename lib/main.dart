@@ -46,7 +46,7 @@ void main() async {
       final students = result.value;
 
       for (final student in students) {
-        print(student.email);
+        print(student.username);
       }
 
     case Error<List<User>>():
