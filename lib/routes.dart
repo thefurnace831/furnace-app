@@ -2,6 +2,7 @@ import 'package:furnace_app/admin/admin_view_students/admin_view_students_screen
 import 'package:furnace_app/admin/admin_view_students/admin_view_students_viewmodel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 
 import 'admin/admin_home/admin_home_screen.dart';
 import 'api/room.dart';
@@ -102,7 +103,9 @@ class AppRouter {
           path: '/admin-view-students',
           name: "Admin View Students",
           builder: (context, state) {
-            return AdminViewStudentsScreen(viewModel: AdminViewStudentsViewmodel());
+            return AdminViewStudentsScreen(viewModel: AdminViewStudentsViewmodel(
+              studentRepository: context.read(),
+            ));
           }
         )
       ],

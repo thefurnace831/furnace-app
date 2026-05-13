@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:furnace_app/admin/admin_home/admin_home_screen_viewmodel.dart';
 import 'package:furnace_app/admin/admin_view_students/admin_view_students_viewmodel.dart';
 import 'package:furnace_app/furnace_ui.dart';
-import 'package:furnace_app/widgets/dashboard_card.dart';
 
 class AdminViewStudentsScreen extends StatelessWidget {
   const AdminViewStudentsScreen({super.key, required this.viewModel});
