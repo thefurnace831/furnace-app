@@ -23,11 +23,37 @@ class AdminViewStudentsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    FurnaceBrandHeader(
-                      title: "Admin Dashboard",
-                      subtitle: "Viewing All Users",
-                      logoWidth: 220,
-                    ),
+                    ListenableBuilder(listenable: viewModel, builder: (context, _) {
+                      int totalStudents = viewModel.students.length;
+                      return FurnaceBrandHeader(
+                        title: "Admin Dashboard",
+                        subtitle: "Viewing All $totalStudents Students",
+                        logoWidth: 220,
+                      );
+                    }),
+
+                    ListenableBuilder(
+                        listenable: viewModel.loadStudents,
+                        builder: (context, child) {
+                      if (viewModel.loadStudents.running) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+
+                      if (viewModel.loadStudents.error) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text("There was an error fetching students."),
+                            ElevatedButton(
+                                onPressed: viewModel.loadStudents.execute,
+                                child: Text("Try Again")
+                            )
+                          ],
+                        );
+                      }
+                      
+                      return Text(viewModel.students.toString());
+                    })
                   ],
                 ),
               )),
