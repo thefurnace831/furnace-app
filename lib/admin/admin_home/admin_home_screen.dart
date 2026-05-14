@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furnace_app/admin/admin_home/admin_home_screen_viewmodel.dart';
 import 'package:furnace_app/furnace_ui.dart';
 import 'package:furnace_app/widgets/dashboard_card.dart';
+import 'package:go_router/go_router.dart';
 
 class AdminHomePage extends StatelessWidget {
   const AdminHomePage({super.key, required this.viewModel});
@@ -39,14 +40,17 @@ class AdminHomePage extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Expanded(
-                                child: DashboardCard(
-                                  icon: Icons.person,
-                                  description: "view users",
-                                  height: 163,
-                                  onClick: () { print("View users clicked"); },
-                                ),
-                              ),
+                          Expanded(
+                          child: DashboardCard(
+                          icon: Icons.person,
+                            description: "view users",
+                            height: 163,
+
+                            onClick: () {
+                              context.goNamed('adminViewStudents');
+                            },
+                          ),
+                          ),
                               const SizedBox(width: 12),
                               const Expanded(
                                 child: DashboardCard(
