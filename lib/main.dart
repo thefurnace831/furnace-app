@@ -2,7 +2,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:furnace_app/data/repositories/student/student_repository.dart';
 import 'package:furnace_app/data/repositories/student/student_repository_remote.dart';
 import 'package:furnace_app/routes.dart';
-import 'package:furnace_app/utils/result.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +9,7 @@ import 'package:furnace_app/furnace_ui.dart';
 import 'package:furnace_app/register.dart';
 import 'package:provider/provider.dart';
 
-import 'data/repositories/student/student_repository_remote.dart';
 import 'api/room.dart';
-import 'api/user.dart';
 import 'login.dart';
 import 'secure_core_store.dart';
 import 'welcome.dart';
