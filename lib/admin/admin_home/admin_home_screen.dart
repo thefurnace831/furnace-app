@@ -45,7 +45,10 @@ class AdminHomePage extends StatelessWidget {
                                   icon: Icons.person,
                                   description: "view users",
                                   height: 163,
-                                  onClick: () { context.push('/admin-view-students'); },
+
+                                  onClick: () {
+                                    context.goNamed('adminViewStudents');
+                                  },
                                 ),
                               ),
                               const SizedBox(width: 12),
