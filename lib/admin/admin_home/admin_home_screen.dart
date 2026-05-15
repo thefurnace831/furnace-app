@@ -40,17 +40,17 @@ class AdminHomePage extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Expanded(
-                                child: DashboardCard(
-                                  icon: Icons.person,
-                                  description: "view users",
-                                  height: 163,
+                          Expanded(
+                          child: DashboardCard(
+                          icon: Icons.person,
+                            description: "view users",
+                            height: 163,
 
-                                  onClick: () {
-                                    context.goNamed('adminViewStudents');
-                                  },
-                                ),
-                              ),
+                            onClick: () {
+                              context.goNamed('adminViewStudents');
+                            },
+                          ),
+                          ),
                               const SizedBox(width: 12),
                               const Expanded(
                                 child: DashboardCard(
