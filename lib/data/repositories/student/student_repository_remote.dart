@@ -10,7 +10,9 @@ class StudentRepositoryRemote extends StudentRepository {
       final response = await query.query();
 
       if (response.success) {
-        List<ParseObject> studentsObject = response.results as List<ParseObject>;
+        // If no users are returned, Parse can return null instead of an empty list.
+        final List<ParseObject> studentsObject =
+        (response.results ?? []).cast<ParseObject>();
         return Result.ok(studentsObject.map(User.fromParseObject).toList());
       }
       return Result.error(
