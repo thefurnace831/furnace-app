@@ -23,33 +23,35 @@ class AdminViewStudentsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ListenableBuilder(listenable: viewModel, builder: (context, _) {
-                      int totalStudents = viewModel.filteredStudents.length;
-                      return FurnaceBrandHeader(
-                        title: "Admin Dashboard",
-                        subtitle: "Viewing $totalStudents Students",
-                        logoWidth: 220,
-                      );
-                    }),
-                    SizedBox(height: 10),
-                    ListenableBuilder(listenable: viewModel, builder: (context, _) {
-                      return TextField(
-                          controller: viewModel.searchController,
-                          decoration: InputDecoration(
-                              hintText: 'Search students',
-                              prefixIcon: const Icon(Icons.search),
-                              suffixIcon: viewModel.searchController.text.isEmpty
-                                  ? null
-                                  : IconButton(
-                                  icon: const Icon(Icons.clear),
-                                  onPressed: viewModel.clearFilter
-                              )
-                          )
-                      );
-                    }),
+                    ListenableBuilder(
+                        listenable: viewModel,
+                        builder: (context, _) {
+                          int totalStudents = viewModel.filteredStudents.length;
+                          return FurnaceBrandHeader(
+                            title: "Admin Dashboard",
+                            subtitle: "Viewing $totalStudents Students",
+                            logoWidth: 220,
+                          );
+                        }),
                     SizedBox(height: 10),
                     ListenableBuilder(
                         listenable: viewModel,
+                        builder: (context, _) {
+                          return TextField(
+                              controller: viewModel.searchController,
+                              decoration: InputDecoration(
+                                  hintText: 'Search students',
+                                  prefixIcon: const Icon(Icons.search),
+                                  suffixIcon: viewModel
+                                          .searchController.text.isEmpty
+                                      ? null
+                                      : IconButton(
+                                          icon: const Icon(Icons.clear),
+                                          onPressed: viewModel.clearFilter)));
+                        }),
+                    SizedBox(height: 10),
+                    ListenableBuilder(
+                        listenable: viewModel.loadStudents,
                         builder: (context, child) {
                           if (viewModel.loadStudents.running) {
                             return Center(child: CircularProgressIndicator());
@@ -62,36 +64,44 @@ class AdminViewStudentsScreen extends StatelessWidget {
                                 Text("There was an error fetching students."),
                                 ElevatedButton(
                                     onPressed: viewModel.loadStudents.execute,
-                                    child: Text("Try Again")
-                                )
+                                    child: Text("Try Again"))
                               ],
                             );
                           }
 
-                          return SizedBox(
-                            height: 400,
-                            child: viewModel.filteredStudents.isEmpty ? const Center(
-                              child: Text('No students found.'),
-                            ) : ListView.separated(
-                              itemCount: viewModel.filteredStudents.length,
-                              separatorBuilder: (context, index) {
-                                return const Divider(height: 1);
-                              },
-                              itemBuilder: (context, index) {
-                                final student = viewModel.filteredStudents[index];
-                                return ListTile(
-                                  leading: const Icon(Icons.person),
-                                  title: Text(student.name),
-                                  onTap: () {
-                                    debugPrint(
-                                      'Selected student: ${student.name}',
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                          );
-                        })
+                          return child!;
+                        },
+                      child: ListenableBuilder(listenable: viewModel, builder: (context, _) {
+                        return SizedBox(
+                          height: 400,
+                          child: viewModel.filteredStudents.isEmpty
+                              ? const Center(
+                            child: Text('No students found.'),
+                          )
+                              : ListView.separated(
+                            itemCount:
+                            viewModel.filteredStudents.length,
+                            separatorBuilder: (context, index) {
+                              return const Divider(height: 1);
+                            },
+                            itemBuilder: (context, index) {
+                              final student =
+                              viewModel.filteredStudents[index];
+                              return ListTile(
+                                leading: const Icon(Icons.person),
+                                title: Text(student.name),
+                                onTap: () {
+                                  debugPrint(
+                                    'Selected student: ${student.name}',
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        );
+                      }
+                      ),
+                    )
                   ],
                 ),
               )),
