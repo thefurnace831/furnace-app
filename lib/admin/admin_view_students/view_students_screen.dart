@@ -47,6 +47,7 @@ class AdminViewStudentsScreen extends StatelessWidget {
                           )
                       );
                     }),
+                    SizedBox(height: 10),
                     ListenableBuilder(
                         listenable: viewModel,
                         builder: (context, child) {
