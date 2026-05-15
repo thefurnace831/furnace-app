@@ -1,6 +1,9 @@
+import 'package:furnace_app/admin/admin_view_students/admin_view_students_viewmodel.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import 'admin/admin_home/admin_home_screen.dart';
+import 'admin/admin_view_students/view_students_screen.dart';
 import 'api/room.dart';
 import 'login.dart';
 import 'main.dart';
@@ -8,7 +11,6 @@ import 'register.dart';
 import 'welcome.dart';
 import 'scanner.dart';
 import 'admin/admin_home/admin_home_screen_viewmodel.dart';
-import 'admin/view_students/view_students_screen.dart';
 
 class AppRouter {
   static GoRouter router({
@@ -32,7 +34,7 @@ class AppRouter {
           return isAdmin ? '/admin-home' : '/welcome';
         }
 
-// Prevent non-admin users from manually navigating to admin routes
+        // Prevent non-admin users from manually navigating to admin routes
         if (location.startsWith('/admin') && !isAdmin) {
           return '/welcome';
         }
@@ -91,18 +93,21 @@ class AppRouter {
         ),
         GoRoute(
           path: '/admin-home',
-          name: 'adminHome',
+          name: 'Admin Home',
           builder: (context, state) {
             return AdminHomePage(viewModel: AdminHomeScreenViewmodel(),);
           },
         ),
         GoRoute(
-          path: '/admin-view-students',
-          name: 'adminViewStudents',
-          builder: (context, state) {
-            return const ViewStudentsScreen();
-          },
-        ),
+            path: '/admin-view-students',
+            name: "Admin View Students",
+            builder: (context, state) {
+              return AdminViewStudentsScreen(viewModel: AdminViewStudentsViewmodel(
+                studentRepository: context.read(),
+              ));
+            }
+        )
       ],
     );
   }
+}
