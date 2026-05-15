@@ -6,34 +6,63 @@ import '../../api/user.dart';
 import '../../utils/result.dart';
 
 class AdminViewStudentsViewmodel extends ChangeNotifier {
-
   AdminViewStudentsViewmodel({
     required StudentRepository studentRepository,
   }) : _studentRepository = studentRepository {
-    loadStudents = Command0(_getStudents)
-      ..execute();
+    loadStudents = Command0(_getStudents)..execute();
+    searchController.addListener(_filterStudents);
   }
 
   final StudentRepository _studentRepository;
-
-  List<User> _students = [];
-  List<User> get students => _students;
-
   late Command0 loadStudents;
 
+  final searchController = TextEditingController();
+
+  List<User> _allStudents = [];
+  List<User> get allStudents => _allStudents;
+
+  List<User> _filteredStudents = [];
+  List<User> get filteredStudents => _filteredStudents;
+
+  String _searchTerm = "";
+  String get searchTerm => _searchTerm;
+
+  @override
+  void dispose() {
+    searchController.removeListener(_filterStudents);
+    searchController.dispose();
+    super.dispose();
+  }
+  
   Future<Result> _getStudents() async {
     try {
       final result = await _studentRepository.getAllStudents();
 
       switch (result) {
         case Ok<List<User>>():
-          _students = result.value;
+          _allStudents = result.value;
+          _filteredStudents = List.of(_allStudents);
         case Error<List<User>>():
-          print("error");
+        /** no-op **/
       }
       return result;
     } finally {
       notifyListeners();
     }
+  }
+
+  void _filterStudents() {
+    final text = searchController.text;
+    String query = text.toLowerCase();
+    _filteredStudents = _allStudents
+        .where((student) => student.name.toLowerCase().contains(query))
+        .toList();
+    notifyListeners();
+  }
+
+  void clearFilter() {
+    searchController.clear();
+    _filteredStudents = List.of(_allStudents);
+    notifyListeners();
   }
 }

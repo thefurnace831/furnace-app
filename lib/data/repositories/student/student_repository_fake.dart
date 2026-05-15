@@ -26,6 +26,24 @@ class StudentRepositoryFake extends StudentRepository {
         email: 'maria@email.com',
         username: 'alex@email.com'
       ),
+      User(
+          userId: '4',
+          name: 'Maria Lopeza',
+          email: 'maria@email.com',
+          username: 'alex@email.com'
+      ),
+      User(
+          userId: '5',
+          name: 'Maria Lopezb',
+          email: 'maria@email.com',
+          username: 'alex@email.com'
+      ),
+      User(
+          userId: '6',
+          name: 'Maria Lopezc',
+          email: 'maria@email.com',
+          username: 'alex@email.com'
+      ),
     ];
 
     if (isSuccessful) {
