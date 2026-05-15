@@ -4,12 +4,14 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 class User {
   final String userId;
   final String name;
+  final String email;
   final String username;
 
   User({
     required this.userId,
     required this.name,
     required this.username,
+    required this.email,
   });
 
   factory User.fromParseObject(ParseObject object) {
@@ -17,6 +19,7 @@ class User {
       userId: object.objectId ?? '',
       name: object.get<String>('fullName') ?? '',
       username: object.get<String>('username') ?? '',
+      email: object.get<String>('email') ?? '',
     );
   }
 }
