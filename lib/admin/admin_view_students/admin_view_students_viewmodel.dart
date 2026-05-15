@@ -24,9 +24,6 @@ class AdminViewStudentsViewmodel extends ChangeNotifier {
   List<User> _filteredStudents = [];
   List<User> get filteredStudents => _filteredStudents;
 
-  String _searchTerm = "";
-  String get searchTerm => _searchTerm;
-
   @override
   void dispose() {
     searchController.removeListener(_filterStudents);
