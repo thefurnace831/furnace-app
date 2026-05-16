@@ -20,7 +20,7 @@ class AppRouter {
     required bool isAdmin,
   }) {
     return GoRouter(
-      initialLocation: '/admin-home',
+      initialLocation: '/',
       redirect: (context, state) {
         final location = state.uri.toString();
 
@@ -28,9 +28,9 @@ class AppRouter {
             location == '/login' ||
             location == '/register';
 
-        // if (!isLoggedIn && !isAuthPage) {
-        //   return '/login';
-        // }
+        if (!isLoggedIn && !isAuthPage) {
+          return '/login';
+        }
 
         if (isLoggedIn && isAuthPage) {
           return isAdmin ? '/admin-home' : '/welcome';
