@@ -47,7 +47,7 @@ class AdminHomePage extends StatelessWidget {
                             height: 163,
 
                             onClick: () {
-                              context.goNamed('adminViewStudents');
+                              context.push('/admin-view-students');
                             },
                           ),
                           ),
