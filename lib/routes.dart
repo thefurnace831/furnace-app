@@ -9,6 +9,7 @@ import 'welcome.dart';
 import 'scanner.dart';
 import 'admin/admin_home/admin_home_screen_viewmodel.dart';
 import 'admin/view_students/view_students_screen.dart';
+import 'admin/analytics/analytics_screen.dart';
 
 class AppRouter {
   static GoRouter router({
@@ -94,6 +95,13 @@ class AppRouter {
           name: 'adminHome',
           builder: (context, state) {
             return AdminHomePage(viewModel: AdminHomeScreenViewmodel(),);
+          },
+        ),
+        GoRoute(
+          path: '/admin-analytics',
+          name: 'adminAnalytics',
+          builder: (context, state) {
+            return const AnalyticsScreen();
           },
         ),
         GoRoute(
