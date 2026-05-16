@@ -18,13 +18,11 @@ class AdminViewStudentsViewmodel extends ChangeNotifier {
 
   final searchController = TextEditingController();
 
-  ValueNotifier<List<User>> _allStudents = ValueNotifier([]);
+  List<User> _allStudents = [];
+  List<User> get allStudents => _allStudents;
 
-  ValueNotifier<List<User>> get allStudents => _allStudents;
-
-  ValueNotifier<List<User>> _filteredStudents = ValueNotifier([]);
-
-  ValueNotifier<List<User>> get filteredStudents => _filteredStudents;
+  List<User> _filteredStudents = [];
+  List<User> get filteredStudents => _filteredStudents;
 
   @override
   void dispose() {
@@ -34,29 +32,34 @@ class AdminViewStudentsViewmodel extends ChangeNotifier {
   }
 
   Future<Result> _getStudents() async {
-    final result = await _studentRepository.getAllStudents();
+    try {
+      final result = await _studentRepository.getAllStudents();
 
-    switch (result) {
-      case Ok<List<User>>():
-        _allStudents.value = result.value;
-        _filteredStudents.value = List.of(_allStudents.value);
-      case Error<List<User>>():
-      /** no-op **/
+      switch (result) {
+        case Ok<List<User>>():
+          _allStudents = result.value;
+          _filteredStudents = List.of(_allStudents);
+        case Error<List<User>>():
+        /** no-op **/
+      }
+      return result;
+    } finally {
+      notifyListeners();
     }
-    return result;
   }
 
   void _filterStudents() {
     final text = searchController.text;
     String query = text.toLowerCase();
-    _filteredStudents.value = _allStudents.value
+    _filteredStudents = _allStudents
         .where((student) => student.name.toLowerCase().contains(query))
         .toList();
+    notifyListeners();
   }
 
   void clearFilter() {
     searchController.clear();
-    _filteredStudents.value = List.of(_allStudents.value);
+    _filteredStudents = List.of(_allStudents);
     notifyListeners();
   }
 }

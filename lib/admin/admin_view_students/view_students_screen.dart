@@ -23,10 +23,10 @@ class AdminViewStudentsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ValueListenableBuilder(
-                        valueListenable: viewModel.filteredStudents,
-                        builder: (context, value, child) {
-                          int totalStudents = value.length;
+                    ListenableBuilder(
+                        listenable: viewModel,
+                        builder: (context, _) {
+                          int totalStudents = viewModel.filteredStudents.length;
                           return FurnaceBrandHeader(
                             title: "Admin Dashboard",
                             subtitle: "Viewing $totalStudents Students",
@@ -71,24 +71,22 @@ class AdminViewStudentsScreen extends StatelessWidget {
 
                           return child!;
                         },
-                      child: ValueListenableBuilder(
-                          valueListenable: viewModel.filteredStudents,
-                          builder: (context, value, child) {
+                      child: ListenableBuilder(listenable: viewModel, builder: (context, _) {
                         return SizedBox(
                           height: 400,
-                          child: value.isEmpty
+                          child: viewModel.filteredStudents.isEmpty
                               ? const Center(
                             child: Text('No students found.'),
                           )
                               : ListView.separated(
                             itemCount:
-                            value.length,
+                            viewModel.filteredStudents.length,
                             separatorBuilder: (context, index) {
                               return const Divider(height: 1);
                             },
                             itemBuilder: (context, index) {
                               final student =
-                              value[index];
+                              viewModel.filteredStudents[index];
                               return ListTile(
                                 leading: const Icon(Icons.person),
                                 title: Text(student.name),
