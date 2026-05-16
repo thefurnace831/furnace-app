@@ -83,12 +83,19 @@ class AdminHomePage extends StatelessWidget {
 
                               const SizedBox(width: 12),
 
-                              const Expanded(
-                                child: DashboardCard(
-                                  icon: Icons.settings,
-                                  description: "settings",
-                                  height: 163,
-                                ),
+                Expanded(
+                  child: DashboardCard(
+                    icon: Icons.settings,
+                    description: "settings",
+                    height: 163,
+
+                    // Opens the Admin Settings screen.
+                    onClick: () {
+                      context.goNamed('adminSettings');
+                    },
+                  ),
+
+
                               ),
                             ],
                           ),

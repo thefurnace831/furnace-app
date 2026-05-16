@@ -12,6 +12,7 @@ import 'register.dart';
 import 'welcome.dart';
 import 'scanner.dart';
 import 'admin/admin_home/admin_home_screen_viewmodel.dart';
+import 'admin/admin_settings/admin_settings_screen.dart';
 
 class AppRouter {
   static GoRouter router({
@@ -19,7 +20,7 @@ class AppRouter {
     required bool isAdmin,
   }) {
     return GoRouter(
-      initialLocation: '/',
+      initialLocation: '/admin-home',
       redirect: (context, state) {
         final location = state.uri.toString();
 
@@ -27,9 +28,9 @@ class AppRouter {
             location == '/login' ||
             location == '/register';
 
-        if (!isLoggedIn && !isAuthPage) {
-          return '/login';
-        }
+        // if (!isLoggedIn && !isAuthPage) {
+        //   return '/login';
+        // }
 
         if (isLoggedIn && isAuthPage) {
           return isAdmin ? '/admin-home' : '/welcome';
@@ -110,6 +111,13 @@ class AppRouter {
           name: 'adminAnalytics',
           builder: (context, state) {
             return const AnalyticsScreen();
+          },
+        ),
+        GoRoute(
+          path: '/admin-settings',
+          name: 'adminSettings',
+          builder: (context, state) {
+            return const AdminSettingsScreen();
           },
         ),
         GoRoute(
