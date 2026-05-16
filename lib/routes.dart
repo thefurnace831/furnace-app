@@ -67,13 +67,15 @@ class AppRouter {
           name: 'welcome',
           builder: (context, state) {
             return WelcomePage(
-                false,
-                null,
-                Room(
-                    roomId: '',
-                    roomName: '',
-                    qrRoomValue: '',
-                    qrCheckoutValue: ''));
+              false,
+              null,
+              Room(
+                roomId: '',
+                roomName: '',
+                qrRoomValue: '',
+                qrCheckoutValue: '',
+              ),
+            );
           },
         ),
         GoRoute(
@@ -81,20 +83,24 @@ class AppRouter {
           name: 'scanner',
           builder: (context, state) {
             return ScanPage(
-                false,
-                null,
-                Room(
-                    roomId: '',
-                    roomName: '',
-                    qrRoomValue: '',
-                    qrCheckoutValue: ''));
+              false,
+              null,
+              Room(
+                roomId: '',
+                roomName: '',
+                qrRoomValue: '',
+                qrCheckoutValue: '',
+              ),
+            );
           },
         ),
         GoRoute(
           path: '/admin-home',
           name: 'adminHome',
           builder: (context, state) {
-            return AdminHomePage(viewModel: AdminHomeScreenViewmodel(),);
+            return AdminHomePage(
+              viewModel: AdminHomeScreenViewmodel(),
+            );
           },
         ),
         GoRoute(
