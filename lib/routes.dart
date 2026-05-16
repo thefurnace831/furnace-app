@@ -1,16 +1,17 @@
+import 'package:furnace_app/admin/admin_view_students/admin_view_students_viewmodel.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import 'admin/admin_home/admin_home_screen.dart';
-import 'admin/admin_home/admin_home_screen_viewmodel.dart';
-import 'admin/view_students/view_students_screen.dart';
+import 'admin/admin_view_students/view_students_screen.dart';
 import 'admin/analytics/analytics_screen.dart';
-
 import 'api/room.dart';
 import 'login.dart';
 import 'main.dart';
 import 'register.dart';
-import 'scanner.dart';
 import 'welcome.dart';
+import 'scanner.dart';
+import 'admin/admin_home/admin_home_screen_viewmodel.dart';
 
 class AppRouter {
   static GoRouter router({
@@ -41,19 +42,14 @@ class AppRouter {
 
         return null;
       },
-
       routes: [
-
         GoRoute(
           path: '/',
           name: 'home',
           builder: (context, state) {
-            return const MyHomePage(
-              title: 'The Furnace Home Page',
-            );
+            return const MyHomePage(title: 'The Furnace Home Page');
           },
         ),
-
         GoRoute(
           path: '/login',
           name: 'login',
@@ -61,7 +57,6 @@ class AppRouter {
             return const LoginPage();
           },
         ),
-
         GoRoute(
           path: '/register',
           name: 'register',
@@ -69,7 +64,6 @@ class AppRouter {
             return const Register();
           },
         ),
-
         GoRoute(
           path: '/welcome',
           name: 'welcome',
@@ -86,7 +80,6 @@ class AppRouter {
             );
           },
         ),
-
         GoRoute(
           path: '/scanner',
           name: 'scanner',
@@ -103,17 +96,15 @@ class AppRouter {
             );
           },
         ),
-
         GoRoute(
           path: '/admin-home',
-          name: 'adminHome',
+          name: 'Admin Home',
           builder: (context, state) {
             return AdminHomePage(
               viewModel: AdminHomeScreenViewmodel(),
             );
           },
         ),
-
         GoRoute(
           path: '/admin-analytics',
           name: 'adminAnalytics',
@@ -121,12 +112,15 @@ class AppRouter {
             return const AnalyticsScreen();
           },
         ),
-
         GoRoute(
           path: '/admin-view-students',
-          name: 'adminViewStudents',
+          name: "Admin View Students",
           builder: (context, state) {
-            return const ViewStudentsScreen();
+            return AdminViewStudentsScreen(
+              viewModel: AdminViewStudentsViewmodel(
+                studentRepository: context.read(),
+              ),
+            );
           },
         ),
       ],

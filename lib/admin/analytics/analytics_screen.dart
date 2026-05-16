@@ -6,20 +6,18 @@ class AnalyticsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    // Main analytics page
     return Scaffold(
 
-      // Top app bar
       appBar: AppBar(
         title: const Text("Analytics"),
       ),
 
-      // Main screen body
       body: Padding(
         padding: const EdgeInsets.all(20),
 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+
           children: [
 
             // Page title
@@ -31,34 +29,107 @@ class AnalyticsScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 8),
 
-            // Daily attendance button
-            ElevatedButton(
-              onPressed: () {},
+            // Subtitle
+            const Text(
+              "Track attendance and session activity",
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
 
-              child: const Padding(
-                padding: EdgeInsets.all(20),
+            const SizedBox(height: 24),
 
-                child: Text(
-                  "Daily Attendance",
-                  style: TextStyle(fontSize: 18),
+            // Daily attendance analytics card
+            Card(
+              elevation: 3,
+
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                  children: [
+
+                    const Icon(
+                      Icons.groups,
+                      size: 40,
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    const Text(
+                      "Daily Attendance",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    const Text(
+                      "View student attendance metrics and participation.",
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    ElevatedButton(
+                      onPressed: () {},
+
+                      child: const Text("View Attendance"),
+                    ),
+                  ],
                 ),
               ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
-            // Sessions button
-            ElevatedButton(
-              onPressed: () {},
+            // Session analytics card
+            Card(
+              elevation: 3,
 
-              child: const Padding(
-                padding: EdgeInsets.all(20),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
 
-                child: Text(
-                  "Sessions",
-                  style: TextStyle(fontSize: 18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                  children: [
+
+                    const Icon(
+                      Icons.analytics,
+                      size: 40,
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    const Text(
+                      "Session Analytics",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    const Text(
+                      "Review active sessions and engagement trends.",
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    ElevatedButton(
+                      onPressed: () {},
+
+                      child: const Text("View Sessions"),
+                    ),
+                  ],
                 ),
               ),
             ),
