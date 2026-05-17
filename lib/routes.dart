@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'admin/admin_home/admin_home_screen.dart';
 import 'admin/admin_view_students/view_students_screen.dart';
+import 'admin/analytics/analytics_screen.dart';
 import 'api/room.dart';
 import 'login.dart';
 import 'main.dart';
@@ -11,6 +12,7 @@ import 'register.dart';
 import 'welcome.dart';
 import 'scanner.dart';
 import 'admin/admin_home/admin_home_screen_viewmodel.dart';
+import 'admin/admin_settings/admin_settings_screen.dart';
 
 class AppRouter {
   static GoRouter router({
@@ -68,13 +70,15 @@ class AppRouter {
           name: 'welcome',
           builder: (context, state) {
             return WelcomePage(
-                false,
-                null,
-                Room(
-                    roomId: '',
-                    roomName: '',
-                    qrRoomValue: '',
-                    qrCheckoutValue: ''));
+              false,
+              null,
+              Room(
+                roomId: '',
+                roomName: '',
+                qrRoomValue: '',
+                qrCheckoutValue: '',
+              ),
+            );
           },
         ),
         GoRoute(
@@ -82,31 +86,51 @@ class AppRouter {
           name: 'scanner',
           builder: (context, state) {
             return ScanPage(
-                false,
-                null,
-                Room(
-                    roomId: '',
-                    roomName: '',
-                    qrRoomValue: '',
-                    qrCheckoutValue: ''));
+              false,
+              null,
+              Room(
+                roomId: '',
+                roomName: '',
+                qrRoomValue: '',
+                qrCheckoutValue: '',
+              ),
+            );
           },
         ),
         GoRoute(
           path: '/admin-home',
           name: 'Admin Home',
           builder: (context, state) {
-            return AdminHomePage(viewModel: AdminHomeScreenViewmodel(),);
+            return AdminHomePage(
+              viewModel: AdminHomeScreenViewmodel(),
+            );
           },
         ),
         GoRoute(
-            path: '/admin-view-students',
-            name: "Admin View Students",
-            builder: (context, state) {
-              return AdminViewStudentsScreen(viewModel: AdminViewStudentsViewmodel(
+          path: '/admin-analytics',
+          name: 'adminAnalytics',
+          builder: (context, state) {
+            return const AnalyticsScreen();
+          },
+        ),
+        GoRoute(
+          path: '/admin-settings',
+          name: 'adminSettings',
+          builder: (context, state) {
+            return const AdminSettingsScreen();
+          },
+        ),
+        GoRoute(
+          path: '/admin-view-students',
+          name: "Admin View Students",
+          builder: (context, state) {
+            return AdminViewStudentsScreen(
+              viewModel: AdminViewStudentsViewmodel(
                 studentRepository: context.read(),
-              ));
-            }
-        )
+              ),
+            );
+          },
+        ),
       ],
     );
   }

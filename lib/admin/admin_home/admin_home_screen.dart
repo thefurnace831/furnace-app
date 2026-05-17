@@ -63,7 +63,7 @@ class AdminHomePage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        const SizedBox(
+                        SizedBox(
                           height: 120,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -73,15 +73,29 @@ class AdminHomePage extends StatelessWidget {
                                   icon: Icons.analytics,
                                   description: "analytics",
                                   height: 163,
+
+                                  // Opens the Analytics screen.
+                                  onClick: () {
+                                    context.pushNamed('adminAnalytics');
+                                  },
                                 ),
                               ),
-                              SizedBox(width: 12),
-                              Expanded(
-                                child: DashboardCard(
-                                  icon: Icons.settings,
-                                  description: "settings",
-                                  height: 163,
-                                ),
+
+                              const SizedBox(width: 12),
+
+                Expanded(
+                  child: DashboardCard(
+                    icon: Icons.settings,
+                    description: "settings",
+                    height: 163,
+
+                    // Opens the Admin Settings screen.
+                    onClick: () {
+                      context.pushNamed('adminSettings');
+                    },
+                  ),
+
+
                               ),
                             ],
                           ),
