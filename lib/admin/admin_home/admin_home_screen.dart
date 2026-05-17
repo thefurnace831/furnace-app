@@ -91,7 +91,7 @@ class AdminHomePage extends StatelessWidget {
 
                     // Opens the Admin Settings screen.
                     onClick: () {
-                      context.goNamed('adminSettings');
+                      context.pushNamed('adminSettings');
                     },
                   ),
 
