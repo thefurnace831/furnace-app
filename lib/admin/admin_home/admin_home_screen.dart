@@ -76,7 +76,7 @@ class AdminHomePage extends StatelessWidget {
 
                                   // Opens the Analytics screen.
                                   onClick: () {
-                                    context.goNamed('adminAnalytics');
+                                    context.pushNamed('adminAnalytics');
                                   },
                                 ),
                               ),
