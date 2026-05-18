@@ -1,3 +1,4 @@
+import 'package:furnace_app/admin/admin_view_users/view_users_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -24,9 +25,8 @@ class AppRouter {
       redirect: (context, state) {
         final location = state.uri.toString();
 
-        final isAuthPage = location == '/' ||
-            location == '/login' ||
-            location == '/register';
+        final isAuthPage =
+            location == '/' || location == '/login' || location == '/register';
 
         if (!isLoggedIn && !isAuthPage) {
           return '/login';
@@ -131,6 +131,17 @@ class AppRouter {
             );
           },
         ),
+        GoRoute(
+            path: '/admin-view-users',
+            builder: (context, state) {
+              return ViewUsersScreen();
+            }),
+        GoRoute(
+            path: '/admin-view-admins',
+            builder: (context, state) {
+              // Placeholder screen
+              return ViewUsersScreen();
+            })
       ],
     );
   }
