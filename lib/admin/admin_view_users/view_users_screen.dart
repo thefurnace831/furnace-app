@@ -33,7 +33,7 @@ class ViewUsersScreen extends StatelessWidget {
                     children: [
                       Expanded(
                           child: DashboardCard(
-                        icon: Icons.person,
+                        icon: Icons.people_sharp,
                         description: "View Students",
                         height: 163,
                         onClick: () {
@@ -43,7 +43,7 @@ class ViewUsersScreen extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                           child: DashboardCard(
-                        icon: Icons.admin_panel_settings,
+                        icon: Icons.admin_panel_settings_sharp,
                         description: "View Admins",
                         height: 163,
                         onClick: () {
