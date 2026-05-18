@@ -1,9 +1,9 @@
-import 'package:furnace_app/admin/admin_view_students/admin_view_students_viewmodel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'admin/admin_home/admin_home_screen.dart';
-import 'admin/admin_view_students/view_students_screen.dart';
+import 'admin/admin_view_users/view_students/admin_view_students_viewmodel.dart';
+import 'admin/admin_view_users/view_students/view_students_screen.dart';
 import 'admin/analytics/analytics_screen.dart';
 import 'api/room.dart';
 import 'login.dart';

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:furnace_app/data/repositories/student/student_repository.dart';
 import 'package:furnace_app/utils/command.dart';
 
-import '../../api/user.dart';
-import '../../utils/result.dart';
+import '../../../api/user.dart';
+import '../../../utils/result.dart';
 
 class AdminViewStudentsViewmodel extends ChangeNotifier {
   AdminViewStudentsViewmodel({
