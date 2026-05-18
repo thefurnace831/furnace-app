@@ -5,7 +5,6 @@ import 'package:furnace_app/widgets/dashboard_card.dart';
 import 'package:go_router/go_router.dart';
 
 class ViewUsersScreen extends StatelessWidget {
-
   final ViewUsersViewmodel viewModel;
 
   const ViewUsersScreen({super.key, required this.viewModel});
@@ -17,50 +16,44 @@ class ViewUsersScreen extends StatelessWidget {
         title: const Text("The Furnace"),
       ),
       body: FurnaceBackground(
-        pattern: true,
+          pattern: true,
           child: FurnaceContent(
-            maxWidth: 560,
+              maxWidth: 560,
               child: FurnacePanel(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  FurnaceBrandHeader(
+                    title: "Admin Dashboard",
+                    subtitle: "Users",
+                    logoWidth: 220,
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
                     children: [
-                      FurnaceBrandHeader(
-                        title: "Admin Dashboard",
-                        subtitle: "Users",
-                        logoWidth: 220,
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Expanded(
-                              child: DashboardCard(
-                                  icon: Icons.person,
-                                  description: "View Students",
-                                  height: 163,
-                                onClick: () {
-                                    context.push('/admin-view-students');
-                                },
-                              )
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                              child: DashboardCard(
-                                icon: Icons.admin_panel_settings,
-                                description: "View Admins",
-                                height: 163,
-                                onClick: () {
-                                  context.push("/admin-view-admins");
-                                },
-                              )
-                          ),
-                        ],
-                      )
+                      Expanded(
+                          child: DashboardCard(
+                        icon: Icons.person,
+                        description: "View Students",
+                        height: 163,
+                        onClick: () {
+                          context.push('/admin-view-students');
+                        },
+                      )),
+                      const SizedBox(width: 12),
+                      Expanded(
+                          child: DashboardCard(
+                        icon: Icons.admin_panel_settings,
+                        description: "View Admins",
+                        height: 163,
+                        onClick: () {
+                          context.push("/admin-view-admins");
+                        },
+                      )),
                     ],
                   )
-              )
-          )
-      ),
+                ],
+              )))),
     );
   }
-
 }
