@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:furnace_app/admin/admin_view_users/view_users_viewmodel.dart';
 import 'package:furnace_app/furnace_ui.dart';
 import 'package:furnace_app/widgets/dashboard_card.dart';
 import 'package:go_router/go_router.dart';
 
 class ViewUsersScreen extends StatelessWidget {
-  const ViewUsersScreen({super.key});
+
+  final ViewUsersViewmodel viewModel;
+
+  const ViewUsersScreen({super.key, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {

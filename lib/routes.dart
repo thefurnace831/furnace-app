@@ -1,4 +1,5 @@
 import 'package:furnace_app/admin/admin_view_users/view_users_screen.dart';
+import 'package:furnace_app/admin/admin_view_users/view_users_viewmodel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -134,13 +135,17 @@ class AppRouter {
         GoRoute(
             path: '/admin-view-users',
             builder: (context, state) {
-              return ViewUsersScreen();
+              return ViewUsersScreen(
+                viewModel: ViewUsersViewmodel(),
+              );
             }),
         GoRoute(
             path: '/admin-view-admins',
             builder: (context, state) {
               // Placeholder screen
-              return ViewUsersScreen();
+              return ViewUsersScreen(
+                viewModel: ViewUsersViewmodel(),
+              );
             })
       ],
     );
