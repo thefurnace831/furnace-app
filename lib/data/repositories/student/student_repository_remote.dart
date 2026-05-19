@@ -19,4 +19,21 @@ class StudentRepositoryRemote extends StudentRepository {
         Exception(response.error?.message ?? 'Failed to load students'),
       );
   }
+
+  @override
+  Future<Result<User?>> getStudentById(String userId) async {
+    final QueryBuilder<ParseObject> query = QueryBuilder<ParseObject>(ParseObject('_User'));
+    query.whereEqualTo("objectId", userId);
+
+    final response = await query.query();
+
+    if (response.success) {
+      final ParseObject studentObject = response.results?.first as ParseObject;
+      return Result.ok(User.fromParseObject(studentObject));
+    }
+
+    return Result.error(
+      Exception(response.error?.message ?? 'Failed to find student by id'),
+    );
+  }
 }

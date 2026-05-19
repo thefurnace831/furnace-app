@@ -1,6 +1,9 @@
+import 'package:furnace_app/admin/admin_view_users/student_details/student_details_screen.dart';
+import 'package:furnace_app/admin/admin_view_users/student_details/student_details_viewmodel.dart';
 import 'package:furnace_app/admin/admin_view_users/view_users_screen.dart';
 import 'package:furnace_app/admin/admin_view_users/view_users_viewmodel.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 import 'admin/admin_home/admin_home_screen.dart';
@@ -146,7 +149,16 @@ class AppRouter {
               return ViewUsersScreen(
                 viewModel: ViewUsersViewmodel(),
               );
-            })
+            }),
+        GoRoute(
+            path: '/admin-student-details/:userId',
+            name: 'adminStudentDetails',
+            builder: (context, state) {
+              return StudentDetailsScreen(
+                  viewModel: StudentDetailsViewmodel(
+                      studentRepository: context.read(),
+                      userId: state.pathParameters['userId']!));
+            }),
       ],
     );
   }

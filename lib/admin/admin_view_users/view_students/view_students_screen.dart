@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furnace_app/furnace_ui.dart';
+import 'package:go_router/go_router.dart';
 
 import 'admin_view_students_viewmodel.dart';
 
@@ -92,9 +93,7 @@ class AdminViewStudentsScreen extends StatelessWidget {
                                 leading: const Icon(Icons.person),
                                 title: Text(student.name),
                                 onTap: () {
-                                  debugPrint(
-                                    'Selected student: ${student.name}',
-                                  );
+                                  context.pushNamed('adminStudentDetails', pathParameters: {'userId': student.userId});
                                 },
                               );
                             },

@@ -3,4 +3,5 @@ import 'package:furnace_app/utils/result.dart';
 
 abstract class StudentRepository {
   Future<Result<List<User>>> getAllStudents();
+  Future<Result<User?>> getStudentById(String userId);
 }
