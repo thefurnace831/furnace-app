@@ -29,11 +29,9 @@ class StudentRepositoryRemote extends StudentRepository {
 
     if (response.success) {
       final ParseObject studentObject = response.results?.first as ParseObject;
-      print(studentObject);
       return Result.ok(User.fromParseObject(studentObject));
     }
 
-    print(response.error?.message);
     return Result.error(
       Exception(response.error?.message ?? 'Failed to find student by id'),
     );

@@ -56,9 +56,14 @@ class StudentRepositoryFake extends StudentRepository {
   }
 
   @override
-  Future<Result<User>> getStudentById(String userId) {
-    // TODO: implement getStudentById
-    throw UnimplementedError();
+  Future<Result<User>> getStudentById(String userId) async {
+    if (isSuccessful) {
+      return Result.ok(User(userId: "a", name: "Cody", username: "Cody", email: "myemail.com"));
+    }
+
+    return Result.error(
+      Exception('Failed to load students'),
+    );
   }
 
 }
