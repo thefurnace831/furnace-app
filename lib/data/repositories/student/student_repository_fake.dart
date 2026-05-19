@@ -55,4 +55,10 @@ class StudentRepositoryFake extends StudentRepository {
     );
   }
 
+  @override
+  Future<Result<User>> getStudentById(String userId) {
+    // TODO: implement getStudentById
+    throw UnimplementedError();
+  }
+
 }
