@@ -1,9 +1,11 @@
-import 'package:furnace_app/admin/admin_view_students/admin_view_students_viewmodel.dart';
+import 'package:furnace_app/admin/admin_view_users/view_users_screen.dart';
+import 'package:furnace_app/admin/admin_view_users/view_users_viewmodel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'admin/admin_home/admin_home_screen.dart';
-import 'admin/admin_view_students/view_students_screen.dart';
+import 'admin/admin_view_users/view_students/admin_view_students_viewmodel.dart';
+import 'admin/admin_view_users/view_students/view_students_screen.dart';
 import 'admin/analytics/analytics_screen.dart';
 import 'api/room.dart';
 import 'login.dart';
@@ -24,9 +26,8 @@ class AppRouter {
       redirect: (context, state) {
         final location = state.uri.toString();
 
-        final isAuthPage = location == '/' ||
-            location == '/login' ||
-            location == '/register';
+        final isAuthPage =
+            location == '/' || location == '/login' || location == '/register';
 
         if (!isLoggedIn && !isAuthPage) {
           return '/login';
@@ -131,6 +132,21 @@ class AppRouter {
             );
           },
         ),
+        GoRoute(
+            path: '/admin-view-users',
+            builder: (context, state) {
+              return ViewUsersScreen(
+                viewModel: ViewUsersViewmodel(),
+              );
+            }),
+        GoRoute(
+            path: '/admin-view-admins',
+            builder: (context, state) {
+              // Placeholder screen
+              return ViewUsersScreen(
+                viewModel: ViewUsersViewmodel(),
+              );
+            })
       ],
     );
   }
