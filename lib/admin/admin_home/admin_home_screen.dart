@@ -17,8 +17,7 @@ class AdminHomePage extends StatelessWidget {
         appBar: AppBar(
           title: const Text("The Furnace"),
         ),
-        body:
-        FurnaceBackground(
+        body: FurnaceBackground(
           pattern: true,
           child: FurnaceContent(
               maxWidth: 560,
@@ -40,23 +39,25 @@ class AdminHomePage extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                          Expanded(
-                          child: DashboardCard(
-                          icon: Icons.person,
-                            description: "view users",
-                            height: 163,
-
-                            onClick: () {
-                              context.push('/admin-view-users');
-                            },
-                          ),
-                          ),
+                              Expanded(
+                                child: DashboardCard(
+                                  icon: Icons.person,
+                                  description: "view users",
+                                  height: 163,
+                                  onClick: () {
+                                    context.push('/admin-view-students');
+                                  },
+                                ),
+                              ),
                               const SizedBox(width: 12),
-                              const Expanded(
+                              Expanded(
                                 child: DashboardCard(
                                   icon: Icons.qr_code,
                                   description: "view QRs",
                                   height: 163,
+                                  onClick: () {
+                                    context.push('/admin-view-rooms');
+                                  },
                                 ),
                               ),
                             ],
@@ -80,22 +81,18 @@ class AdminHomePage extends StatelessWidget {
                                   },
                                 ),
                               ),
-
                               const SizedBox(width: 12),
+                              Expanded(
+                                child: DashboardCard(
+                                  icon: Icons.settings,
+                                  description: "settings",
+                                  height: 163,
 
-                Expanded(
-                  child: DashboardCard(
-                    icon: Icons.settings,
-                    description: "settings",
-                    height: 163,
-
-                    // Opens the Admin Settings screen.
-                    onClick: () {
-                      context.pushNamed('adminSettings');
-                    },
-                  ),
-
-
+                                  // Opens the Admin Settings screen.
+                                  onClick: () {
+                                    context.pushNamed('adminSettings');
+                                  },
+                                ),
                               ),
                             ],
                           ),
@@ -104,11 +101,9 @@ class AdminHomePage extends StatelessWidget {
                     )
                   ],
                 ),
-              )
-          ),
+              )),
         ),
       ),
     );
   }
-
 }
