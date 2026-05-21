@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 // Main admin settings screen.
 class AdminSettingsScreen extends StatelessWidget {
@@ -136,7 +137,8 @@ class AdminSettingsScreen extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
 
-                        // Placeholder for future edit settings navigation.
+                        // Opens the edit settings screen.
+                        context.goNamed('adminSettingsEdit');
                       },
 
                       child: const Text("Edit Settings"),
