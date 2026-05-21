@@ -18,6 +18,7 @@ import 'welcome.dart';
 import 'scanner.dart';
 import 'admin/admin_home/admin_home_screen_viewmodel.dart';
 import 'admin/admin_settings/admin_settings_screen.dart';
+import 'admin/admin_rooms/admin_rooms_screen.dart';
 
 class AppRouter {
   static GoRouter router({
@@ -159,6 +160,13 @@ class AppRouter {
                       studentRepository: context.read(),
                       userId: state.pathParameters['userId']!));
             }),
+        GoRoute(
+          path: '/admin-view-rooms',
+          name: "Admin View Rooms",
+          builder: (context, state) {
+            return AdminViewRoomsScreen();
+          },
+        ),
       ],
     );
   }
