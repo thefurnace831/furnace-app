@@ -4,7 +4,8 @@ import 'package:furnace_app/utils/result.dart';
 
 class RoomRepositoryRemote extends RoomRepository {
   @override
-  Future<Result<void>> createNewRoom(String roomName, String qrRoomValue, String qrCheckoutValue) {
+  Future<Result<Room>> createNewRoom(
+      String roomName, String qrRoomValue, String qrCheckoutValue) {
     // TODO: implement createNewRoom
     throw UnimplementedError();
   }
@@ -22,9 +23,15 @@ class RoomRepositoryRemote extends RoomRepository {
   }
 
   @override
-  Future<Result<void>> updateRoom(String roomId, String roomName, String qrRoomValue, String qrCheckoutValue) {
+  Future<Result<void>> updateRoom(String roomId, String roomName,
+      String qrRoomValue, String qrCheckoutValue) {
     // TODO: implement updateRoom
     throw UnimplementedError();
   }
 
+  @override
+  Future<Result<void>> deleteRoom(String roomId) {
+    // TODO: implement deleteRoom
+    throw UnimplementedError();
+  }
 }
