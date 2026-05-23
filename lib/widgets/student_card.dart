@@ -61,7 +61,7 @@ class StudentCard extends StatelessWidget {
             Text(
               schoolName,
               style: TextStyle(
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 fontSize: 10,
               ),
             ),
@@ -69,7 +69,7 @@ class StudentCard extends StatelessWidget {
             Text(
               grade,
               style: TextStyle(
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 fontSize: 10,
               ),
             ),
@@ -87,6 +87,6 @@ Widget StudentCardPreview() {
     email: "cody@cody.com",
     phoneNumber: "(111) 111-2222",
     schoolName: "Oak Ridge High School",
-    grade: "Grade 12",
+    grade: "Grade 123",
   );
 }
