@@ -3,7 +3,9 @@ import 'package:furnace_app/data/repositories/room_repository/room_repository.da
 // import 'package:furnace_app/data/repositories/room_repository/room_repository_remote.dart';
 import 'package:furnace_app/data/repositories/room_repository/room_repository_fake.dart';
 import 'package:furnace_app/data/repositories/student/student_repository.dart';
-import 'package:furnace_app/data/repositories/student/student_repository_remote.dart';
+// import 'package:furnace_app/data/repositories/student/student_repository_remote.dart';
+import 'package:furnace_app/data/repositories/student/student_repository_fake.dart';
+
 import 'package:furnace_app/routes.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
@@ -45,8 +47,7 @@ void main() async {
     MultiProvider(
         providers: [
           Provider(
-              create: (create) =>
-                  StudentRepositoryRemote() as StudentRepository),
+              create: (create) => StudentRepositoryFake() as StudentRepository),
           Provider(create: (create) => RoomRepositoryFake() as RoomRepository)
         ],
         child: MyApp(

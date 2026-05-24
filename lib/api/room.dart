@@ -1,8 +1,8 @@
 class Room {
-  String? roomId;
-  String? roomName;
-  String? qrRoomValue;
-  String? qrCheckoutValue;
+  String roomId;
+  String roomName;
+  String qrRoomValue;
+  String qrCheckoutValue;
 
   Room(
       {required this.roomId,
