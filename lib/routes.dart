@@ -19,7 +19,9 @@ import 'scanner.dart';
 import 'admin/admin_home/admin_home_screen_viewmodel.dart';
 import 'admin/admin_settings/admin_settings_screen.dart';
 import 'admin/admin_rooms/admin_rooms_screen.dart';
+
 import 'admin/admin_rooms/admin_rooms_screen_viewmodel.dart';
+import 'admin/admin_settings/admin_settings_edit_screen.dart';
 
 class AppRouter {
   static GoRouter router({
@@ -124,6 +126,13 @@ class AppRouter {
           name: 'adminSettings',
           builder: (context, state) {
             return const AdminSettingsScreen();
+          },
+        ),
+        GoRoute(
+          path: '/admin-settings-edit',
+          name: 'adminSettingsEdit',
+          builder: (context, state) {
+            return const AdminSettingsEditScreen();
           },
         ),
         GoRoute(
