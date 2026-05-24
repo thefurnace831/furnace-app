@@ -5,8 +5,10 @@ import 'package:furnace_app/api/time_log.dart';
 
 class StudentActivityCard extends StatelessWidget {
   final List<TimeLog> logs;
+  final int sessionsAttended;
+  final String lastSessionAttended;
 
-  const StudentActivityCard({super.key, required this.logs});
+  const StudentActivityCard({super.key, required this.logs, required this.sessionsAttended, required this.lastSessionAttended});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class StudentActivityCard extends StatelessWidget {
                         color: Color(0xFF69655D)),
                   ),
                   Text(
-                    "5 sessions",
+                    "${sessionsAttended} sessions",
                     style: TextStyle(
                       fontSize: 8,
                       fontWeight: FontWeight.w500,
@@ -58,7 +60,7 @@ class StudentActivityCard extends StatelessWidget {
                         color: Color(0xFF69655D)),
                   ),
                   Text(
-                    "2 weeks ago",
+                    lastSessionAttended,
                     style: TextStyle(
                       fontSize: 8,
                       fontWeight: FontWeight.w500,
@@ -143,6 +145,8 @@ Widget StudentActivityCardPreview() {
     home: Scaffold(
       body: Center(
         child: StudentActivityCard(
+          sessionsAttended: 5,
+          lastSessionAttended: "2 weeks ago",
           logs: logs,
         ),
       ),
