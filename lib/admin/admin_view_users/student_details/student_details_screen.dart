@@ -78,7 +78,7 @@ class StudentDetailsScreen extends StatelessWidget {
                                 logs: viewModel.recentLogs,
                                 sessionsAttended: viewModel.sessionsAttended,
                                 lastSessionAttended: viewModel.recentLogs.firstOrNull?.createdAt == null ? "None" :
-                                DateFormat('MM/dd/yyyy').format(viewModel.recentLogs.firstOrNull!.createdAt),
+                                DateFormat('MM/dd/yyyy').format(viewModel.recentLogs.first.createdAt),
                               )
                             ],
                           ));
