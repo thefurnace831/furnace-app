@@ -74,7 +74,12 @@ class StudentDetailsScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              //StudentActivityCard(logs: [TimeLog("room", "totalTime")], sessionsAttended: 5, lastSessionAttended: "lastSessionAttended")
+                              StudentActivityCard(
+                                  logs: viewModel.recentLogs,
+                                  sessionsAttended: viewModel.sessionsAttended,
+                                  lastSessionAttended: viewModel
+                                      .recentLogs.first.createdAt
+                                      .toString())
                             ],
                           ));
                         }

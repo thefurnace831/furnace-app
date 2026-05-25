@@ -26,9 +26,12 @@ class StudentDetailsViewmodel extends ChangeNotifier {
 
   User? get student => _student;
 
-  List<TimeLog> _logs = [];
+  List<TimeLog> _recentLogs = [];
 
-  List<TimeLog> get logs => _logs;
+  List<TimeLog> get recentLogs => _recentLogs;
+
+  int _sessionsAttended = 0;
+  int get sessionsAttended => _sessionsAttended;
 
   Future<Result<List<TimeLog>>> _getStudentLogs(String userEmail) async {
     final result =
@@ -36,12 +39,16 @@ class StudentDetailsViewmodel extends ChangeNotifier {
 
     switch (result) {
       case Ok<List<TimeLog>>(value: final logs):
-        _logs = logs;
-        for (final log in _logs) {
-          print(log.totalTime);
+        if (logs.length <= 5) {
+          _recentLogs = logs;
+        } else {
+          for (int i = 0; i < 5; i++) {
+            _recentLogs.add(logs[i]);
+          }
         }
+        _sessionsAttended = logs.length;
       case Error<List<TimeLog>>():
-        _logs = [];
+        _recentLogs = [];
     }
     return result;
   }
