@@ -166,6 +166,7 @@ class AppRouter {
               return StudentDetailsScreen(
                   viewModel: StudentDetailsViewmodel(
                       studentRepository: context.read(),
+                      timeLogRepository: context.read(),
                       userId: state.pathParameters['userId']!));
             }),
         GoRoute(

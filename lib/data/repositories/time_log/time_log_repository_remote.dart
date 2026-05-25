@@ -31,24 +31,4 @@ class TimeLogRepositoryRemote extends TimeLogRepository {
       return Result.error(Exception(error.toString()));
     }
   }
-
-  @override
-  Future<Result<int>> getStudentsTotalSessionsAttended(String userEmail) async {
-    try {
-      final query = QueryBuilder<ParseObject>(ParseObject(_className))
-        ..whereEqualTo("Email", userEmail);
-
-      final response = await query.count();
-
-      if (!response.success) {
-        return Result.error(
-          Exception(response.error?.message ?? 'Failed to count sessions.'),
-        );
-      }
-
-      return Result.ok(response.count);
-    } catch (error) {
-      return Result.error(Exception(error.toString()));
-    }
-  }
 }
