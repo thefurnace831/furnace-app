@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:furnace_app/admin/admin_view_users/student_details/student_details_viewmodel.dart';
-import 'package:furnace_app/api/time_log.dart';
 import 'package:furnace_app/widgets/student_activity_card.dart';
 import 'package:furnace_app/widgets/student_card.dart';
+import 'package:intl/intl.dart';
 
 import '../../../furnace_ui.dart';
 
@@ -75,11 +75,11 @@ class StudentDetailsScreen extends StatelessWidget {
                                 ],
                               ),
                               StudentActivityCard(
-                                  logs: viewModel.recentLogs,
-                                  sessionsAttended: viewModel.sessionsAttended,
-                                  lastSessionAttended: viewModel
-                                      .recentLogs.firstOrNull?.createdAt
-                                      .toString() ?? "None")
+                                logs: viewModel.recentLogs,
+                                sessionsAttended: viewModel.sessionsAttended,
+                                lastSessionAttended: viewModel.recentLogs.firstOrNull?.createdAt == null ? "None" :
+                                DateFormat('MM/dd/yyyy').format(viewModel.recentLogs.firstOrNull!.createdAt),
+                              )
                             ],
                           ));
                         }
