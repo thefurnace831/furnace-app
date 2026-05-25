@@ -4,10 +4,16 @@ import 'package:go_router/go_router.dart';
 
 import 'package:furnace_app/admin/admin_rooms/admin_rooms_screen_viewmodel.dart';
 
-class AdminViewRoomsScreen extends StatelessWidget {
+// push to add, pop after new room is saved, update previous page
+class AdminViewRoomsScreen extends StatefulWidget {
   final RoomsScreenViewmodel viewModel;
   const AdminViewRoomsScreen({super.key, required this.viewModel});
 
+  @override
+  State<AdminViewRoomsScreen> createState() => _AdminRoomsState();
+}
+
+class _AdminRoomsState extends State<AdminViewRoomsScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -25,9 +31,9 @@ class AdminViewRoomsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         ListenableBuilder(
-                            listenable: viewModel,
+                            listenable: widget.viewModel,
                             builder: (context, _) {
-                              int totalRooms = viewModel.rooms.length;
+                              int totalRooms = widget.viewModel.rooms.length;
                               return FurnaceBrandHeader(
                                 title: "Admin Dashboard",
                                 subtitle: 'Viewing $totalRooms Rooms',
@@ -36,41 +42,44 @@ class AdminViewRoomsScreen extends StatelessWidget {
                             }),
                         SizedBox(height: 10),
                         ListenableBuilder(
-                          listenable: viewModel.loadRooms,
+                          listenable: widget.viewModel.loadRooms,
                           builder: (context, child) {
-                            if (viewModel.loadRooms.running) {
+                            if (widget.viewModel.loadRooms.running) {
                               return Center(child: CircularProgressIndicator());
                             }
-                            if (viewModel.loadRooms.error) {
+                            if (widget.viewModel.loadRooms.error) {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   Text("There was an error fetching rooms."),
                                   ElevatedButton(
-                                      onPressed: viewModel.loadRooms.execute,
+                                      onPressed:
+                                          widget.viewModel.loadRooms.execute,
                                       child: Text("Try Again"))
                                 ],
                               );
                             }
                             print('before list view');
-                            print(viewModel.rooms);
-                            print(viewModel.rooms.isEmpty);
+                            print(widget.viewModel.rooms);
+                            print(widget.viewModel.rooms.isEmpty);
                             return SizedBox(
                                 //runtime
                                 height: 400,
-                                child: viewModel.rooms.isEmpty
+                                child: widget.viewModel.rooms.isEmpty
                                     ? const Center(
                                         child: Text('No rooms found.'),
                                       )
                                     : ListView.separated(
-                                        itemCount: viewModel.rooms.length,
+                                        itemCount:
+                                            widget.viewModel.rooms.length,
                                         separatorBuilder: (context, index) {
                                           return const Divider(height: 1);
                                         },
                                         itemBuilder: (context, index) {
                                           print('in item builder');
-                                          print(viewModel.rooms.length);
-                                          final room = viewModel.rooms[index];
+                                          print(widget.viewModel.rooms.length);
+                                          final room =
+                                              widget.viewModel.rooms[index];
                                           return ListTile(
                                               leading:
                                                   const Icon(Icons.qr_code),
@@ -87,6 +96,11 @@ class AdminViewRoomsScreen extends StatelessWidget {
                         )
                       ]),
                 ))),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {},
+          label: const Text('Add'),
+          icon: const Icon(Icons.add),
+        ),
       ),
     );
   }
