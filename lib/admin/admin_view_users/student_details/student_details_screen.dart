@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:furnace_app/admin/admin_view_users/student_details/student_details_viewmodel.dart';
+import 'package:furnace_app/api/time_log.dart';
+import 'package:furnace_app/widgets/student_activity_card.dart';
+import 'package:furnace_app/widgets/student_card.dart';
 
 import '../../../furnace_ui.dart';
 
@@ -45,7 +48,38 @@ class StudentDetailsScreen extends StatelessWidget {
                   child: ListenableBuilder(
                       listenable: viewModel,
                       builder: (context, _) {
-                        return Text(viewModel.student!.name);
+                        if (viewModel.student != null) {
+                          return FurnacePanel(
+                              child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              StudentCard(
+                                  fullName: viewModel.student!.name,
+                                  email: viewModel.student!.email,
+                                  phoneNumber: viewModel.student!.phoneNumber,
+                                  schoolName: viewModel.student!.schoolName,
+                                  // No grade field in _User class
+                                  grade: ""),
+                              Container(height: 21),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.analytics),
+                                  Container(width: 10),
+                                  Text(
+                                    "Student Activities",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              StudentActivityCard(logs: [TimeLog("room", "totalTime")], sessionsAttended: 5, lastSessionAttended: "lastSessionAttended")
+                            ],
+                          ));
+                        }
+
+                        return Text("User not found");
                       }),
                 ))));
   }

@@ -17,7 +17,7 @@ class StudentDetailsViewmodel extends ChangeNotifier {
   final StudentRepository _studentRepository;
   late Command1<User?, String> loadStudentById;
 
-  User? _student = null;
+  User? _student;
   User? get student => _student;
 
   Future<Result<User?>> _getStudentById(String userId) async {
