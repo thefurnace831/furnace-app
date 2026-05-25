@@ -25,11 +25,15 @@ class RoomsScreenViewmodel extends ChangeNotifier {
   Future<Result> _load() async {
     try {
       final result = await _roomRepository.getAllRooms();
+      print('in load');
       switch (result) {
         case Ok<List<Room>>():
+          print('in result value');
           _rooms = result.value;
-          _log.fine('Loaded Rooms $_rooms');
+          print(_rooms);
+          _log.fine('loaded Rooms $_rooms');
         case Error<List<Room>>():
+          print('in error');
           _log.warning('Failed to load rooms', result.error);
         // return result;
       }

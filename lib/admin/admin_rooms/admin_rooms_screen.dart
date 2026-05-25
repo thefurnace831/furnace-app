@@ -24,8 +24,8 @@ class AdminViewRoomsScreen extends StatelessWidget {
                       children: [
                         ListenableBuilder(
                             listenable: viewModel,
-                            builder: (context, child) {
-                              int totalRooms = viewModel.roomsSize;
+                            builder: (context, _) {
+                              int totalRooms = viewModel.rooms.length;
                               return FurnaceBrandHeader(
                                 title: "Admin Dashboard",
                                 subtitle: 'Viewing $totalRooms Rooms',
@@ -34,37 +34,42 @@ class AdminViewRoomsScreen extends StatelessWidget {
                             }),
                         SizedBox(height: 10),
                         ListenableBuilder(
-                            listenable: viewModel.loadRooms,
-                            builder: (context, child) {
-                              if (viewModel.loadRooms.running) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              }
-                              if (viewModel.loadRooms.error) {
-                                return Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Text("There was an error fetching rooms."),
-                                    ElevatedButton(
-                                        onPressed: viewModel.loadRooms.execute,
-                                        child: Text("Try Again"))
-                                  ],
-                                );
-                              }
-                              return child!;
-                            },
-                            child: ListView.separated(
-                                itemCount: viewModel.rooms.length,
-                                separatorBuilder: (context, index) {
-                                  return const Divider(height: 1);
-                                },
-                                itemBuilder: (context, index) {
-                                  final room = viewModel.rooms[index];
-                                  return ListTile(
-                                      leading: const Icon(Icons.qr_code),
-                                      title: Text(room.roomName));
-                                }))
+                          listenable: viewModel.loadRooms,
+                          builder: (context, child) {
+                            if (viewModel.loadRooms.running) {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                            if (viewModel.loadRooms.error) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text("There was an error fetching rooms."),
+                                  ElevatedButton(
+                                      onPressed: viewModel.loadRooms.execute,
+                                      child: Text("Try Again"))
+                                ],
+                              );
+                            }
+                            print('before list view');
+                            print(viewModel.rooms);
+                            print(viewModel.rooms.isEmpty);
+                            return SizedBox(
+                                height: 400,
+                                child: ListView.separated(
+                                    itemCount: viewModel.rooms.length,
+                                    separatorBuilder: (context, index) {
+                                      return const Divider(height: 1);
+                                    },
+                                    itemBuilder: (context, index) {
+                                      print('in item builder');
+                                      print(viewModel.rooms.length);
+                                      final room = viewModel.rooms[index];
+                                      return ListTile(
+                                          leading: const Icon(Icons.qr_code),
+                                          title: Text(room.roomName));
+                                    }));
+                          },
+                        )
                       ]),
                 ))),
       ),
