@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furnace_app/furnace_ui.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:furnace_app/admin/admin_rooms/admin_rooms_screen_viewmodel.dart';
+import 'package:furnace_app/admin/admin_rooms/admin_rooms_list/admin_rooms_screen_viewmodel.dart';
 
 // push to add, pop after new room is saved, update previous page
 class AdminViewRoomsScreen extends StatefulWidget {
@@ -42,25 +42,29 @@ class _AdminRoomsState extends State<AdminViewRoomsScreen> {
                             }),
                         SizedBox(height: 10),
                         ListenableBuilder(
-                          listenable: widget.viewModel.loadRooms,
-                          builder: (context, child) {
-                            if (widget.viewModel.loadRooms.running) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                            if (widget.viewModel.loadRooms.error) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text("There was an error fetching rooms."),
-                                  ElevatedButton(
-                                      onPressed:
-                                          widget.viewModel.loadRooms.execute,
-                                      child: Text("Try Again"))
-                                ],
-                              );
-                            }
+                            listenable: widget.viewModel.loadRooms,
+                            builder: (context, child) {
+                              if (widget.viewModel.loadRooms.running) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              if (widget.viewModel.loadRooms.error) {
+                                return Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Text("There was an error fetching rooms."),
+                                    ElevatedButton(
+                                        onPressed:
+                                            widget.viewModel.loadRooms.execute,
+                                        child: Text("Try Again"))
+                                  ],
+                                );
+                              }
 
-                            return SizedBox(
+                              return child!;
+                            },
+                            child: SizedBox(
                                 //runtime
                                 height: 400,
                                 child: widget.viewModel.rooms.isEmpty
@@ -87,9 +91,7 @@ class _AdminRoomsState extends State<AdminViewRoomsScreen> {
                                                       'roomId': room.roomId
                                                     });
                                               });
-                                        }));
-                          },
-                        )
+                                        })))
                       ]),
                 ))),
         floatingActionButton: FloatingActionButton.extended(

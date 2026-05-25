@@ -1,3 +1,5 @@
+import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
+
 class Room {
   String roomId;
   String roomName;
@@ -10,11 +12,12 @@ class Room {
       required this.qrRoomValue,
       required this.qrCheckoutValue});
 
-  factory Room.fromJson(Map<String, dynamic> responseData) {
+// Switch from json to parseobject
+  factory Room.fromParseObject(ParseObject object) {
     return Room(
-        roomId: responseData['id'],
-        roomName: responseData['roomName'],
-        qrRoomValue: responseData['qrRoomValue'],
-        qrCheckoutValue: responseData['qrCheckoutValue']);
+        roomId: object.objectId ?? '',
+        roomName: object.get<String>('roomName') ?? '',
+        qrRoomValue: object.get<String>('qrRoomValue') ?? '',
+        qrCheckoutValue: object.get<String>('qrCheckoutValue') ?? '');
   }
 }
