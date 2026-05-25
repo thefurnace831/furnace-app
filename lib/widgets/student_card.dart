@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widget_previews.dart';
-import 'package:furnace_app/furnace_ui.dart';
 
 class StudentCard extends StatelessWidget {
   final String fullName;

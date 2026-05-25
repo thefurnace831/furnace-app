@@ -11,7 +11,7 @@ class TimeLogRepositoryRemote extends TimeLogRepository {
     try {
       final query = QueryBuilder<ParseObject>(ParseObject(_className))
         ..whereEqualTo("Email", userEmail)
-        ..orderByDescending('CheckInTime');
+        ..orderByDescending('createdAt');
 
       final response = await query.query();
 
