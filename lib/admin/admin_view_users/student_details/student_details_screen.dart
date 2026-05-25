@@ -78,8 +78,8 @@ class StudentDetailsScreen extends StatelessWidget {
                                   logs: viewModel.recentLogs,
                                   sessionsAttended: viewModel.sessionsAttended,
                                   lastSessionAttended: viewModel
-                                      .recentLogs.first.createdAt
-                                      .toString())
+                                      .recentLogs.firstOrNull?.createdAt
+                                      .toString() ?? "None")
                             ],
                           ));
                         }
