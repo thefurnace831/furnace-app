@@ -1,10 +1,8 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:furnace_app/data/repositories/room_repository/room_repository.dart';
-// import 'package:furnace_app/data/repositories/room_repository/room_repository_remote.dart';
-import 'package:furnace_app/data/repositories/room_repository/room_repository_fake.dart';
+import 'package:furnace_app/data/repositories/room_repository/room_repository_remote.dart';
 import 'package:furnace_app/data/repositories/student/student_repository.dart';
-// import 'package:furnace_app/data/repositories/student/student_repository_remote.dart';
-import 'package:furnace_app/data/repositories/student/student_repository_fake.dart';
+import 'package:furnace_app/data/repositories/student/student_repository_remote.dart';
 
 import 'package:furnace_app/routes.dart';
 import 'package:page_transition/page_transition.dart';
@@ -47,8 +45,9 @@ void main() async {
     MultiProvider(
         providers: [
           Provider(
-              create: (create) => StudentRepositoryFake() as StudentRepository),
-          Provider(create: (create) => RoomRepositoryFake() as RoomRepository)
+              create: (create) =>
+                  StudentRepositoryRemote() as StudentRepository),
+          Provider(create: (create) => RoomRepositoryRemote() as RoomRepository)
         ],
         child: MyApp(
           isLoggedIn: isLoggedIn,
