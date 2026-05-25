@@ -55,7 +55,7 @@ class StudentDetailsScreen extends StatelessWidget {
                             children: [
                               StudentCard(
                                   fullName: viewModel.student!.name,
-                                  email: viewModel.student!.email,
+                                  email: viewModel.student!.username,
                                   phoneNumber: viewModel.student!.phoneNumber,
                                   schoolName: viewModel.student!.schoolName,
                                   // No grade field in _User class
