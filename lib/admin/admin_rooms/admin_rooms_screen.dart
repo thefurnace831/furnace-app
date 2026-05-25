@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:furnace_app/admin/admin_rooms/admin_rooms_screen_viewmodel.dart';
 import 'package:furnace_app/furnace_ui.dart';
+import 'package:go_router/go_router.dart';
+
+import 'package:furnace_app/admin/admin_rooms/admin_rooms_screen_viewmodel.dart';
 
 class AdminViewRoomsScreen extends StatelessWidget {
   final RoomsScreenViewmodel viewModel;
@@ -54,20 +56,33 @@ class AdminViewRoomsScreen extends StatelessWidget {
                             print(viewModel.rooms);
                             print(viewModel.rooms.isEmpty);
                             return SizedBox(
+                                //runtime
                                 height: 400,
-                                child: ListView.separated(
-                                    itemCount: viewModel.rooms.length,
-                                    separatorBuilder: (context, index) {
-                                      return const Divider(height: 1);
-                                    },
-                                    itemBuilder: (context, index) {
-                                      print('in item builder');
-                                      print(viewModel.rooms.length);
-                                      final room = viewModel.rooms[index];
-                                      return ListTile(
-                                          leading: const Icon(Icons.qr_code),
-                                          title: Text(room.roomName));
-                                    }));
+                                child: viewModel.rooms.isEmpty
+                                    ? const Center(
+                                        child: Text('No rooms found.'),
+                                      )
+                                    : ListView.separated(
+                                        itemCount: viewModel.rooms.length,
+                                        separatorBuilder: (context, index) {
+                                          return const Divider(height: 1);
+                                        },
+                                        itemBuilder: (context, index) {
+                                          print('in item builder');
+                                          print(viewModel.rooms.length);
+                                          final room = viewModel.rooms[index];
+                                          return ListTile(
+                                              leading:
+                                                  const Icon(Icons.qr_code),
+                                              title: Text(room.roomName),
+                                              onTap: () {
+                                                context.pushNamed(
+                                                    'adminRoomDetails',
+                                                    pathParameters: {
+                                                      'roomId': room.roomId
+                                                    });
+                                              });
+                                        }));
                           },
                         )
                       ]),

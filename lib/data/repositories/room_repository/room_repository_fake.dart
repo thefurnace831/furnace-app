@@ -10,7 +10,12 @@ class RoomRepositoryFake extends RoomRepository {
         roomId: '1',
         roomName: 'Test Room',
         qrRoomValue: 'a',
-        qrCheckoutValue: 'b')
+        qrCheckoutValue: 'b'),
+    Room(
+        roomId: '2',
+        roomName: 'Break Room',
+        qrRoomValue: 'c',
+        qrCheckoutValue: 'd')
   ];
 
   bool isSuccessful = true;
