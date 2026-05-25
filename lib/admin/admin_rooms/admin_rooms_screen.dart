@@ -59,9 +59,7 @@ class _AdminRoomsState extends State<AdminViewRoomsScreen> {
                                 ],
                               );
                             }
-                            print('before list view');
-                            print(widget.viewModel.rooms);
-                            print(widget.viewModel.rooms.isEmpty);
+
                             return SizedBox(
                                 //runtime
                                 height: 400,
@@ -76,8 +74,6 @@ class _AdminRoomsState extends State<AdminViewRoomsScreen> {
                                           return const Divider(height: 1);
                                         },
                                         itemBuilder: (context, index) {
-                                          print('in item builder');
-                                          print(widget.viewModel.rooms.length);
                                           final room =
                                               widget.viewModel.rooms[index];
                                           return ListTile(
