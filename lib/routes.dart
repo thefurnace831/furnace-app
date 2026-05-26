@@ -29,25 +29,25 @@ class AppRouter {
     required bool isAdmin,
   }) {
     return GoRouter(
-      initialLocation: '/',
+      initialLocation: '/admin-home',
       redirect: (context, state) {
         final location = state.uri.toString();
 
-        final isAuthPage =
-            location == '/' || location == '/login' || location == '/register';
+        // final isAuthPage =
+        //     location == '/' || location == '/login' || location == '/register';
 
-        if (!isLoggedIn && !isAuthPage) {
-          return '/login';
-        }
+        // if (!isLoggedIn && !isAuthPage) {
+        //   return '/login';
+        // }
 
-        if (isLoggedIn && isAuthPage) {
-          return isAdmin ? '/admin-home' : '/welcome';
-        }
+        // if (isLoggedIn && isAuthPage) {
+        //   return isAdmin ? '/admin-home' : '/welcome';
+        // }
 
-        // Prevent non-admin users from manually navigating to admin routes
-        if (location.startsWith('/admin') && !isAdmin) {
-          return '/welcome';
-        }
+        // // Prevent non-admin users from manually navigating to admin routes
+        // if (location.startsWith('/admin') && !isAdmin) {
+        //   return '/welcome';
+        // }
 
         return null;
       },

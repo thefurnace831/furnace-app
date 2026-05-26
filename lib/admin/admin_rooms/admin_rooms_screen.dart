@@ -16,33 +16,33 @@ class AdminViewRoomsScreen extends StatefulWidget {
 class _AdminRoomsState extends State<AdminViewRoomsScreen> {
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: true,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Admin Dashboard"),
-        ),
-        body: FurnaceBackground(
-            pattern: true,
-            child: FurnaceContent(
-                maxWidth: 560,
-                child: FurnacePanel(
-                  child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Admin Dashboard"),
+      ),
+      body: FurnaceBackground(
+          pattern: true,
+          child: FurnaceContent(
+              maxWidth: 560,
+              child: FurnacePanel(
+                child: ListenableBuilder(
+                  //Handle any changes to rooms/viewmodel and reflect to ui
+                  listenable: widget.viewModel,
+                  builder: (context, _) {
+                    int totalRooms = widget.viewModel.rooms.length;
+                    return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        FurnaceBrandHeader(
+                          title: "Admin Dashboard",
+                          subtitle: 'Viewing $totalRooms Rooms',
+                          logoWidth: 220,
+                        ),
+                        const SizedBox(height: 10),
+                        // Listen for Commands
                         ListenableBuilder(
-                            listenable: widget.viewModel,
-                            builder: (context, _) {
-                              int totalRooms = widget.viewModel.rooms.length;
-                              return FurnaceBrandHeader(
-                                title: "Admin Dashboard",
-                                subtitle: 'Viewing $totalRooms Rooms',
-                                logoWidth: 220,
-                              );
-                            }),
-                        SizedBox(height: 10),
-                        ListenableBuilder(
-                          listenable: widget.viewModel.loadRooms,
+                          listenable: Listenable.merge(
+                              [widget.viewModel, widget.viewModel.loadRooms]),
                           builder: (context, child) {
                             if (widget.viewModel.loadRooms.running) {
                               return Center(child: CircularProgressIndicator());
@@ -61,42 +61,44 @@ class _AdminRoomsState extends State<AdminViewRoomsScreen> {
                             }
 
                             return SizedBox(
-                                //runtime
-                                height: 400,
-                                child: widget.viewModel.rooms.isEmpty
-                                    ? const Center(
-                                        child: Text('No rooms found.'),
-                                      )
-                                    : ListView.separated(
-                                        itemCount:
-                                            widget.viewModel.rooms.length,
-                                        separatorBuilder: (context, index) {
-                                          return const Divider(height: 1);
-                                        },
-                                        itemBuilder: (context, index) {
-                                          final room =
-                                              widget.viewModel.rooms[index];
-                                          return ListTile(
-                                              leading:
-                                                  const Icon(Icons.qr_code),
-                                              title: Text(room.roomName),
-                                              onTap: () {
-                                                context.pushNamed(
-                                                    'adminRoomDetails',
-                                                    pathParameters: {
-                                                      'roomId': room.roomId
-                                                    });
-                                              });
-                                        }));
+                              height: 400,
+                              child: widget.viewModel.rooms.isEmpty
+                                  ? const Center(
+                                      child: Text('No rooms found.'),
+                                    )
+                                  : ListView.separated(
+                                      itemCount: widget.viewModel.rooms.length,
+                                      separatorBuilder: (context, index) {
+                                        return const Divider(height: 1);
+                                      },
+                                      itemBuilder: (context, index) {
+                                        final room =
+                                            widget.viewModel.rooms[index];
+                                        return ListTile(
+                                          leading: const Icon(Icons.qr_code),
+                                          title: Text(room.roomName),
+                                          onTap: () {
+                                            context.pushNamed(
+                                                'adminRoomDetails',
+                                                pathParameters: {
+                                                  'roomId': room.roomId
+                                                });
+                                          },
+                                        );
+                                      },
+                                    ),
+                            );
                           },
                         )
-                      ]),
-                ))),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
-          label: const Text('Add'),
-          icon: const Icon(Icons.add),
-        ),
+                      ],
+                    );
+                  },
+                ),
+              ))),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        label: const Text('Add'),
+        icon: const Icon(Icons.add),
       ),
     );
   }
