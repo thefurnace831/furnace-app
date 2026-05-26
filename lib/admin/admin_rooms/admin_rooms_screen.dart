@@ -27,8 +27,7 @@ class _AdminRoomsState extends State<AdminViewRoomsScreen> {
               child: FurnacePanel(
                 child: ListenableBuilder(
                   //Handle any changes to rooms/viewmodel and reflect to ui
-                  listenable: Listenable.merge(
-                      [widget.viewModel, widget.viewModel.loadRooms]),
+                  listenable: widget.viewModel,
                   builder: (context, _) {
                     int totalRooms = widget.viewModel.rooms.length;
                     return Column(
