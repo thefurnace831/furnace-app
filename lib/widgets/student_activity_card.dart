@@ -135,11 +135,7 @@ class StudentActivityCard extends StatelessWidget {
 @Preview(name: 'Student activity card preview')
 Widget StudentActivityCardPreview() {
   List<TimeLog> logs = [
-    TimeLog("Break Room", "1 hours"),
-    TimeLog("Break Room", "15 minutes"),
-    TimeLog("Conference Room", "30 minutes"),
-    TimeLog("Lab101", "1 hours"),
-    TimeLog("Break Room", "1 hours"),
+
   ];
   return MaterialApp(
     home: Scaffold(

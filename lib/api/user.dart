@@ -6,12 +6,16 @@ class User {
   final String name;
   final String email;
   final String username;
+  final String phoneNumber;
+  final String schoolName;
 
   User({
     required this.userId,
     required this.name,
     required this.username,
     required this.email,
+    required this.phoneNumber,
+    required this.schoolName,
   });
 
   factory User.fromParseObject(ParseObject object) {
@@ -20,6 +24,8 @@ class User {
       name: object.get<String>('fullName') ?? '',
       username: object.get<String>('username') ?? '',
       email: object.get<String>('email') ?? '',
+      phoneNumber: object.get<String>('phoneNumber') ?? '',
+      schoolName: object.get<String>('schoolName') ?? '',
     );
   }
 }
