@@ -144,7 +144,6 @@ class AdminSettingsScreen extends StatelessWidget {
                       onPressed: () {
 
                         // Opens the edit settings screen.
-                        context.goNamed('adminSettingsEdit');
                         context.pop();
                       },
 
