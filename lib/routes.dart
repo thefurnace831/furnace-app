@@ -21,6 +21,8 @@ import 'admin/admin_settings/admin_settings_screen.dart';
 import 'admin/admin_rooms/admin_rooms_list/admin_rooms_screen.dart';
 import 'admin/admin_rooms/admin_rooms_list/admin_rooms_screen_viewmodel.dart';
 import 'admin/admin_settings/admin_settings_edit_screen.dart';
+import 'admin/admin_rooms/admin_rooms_view/admin_rooms_view_screen.dart';
+import 'admin/admin_rooms/admin_rooms_view/admin_rooms_view_viewmodel.dart';
 
 class AppRouter {
   static GoRouter router({
@@ -171,13 +173,22 @@ class AppRouter {
             }),
         GoRoute(
           path: '/admin-view-rooms',
-          name: "Admin View Rooms",
+          name: 'Admin View Rooms',
           builder: (context, state) {
             return AdminViewRoomsScreen(
               viewModel: RoomsScreenViewmodel(roomrepository: context.read()),
             );
           },
         ),
+        GoRoute(
+            path: '/admin-room-details/:roomId',
+            name: 'adminRoomDetails',
+            builder: (context, state) {
+              return AdminRoomDetailsScreen(
+                  viewModel: AdminRoomDetailViewmodel(
+                      roomRepository: context.read(),
+                      roomId: state.pathParameters['roomId']!));
+            }),
       ],
     );
   }
