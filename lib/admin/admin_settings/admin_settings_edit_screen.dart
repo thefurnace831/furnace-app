@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furnace_app/furnace_ui.dart';
+import 'package:go_router/go_router.dart';
 
 // Admin settings edit screen.
 // This screen is currently frontend-only and uses placeholder fields.
@@ -203,9 +204,18 @@ class AdminSettingsEditScreen extends StatelessWidget {
                         child: ElevatedButton.icon(
                           onPressed: () {
 
-                            // Future save settings functionality.
-                          },
+                            // Shows confirmation message.
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Admin settings saved successfully.",
+                                ),
+                              ),
+                            );
 
+                            // Returns user back to previous screen.
+                            context.goNamed('adminSettings');
+                          },
                           icon: const Icon(Icons.check),
                           label: const Text("Save"),
                         ),
