@@ -29,17 +29,18 @@ class AppRouter {
     required bool isLoggedIn,
     required bool isAdmin,
   }) {
+    final adminSettingsViewmodel = AdminSettingsViewmodel();
     return GoRouter(
-      initialLocation: '/admin-home',
+      initialLocation: '/',
       redirect: (context, state) {
         final location = state.uri.toString();
 
         final isAuthPage =
             location == '/' || location == '/login' || location == '/register';
 
-        // if (!isLoggedIn && !isAuthPage) {
-        //   return '/login';
-        // }
+        if (!isLoggedIn && !isAuthPage) {
+          return '/login';
+        }
 
         if (isLoggedIn && isAuthPage) {
           return isAdmin ? '/admin-home' : '/welcome';
@@ -127,17 +128,19 @@ class AppRouter {
           name: 'adminSettings',
           builder: (context, state) {
             return AdminSettingsScreen(
-              viewModel: AdminSettingsViewmodel(),
+              viewModel: adminSettingsViewmodel,
             );
           },
         ),
-        GoRoute(
-          path: '/admin-settings-edit',
-          name: 'adminSettingsEdit',
-          builder: (context, state) {
-            return const AdminSettingsEditScreen();
-          },
-        ),
+    GoRoute(
+    path: '/admin-settings-edit',
+    name: 'adminSettingsEdit',
+    builder: (context, state) {
+    return AdminSettingsEditScreen(
+    viewModel: adminSettingsViewmodel,
+    );
+    },
+    ),
         GoRoute(
           path: '/admin-view-students',
           name: "Admin View Students",
