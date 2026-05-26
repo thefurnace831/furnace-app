@@ -214,7 +214,7 @@ class AdminSettingsEditScreen extends StatelessWidget {
                             );
 
                             // Returns user back to previous screen.
-                            context.goNamed('adminSettings');
+                            context.pop();
                           },
                           icon: const Icon(Icons.check),
                           label: const Text("Save"),
