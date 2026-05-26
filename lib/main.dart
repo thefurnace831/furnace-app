@@ -3,6 +3,8 @@ import 'package:furnace_app/data/repositories/room_repository/room_repository.da
 import 'package:furnace_app/data/repositories/room_repository/room_repository_remote.dart';
 import 'package:furnace_app/data/repositories/student/student_repository.dart';
 import 'package:furnace_app/data/repositories/student/student_repository_remote.dart';
+import 'package:furnace_app/data/repositories/time_log/time_log_repository.dart';
+import 'package:furnace_app/data/repositories/time_log/time_log_repository_remote.dart';
 
 import 'package:furnace_app/routes.dart';
 import 'package:page_transition/page_transition.dart';
@@ -44,10 +46,9 @@ void main() async {
   runApp(
     MultiProvider(
         providers: [
-          Provider(
-              create: (create) =>
-                  StudentRepositoryRemote() as StudentRepository),
-          Provider(create: (create) => RoomRepositoryRemote() as RoomRepository)
+          Provider(create: (create) => StudentRepositoryRemote() as StudentRepository),
+          Provider(create: (create) => RoomRepositoryRemote() as RoomRepository),
+          Provider(create: (create) => TimeLogRepositoryRemote() as TimeLogRepository),
         ],
         child: MyApp(
           isLoggedIn: isLoggedIn,
