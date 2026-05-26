@@ -10,44 +10,29 @@ class StudentRepositoryFake extends StudentRepository {
       name: 'Test Student',
       username: 'teststudent@email.com',
       email: 'teststudent@email.com',
+      phoneNumber: '',
+      schoolName: '',
     ),
     User(
         userId: '2',
         name: 'Alex Johnson',
         email: 'alex@email.com',
-        username: 'alex@email.com'
-    ),
+        username: 'alex@email.com',
+        phoneNumber: '',
+        schoolName: ''),
     User(
         userId: '3',
         name: 'Maria Lopez',
         email: 'maria@email.com',
-        username: 'alex@email.com'
-    ),
-    User(
-        userId: '4',
-        name: 'Maria Lopeza',
-        email: 'maria@email.com',
-        username: 'alex@email.com'
-    ),
-    User(
-        userId: '5',
-        name: 'Maria Lopezb',
-        email: 'maria@email.com',
-        username: 'alex@email.com'
-    ),
-    User(
-        userId: '6',
-        name: 'Maria Lopezc',
-        email: 'maria@email.com',
-        username: 'alex@email.com'
-    ),
+        username: 'alex@email.com',
+        phoneNumber: '',
+        schoolName: ''),
   ];
 
   bool isSuccessful = true;
 
   @override
   Future<Result<List<User>>> getAllStudents() async {
-
     if (isSuccessful) {
       return Result.ok(_students);
     }
@@ -68,5 +53,4 @@ class StudentRepositoryFake extends StudentRepository {
       Exception('Failed to load students'),
     );
   }
-
 }

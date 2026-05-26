@@ -18,8 +18,10 @@ import 'welcome.dart';
 import 'scanner.dart';
 import 'admin/admin_home/admin_home_screen_viewmodel.dart';
 import 'admin/admin_settings/admin_settings_screen.dart';
+
 import 'admin/admin_rooms/admin_rooms_list/admin_rooms_screen.dart';
 import 'admin/admin_rooms/admin_rooms_list/admin_rooms_screen_viewmodel.dart';
+
 import 'admin/admin_settings/admin_settings_edit_screen.dart';
 import 'admin/admin_rooms/admin_rooms_view/admin_rooms_view_screen.dart';
 import 'admin/admin_rooms/admin_rooms_view/admin_rooms_view_viewmodel.dart';
@@ -169,6 +171,7 @@ class AppRouter {
               return StudentDetailsScreen(
                   viewModel: StudentDetailsViewmodel(
                       studentRepository: context.read(),
+                      timeLogRepository: context.read(),
                       userId: state.pathParameters['userId']!));
             }),
         GoRoute(
