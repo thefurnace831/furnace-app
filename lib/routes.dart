@@ -19,6 +19,8 @@ import 'scanner.dart';
 import 'admin/admin_home/admin_home_screen_viewmodel.dart';
 import 'admin/admin_settings/admin_settings_screen.dart';
 import 'admin/admin_rooms/admin_rooms_screen.dart';
+
+import 'admin/admin_rooms/admin_rooms_screen_viewmodel.dart';
 import 'admin/admin_settings/admin_settings_edit_screen.dart';
 
 class AppRouter {
@@ -172,7 +174,9 @@ class AppRouter {
           path: '/admin-view-rooms',
           name: "Admin View Rooms",
           builder: (context, state) {
-            return AdminViewRoomsScreen();
+            return AdminViewRoomsScreen(
+              viewModel: RoomsScreenViewmodel(roomrepository: context.read()),
+            );
           },
         ),
       ],
