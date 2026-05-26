@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:furnace_app/admin/admin_rooms/admin_rooms_list/admin_rooms_screen.dart';
-import 'package:furnace_app/admin/admin_rooms/admin_rooms_list/admin_rooms_screen_viewmodel.dart';
 import 'package:furnace_app/admin/admin_rooms/admin_rooms_view/admin_rooms_view_viewmodel.dart';
 import 'package:furnace_app/data/repositories/room_repository/room_repository.dart';
 import 'package:furnace_app/furnace_ui.dart';
@@ -14,6 +12,28 @@ class AdminRoomDetailsScreen extends StatefulWidget {
 }
 
 class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
+  final TextEditingController _nameController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController.addListener(() {
+      final String text = _nameController.text.toLowerCase();
+      _nameController.value = _nameController.value.copyWith(
+        text: text,
+        selection:
+            TextSelection(baseOffset: text.length, extentOffset: text.length),
+        composing: TextRange.empty,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +61,13 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                               child: Column(
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
-                                  children: [Text('room name')])));
+                                  children: [
+                                TextFormField(
+                                  controller: _nameController,
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder()),
+                                )
+                              ])));
                     })
               ],
             )));
