@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'admin_settings_viewmodel.dart';
+
 // Main admin settings screen.
 class AdminSettingsScreen extends StatelessWidget {
-  const AdminSettingsScreen({super.key});
+  final AdminSettingsViewmodel viewModel;
+
+  const AdminSettingsScreen({
+    super.key,
+    required this.viewModel,
+  });
 
   @override
   Widget build(BuildContext context) {
-
     // Main page structure.
     return Scaffold(
 
@@ -77,11 +83,11 @@ class AdminSettingsScreen extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                    // Admin display name.
-                    const Text(
-                      "Katie Lopez",
+                    // Admin display name from ViewModel.
+                    Text(
+                      viewModel.adminName,
 
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
@@ -89,56 +95,57 @@ class AdminSettingsScreen extends StatelessWidget {
 
                     const SizedBox(height: 8),
 
-                    // Admin role text.
-                    const Text(
-                      "Administrator",
+                    // Admin role text from ViewModel.
+                    Text(
+                      viewModel.adminRole,
 
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.grey,
                       ),
                     ),
 
                     const SizedBox(height: 24),
 
-                    // Email information section.
-                    const ListTile(
-                      leading: Icon(Icons.email),
+                    // Email information section from ViewModel.
+                    ListTile(
+                      leading: const Icon(Icons.email),
 
-                      title: Text("Email"),
+                      title: const Text("Email"),
 
-                      subtitle: Text("admin@furnace.org"),
+                      subtitle: Text(viewModel.adminEmail),
                     ),
 
                     const Divider(),
 
-                    // Phone information section.
-                    const ListTile(
-                      leading: Icon(Icons.phone),
+                    // Phone information section from ViewModel.
+                    ListTile(
+                      leading: const Icon(Icons.phone),
 
-                      title: Text("Phone"),
+                      title: const Text("Phone"),
 
-                      subtitle: Text("(000) 000-0000"),
+                      subtitle: Text(viewModel.adminPhone),
                     ),
 
                     const Divider(),
 
-                    // Role information section.
-                    const ListTile(
-                      leading: Icon(Icons.badge),
+                    // Role information section from ViewModel.
+                    ListTile(
+                      leading: const Icon(Icons.badge),
 
-                      title: Text("Role"),
+                      title: const Text("Role"),
 
-                      subtitle: Text("Administrator"),
+                      subtitle: Text(viewModel.adminRole),
                     ),
 
                     const SizedBox(height: 20),
 
-                    // Future edit settings button.
+                    // Opens edit settings screen.
                     ElevatedButton(
                       onPressed: () {
 
                         // Opens the edit settings screen.
                         context.goNamed('adminSettingsEdit');
+                        context.pop();
                       },
 
                       child: const Text("Edit Settings"),
