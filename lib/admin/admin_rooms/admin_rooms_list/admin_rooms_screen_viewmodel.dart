@@ -19,7 +19,7 @@ class RoomsScreenViewmodel extends ChangeNotifier {
 
   late Command0 loadRooms;
 
-// Load rooms
+// Load all rooms
   Future<Result> _load() async {
     try {
       final result = await _roomRepository.getAllRooms();

@@ -16,7 +16,7 @@ class AdminRoomDetailViewmodel extends ChangeNotifier {
   final RoomRepository _roomRepository;
   late Command1<Room?, String> loadRoomById;
 
-  Room? _room = null;
+  Room? _room;
   Room? get room => _room;
   bool _saving = false;
   bool _editing = false;

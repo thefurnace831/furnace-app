@@ -66,12 +66,12 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                   // Checkin
                                   children: [
                                 // Room name
-                                Text(widget.viewModel.roomId),
+                                Text(widget.viewModel.room!.roomName),
                                 // Checking Type
                                 Text("Check-in"),
                                 // QR Code
                                 QrImageView(
-                                    data: widget.viewModel.roomId,
+                                    data: widget.viewModel.room!.roomName,
                                     version: QrVersions.auto,
                                     size: 200.0),
                                 // Checkout
