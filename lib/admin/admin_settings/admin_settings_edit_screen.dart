@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:furnace_app/furnace_ui.dart';
 import 'package:go_router/go_router.dart';
+import 'admin_settings_viewmodel.dart';
 
 // Admin settings edit screen.
 // This screen is currently frontend-only and uses placeholder fields.
 class AdminSettingsEditScreen extends StatelessWidget {
-  const AdminSettingsEditScreen({super.key});
+
+  final AdminSettingsViewmodel viewModel;
+
+  const AdminSettingsEditScreen({
+    super.key,
+    required this.viewModel,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -8,7 +8,7 @@ void main() {
   testWidgets('shows logged-out entry actions', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp(isLoggedIn: false, isAdmin: false));
 
-    expect(find.text('Teen Center Check-In'), findsOneWidget);
+    expect(find.text('Check in'), findsOneWidget);
     expect(find.text('Log in'), findsOneWidget);
     expect(find.text('Create account'), findsOneWidget);
   });
