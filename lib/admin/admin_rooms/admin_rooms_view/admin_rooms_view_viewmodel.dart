@@ -18,6 +18,8 @@ class AdminRoomDetailViewmodel extends ChangeNotifier {
 
   Room? _room = null;
   Room? get room => _room;
+  bool _saving = false;
+  bool _editing = false;
 
   Future<Result<Room?>> _getRoomById(String roomId) async {
     try {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furnace_app/admin/admin_rooms/admin_rooms_view/admin_rooms_view_viewmodel.dart';
 import 'package:furnace_app/data/repositories/room_repository/room_repository.dart';
 import 'package:furnace_app/furnace_ui.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class AdminRoomDetailsScreen extends StatefulWidget {
   final AdminRoomDetailViewmodel viewModel;
@@ -11,6 +12,7 @@ class AdminRoomDetailsScreen extends StatefulWidget {
   State<AdminRoomDetailsScreen> createState() => _AdminViewRoomState();
 }
 
+//edit button -> push to edit page -> pop to view page with new edit
 class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
   final TextEditingController _nameController = TextEditingController();
 
@@ -49,11 +51,11 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                   height: 200,
                   fit: BoxFit.contain,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
                 const Text("Under Construction"),
                 SizedBox(height: 10),
                 ListenableBuilder(
-                    listenable: Listenable.merge([widget.viewModel]),
+                    listenable: widget.viewModel,
                     builder: (context, _) {
                       return FurnaceContent(
                           maxWidth: 560,
@@ -61,12 +63,18 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                               child: Column(
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
+                                  // Checkin
                                   children: [
-                                TextFormField(
-                                  controller: _nameController,
-                                  decoration: const InputDecoration(
-                                      border: OutlineInputBorder()),
-                                )
+                                // Room name
+                                Text(widget.viewModel.roomId),
+                                // Checking Type
+                                Text("Check-in"),
+                                // QR Code
+                                QrImageView(
+                                    data: widget.viewModel.roomId,
+                                    version: QrVersions.auto,
+                                    size: 200.0),
+                                // Checkout
                               ])));
                     })
               ],
