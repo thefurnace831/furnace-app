@@ -81,7 +81,7 @@ class StudentCard extends StatelessWidget {
 }
 
 @Preview(name: 'Student card preview')
-Widget studentCardPreview() {
+Widget StudentCardPreview() {
   return StudentCard(
     fullName: "Cody Hopkins",
     email: "cody@cody.com",
