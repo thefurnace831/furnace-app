@@ -32,7 +32,7 @@ class StudentActivityCard extends StatelessWidget {
                         color: Color(0xFF69655D)),
                   ),
                   Text(
-                    "${sessionsAttended} sessions",
+                    "$sessionsAttended sessions",
                     style: TextStyle(
                       fontSize: 8,
                       fontWeight: FontWeight.w500,
