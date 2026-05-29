@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widget_previews.dart';
 
@@ -81,7 +80,7 @@ class StudentCard extends StatelessWidget {
 }
 
 @Preview(name: 'Student card preview')
-Widget StudentCardPreview() {
+Widget studentCardPreview() {
   return StudentCard(
     fullName: "Cody Hopkins",
     email: "cody@cody.com",

@@ -35,9 +35,6 @@ class RoomRepositoryFake extends RoomRepository {
 
   @override
   Future<Result<List<Room>>> getAllRooms() async {
-    print('in get all rooms');
-    print(_rooms);
-
     if (isSuccessful) {
       return Result.ok(_rooms);
     }

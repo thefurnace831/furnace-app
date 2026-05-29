@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:furnace_app/api/time_log.dart';
@@ -33,7 +32,7 @@ class StudentActivityCard extends StatelessWidget {
                         color: Color(0xFF69655D)),
                   ),
                   Text(
-                    "${sessionsAttended} sessions",
+                    "$sessionsAttended sessions",
                     style: TextStyle(
                       fontSize: 8,
                       fontWeight: FontWeight.w500,
@@ -133,7 +132,7 @@ class StudentActivityCard extends StatelessWidget {
 }
 
 @Preview(name: 'Student activity card preview')
-Widget StudentActivityCardPreview() {
+Widget studentActivityCardPreview() {
   List<TimeLog> logs = [
 
   ];

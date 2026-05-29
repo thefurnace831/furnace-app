@@ -234,7 +234,7 @@ class WelcomePageState extends State<WelcomePage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          widget.room.roomName ?? 'Current room',
+          widget.room.roomName,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 14),
