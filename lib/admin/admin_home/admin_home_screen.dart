@@ -42,7 +42,7 @@ class AdminHomePage extends StatelessWidget {
                               Expanded(
                                 child: DashboardCard(
                                   icon: Icons.person,
-                                  description: "view users",
+                                  description: "View Users",
                                   height: 163,
                                   onClick: () {
                                     context.push('/admin-view-users');
@@ -53,7 +53,7 @@ class AdminHomePage extends StatelessWidget {
                               Expanded(
                                 child: DashboardCard(
                                   icon: Icons.qr_code,
-                                  description: "view QRs",
+                                  description: "View Rooms",
                                   height: 163,
                                   onClick: () {
                                     context.push('/admin-view-rooms');
@@ -72,7 +72,7 @@ class AdminHomePage extends StatelessWidget {
                               Expanded(
                                 child: DashboardCard(
                                   icon: Icons.analytics,
-                                  description: "analytics",
+                                  description: "Analytics",
                                   height: 163,
 
                                   // Opens the Analytics screen.
@@ -85,7 +85,7 @@ class AdminHomePage extends StatelessWidget {
                               Expanded(
                                 child: DashboardCard(
                                   icon: Icons.settings,
-                                  description: "settings",
+                                  description: "Settings",
                                   height: 163,
 
                                   // Opens the Admin Settings screen.
