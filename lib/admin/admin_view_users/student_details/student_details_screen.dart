@@ -45,47 +45,51 @@ class StudentDetailsScreen extends StatelessWidget {
 
                     return child!;
                   },
-                  child: ListenableBuilder(
-                      listenable: viewModel,
-                      builder: (context, _) {
-                        if (viewModel.student != null) {
-                          return FurnacePanel(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              StudentCard(
-                                  fullName: viewModel.student!.name,
-                                  email: viewModel.student!.username,
-                                  phoneNumber: viewModel.student!.phoneNumber,
-                                  schoolName: viewModel.student!.schoolName,
-                                  // No grade field in _User class
-                                  grade: ""),
-                              Container(height: 21),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(Icons.analytics),
-                                  Container(width: 10),
-                                  Text(
-                                    "Student Activities",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 14),
-                                  ),
-                                ],
-                              ),
-                              StudentActivityCard(
-                                logs: viewModel.recentLogs,
-                                sessionsAttended: viewModel.sessionsAttended,
-                                lastSessionAttended: viewModel.recentLogs.firstOrNull?.createdAt == null ? "None" :
-                                DateFormat('MM/dd/yyyy').format(viewModel.recentLogs.first.createdAt),
-                              )
-                            ],
-                          ));
-                        }
-
-                        return Text("User not found");
-                      }),
+                  child: _buildStudentContent(viewModel),
                 ))));
   }
+}
+
+Widget _buildStudentContent(StudentDetailsViewmodel viewModel) {
+  return ListenableBuilder(
+      listenable: viewModel,
+      builder: (context, _) {
+        if (viewModel.student != null) {
+          return FurnacePanel(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  StudentCard(
+                      fullName: viewModel.student!.name,
+                      email: viewModel.student!.username,
+                      phoneNumber: viewModel.student!.phoneNumber,
+                      schoolName: viewModel.student!.schoolName,
+                      // No grade field in _User class
+                      grade: ""),
+                  Container(height: 21),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(Icons.analytics),
+                      Container(width: 10),
+                      Text(
+                        "Student Activities",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 14),
+                      ),
+                    ],
+                  ),
+                  StudentActivityCard(
+                    logs: viewModel.recentLogs,
+                    sessionsAttended: viewModel.sessionsAttended,
+                    lastSessionAttended: viewModel.recentLogs.firstOrNull?.createdAt == null ? "None" :
+                    DateFormat('MM/dd/yyyy').format(viewModel.recentLogs.first.createdAt),
+                  )
+                ],
+              ));
+        }
+
+        return Text("User not found");
+      });
 }
