@@ -8,6 +8,9 @@ class User {
   final String username;
   final String phoneNumber;
   final String schoolName;
+  final String birthday;
+  final String ethnicity;
+  final String gender;
 
   User({
     required this.userId,
@@ -16,6 +19,9 @@ class User {
     required this.email,
     required this.phoneNumber,
     required this.schoolName,
+    required this.birthday,
+    required this.ethnicity,
+    required this.gender,
   });
 
   factory User.fromParseObject(ParseObject object) {
@@ -26,6 +32,9 @@ class User {
       email: object.get<String>('email') ?? '',
       phoneNumber: object.get<String>('phoneNumber') ?? '',
       schoolName: object.get<String>('schoolName') ?? '',
+      birthday: object.get<String>('birthday') ?? '',
+      ethnicity: object.get<String>('ethnicity') ?? '',
+      gender: object.get<String>('gender') ?? '',
     );
   }
 }
