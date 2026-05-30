@@ -246,14 +246,36 @@ class _AdminSettingsEditScreenState
                         child: ElevatedButton.icon(
                           onPressed: () {
 
+                            // Checks if any required field is empty.
+                            final hasEmptyField =
+                                nameController.text.trim().isEmpty ||
+                                    emailController.text.trim().isEmpty ||
+                                    phoneController.text.trim().isEmpty ||
+                                    roleController.text.trim().isEmpty;
+
+                            // If a field is empty, show an error and stop saving.
+                            if (hasEmptyField) {
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    "Please complete all fields before saving.",
+                                  ),
+                                ),
+                              );
+
+                              return;
+                            }
+
                             // Updates ViewModel state.
                             widget.viewModel.updateAdminInfo(
-                              name: nameController.text,
-                              email: emailController.text,
-                              phone: phoneController.text,
-                              role: roleController.text,
+                              name: nameController.text.trim(),
+                              email: emailController.text.trim(),
+                              phone: phoneController.text.trim(),
+                              role: roleController.text.trim(),
                             );
 
+                            // Shows confirmation message.
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -262,6 +284,7 @@ class _AdminSettingsEditScreenState
                               ),
                             );
 
+                            // Returns user back to previous screen.
                             context.pop();
                           },
 
