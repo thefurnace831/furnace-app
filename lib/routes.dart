@@ -3,7 +3,6 @@ import 'package:furnace_app/admin/admin_view_users/student_details/student_detai
 import 'package:furnace_app/admin/admin_view_users/view_users_screen.dart';
 import 'package:furnace_app/admin/admin_view_users/view_users_viewmodel.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 import 'admin/admin_home/admin_home_screen.dart';
