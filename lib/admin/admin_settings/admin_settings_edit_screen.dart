@@ -247,13 +247,14 @@ class _AdminSettingsEditScreenState
                           onPressed: () {
 
                             // Checks if any required field is empty.
+                            // Checks if any required field is empty.
                             final hasEmptyField =
                                 nameController.text.trim().isEmpty ||
                                     emailController.text.trim().isEmpty ||
                                     phoneController.text.trim().isEmpty ||
                                     roleController.text.trim().isEmpty;
 
-                            // If a field is empty, show an error and stop saving.
+// If a field is empty, show an error and stop saving.
                             if (hasEmptyField) {
 
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -267,7 +268,26 @@ class _AdminSettingsEditScreenState
                               return;
                             }
 
-                            // Updates ViewModel state.
+// Checks if email format looks valid.
+                            final hasValidEmail =
+                                emailController.text.trim().contains("@") &&
+                                    emailController.text.trim().contains(".");
+
+// If email format is invalid, show an error and stop saving.
+                            if (!hasValidEmail) {
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    "Please enter a valid email address.",
+                                  ),
+                                ),
+                              );
+
+                              return;
+                            }
+
+// Updates ViewModel state.
                             widget.viewModel.updateAdminInfo(
                               name: nameController.text.trim(),
                               email: emailController.text.trim(),
