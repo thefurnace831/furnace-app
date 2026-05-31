@@ -42,7 +42,8 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
         appBar: AppBar(title: const Text("Rooms List")),
         body: FurnaceBackground(
             pattern: true,
-            child: Column(
+            child: SingleChildScrollView(
+                child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
@@ -54,6 +55,7 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                 const SizedBox(height: 5),
                 const Text("Under Construction"),
                 SizedBox(height: 10),
+                const SizedBox(height: 10),
                 ListenableBuilder(
                     listenable: widget.viewModel,
                     builder: (context, _) {
@@ -64,31 +66,49 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                           maxWidth: 560,
                           child: FurnacePanel(
                               child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   // Checkin
                                   children: [
                                 // Room name
+                                Text('Name'),
                                 Text(widget.viewModel.room!.roomName),
+                                // Divider
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 22.0),
+                                  child: Divider(color: Colors.grey),
+                                ),
                                 // Checking Type
                                 Text("Check-in"),
                                 // QR Code
-                                QrImageView(
-                                    data: widget.viewModel.room!.roomName +
-                                        checkIn,
-                                    version: QrVersions.auto,
-                                    size: 200.0),
+                                Center(
+                                  child: QrImageView(
+                                      data: widget.viewModel.room!.roomName +
+                                          checkIn,
+                                      version: QrVersions.auto,
+                                      size: 200.0),
+                                ),
+
+                                // Divider
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 22.0),
+                                  child: Divider(color: Colors.grey),
+                                ),
                                 // Checkout
-                                Text("Check-Out"), // Checking Type
-                                // QR Code
-                                QrImageView(
-                                    data: widget.viewModel.room!.roomName +
-                                        checkOut,
-                                    version: QrVersions.auto,
-                                    size: 200.0),
-                              ])));
+                                Text("Check-Out"),
+                                Center(
+                                    child: // Checking Type
+                                        // QR Code
+                                        QrImageView(
+                                            data: widget
+                                                    .viewModel.room!.roomName +
+                                                checkOut,
+                                            version: QrVersions.auto,
+                                            size: 200.0)),
+                              ]))
+                          // reusable floating action button
+                          );
                     })
               ],
-            )));
+            ))));
   }
 }
