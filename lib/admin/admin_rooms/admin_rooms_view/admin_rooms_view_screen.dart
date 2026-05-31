@@ -70,11 +70,13 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                   // Checkin
                                   children: [
                                 // Room name
-                                Text('Name'),
+                                Text('Name',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
                                 Text(widget.viewModel.room!.roomName),
                                 // Divider
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 22.0),
+                                  padding: EdgeInsets.symmetric(vertical: 20.0),
                                   child: Divider(color: Colors.grey),
                                 ),
                                 // Checking Type
