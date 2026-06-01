@@ -41,7 +41,7 @@ void main() {
   ];
 
   group('AdminViewStudentViewModel test', () {
-    test("Students list is correctly initialized", () async {
+    test("Students list is correctly initialized when loading students", () async {
       final viewModel = AdminViewStudentsViewmodel(
           studentRepository: StudentRepositoryFake());
       await viewModel.loadStudents.execute();
