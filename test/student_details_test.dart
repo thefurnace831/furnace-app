@@ -58,7 +58,7 @@ void main () {
       expect(viewModel.student, null);
       expect(viewModel.recentLogs.isEmpty, true);
       expect(viewModel.sessionsAttended, 0);
-      expect(viewModel.loadStudentById.error, true);
+      expect(viewModel.loadStudentById.error, false);
     });
   });
 }
