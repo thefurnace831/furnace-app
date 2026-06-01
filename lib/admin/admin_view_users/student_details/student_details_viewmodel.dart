@@ -60,6 +60,7 @@ class StudentDetailsViewmodel extends ChangeNotifier {
       switch (result) {
         case Ok<User?>():
           _student = result.value;
+          if (student == null) return result;
           await _getStudentLogs(_student!.email);
         case Error<User?>():
           /** no-op **/
