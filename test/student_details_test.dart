@@ -6,27 +6,28 @@ import 'package:furnace_app/data/repositories/time_log/time_log_repository_fake.
 
 void main () {
   final User expectedStudent = User(
-      userId: '1',
-      name: 'Test Student',
-      username: 'teststudent@email.com',
-      email: 'teststudent@email.com',
-      phoneNumber: '555-0101',
-      schoolName: 'Monterey High School',
-      birthday: '2007-04-15',
-      ethnicity: 'Prefer not to say',
-      gender: 'Prefer not to say',
-    );
+    userId: '2',
+    name: 'Alex Johnson',
+    email: 'alex@email.com',
+    username: 'alex@email.com',
+    phoneNumber: '555-0102',
+    schoolName: 'Seaside High School',
+    birthday: '2006-09-22',
+    ethnicity: 'Asian',
+    gender: 'Male',
+  );
 
   group("StudentDetailsViewModel test", () {
     test("Student is correctly initialized", () async {
       final viewModel = StudentDetailsViewmodel(
-          userId: "1",
+          userId: "2",
           studentRepository: StudentRepositoryFake(),
           timeLogRepository: TimeLogRepositoryFake(),
       );
 
-      await viewModel.loadStudentById.execute("1");
+      await viewModel.loadStudentById.execute("2");
       expect(viewModel.student?.username, expectedStudent.username);
+      expect(viewModel.loadStudentById.error, false);
     });
 
     test("Student is null when id does not exist", () async {
@@ -37,7 +38,27 @@ void main () {
       );
 
       await viewModel.loadStudentById.execute("4");
+
       expect(viewModel.student, null);
+      expect(viewModel.recentLogs.isEmpty, true);
+      expect(viewModel.sessionsAttended, 0);
+    });
+
+    test("Student is null when an error occurs", () async {
+      final StudentRepositoryFake studentRepositoryFake = StudentRepositoryFake();
+      studentRepositoryFake.isSuccessful = false;
+      final viewModel = StudentDetailsViewmodel(
+        userId: "2",
+        studentRepository: studentRepositoryFake,
+        timeLogRepository: TimeLogRepositoryFake(),
+      );
+
+      await viewModel.loadStudentById.execute("2");
+
+      expect(viewModel.student, null);
+      expect(viewModel.recentLogs.isEmpty, true);
+      expect(viewModel.sessionsAttended, 0);
+      expect(viewModel.loadStudentById.error, true);
     });
   });
 }
