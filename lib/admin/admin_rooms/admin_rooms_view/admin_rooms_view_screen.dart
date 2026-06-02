@@ -59,6 +59,23 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
               ListenableBuilder(
                   listenable: widget.viewModel.loadRoomById,
                   builder: (context, _) {
+                    if (widget.viewModel.loadRoomById.running) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (widget.viewModel.loadRoomById.error) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text("There was an error fetching room."),
+                          ElevatedButton(
+                              onPressed: () {
+                                widget.viewModel.loadRoomById
+                                    .execute(widget.viewModel.roomId);
+                              },
+                              child: Text("Try Again"))
+                        ],
+                      );
+                    }
                     return FurnaceContent(
                         maxWidth: 560,
                         child: FurnacePanel(
