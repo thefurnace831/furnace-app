@@ -57,11 +57,8 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                     icon: _isEditing ? Icons.edit : Icons.visibility),
               ),
               ListenableBuilder(
-                  listenable: widget.viewModel,
+                  listenable: widget.viewModel.loadRoomById,
                   builder: (context, _) {
-                    String checkIn = '-checkin';
-                    String checkOut = '-checkout';
-
                     return FurnaceContent(
                         maxWidth: 560,
                         child: FurnacePanel(
@@ -84,8 +81,7 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                               // QR Code
                               Center(
                                 child: QrImageView(
-                                    data: widget.viewModel.room!.roomName +
-                                        checkIn,
+                                    data: widget.viewModel.room!.qrRoomValue,
                                     version: QrVersions.auto,
                                     size: 200.0),
                               ),
@@ -101,9 +97,8 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                   child: // Checking Type
                                       // QR Code
                                       QrImageView(
-                                          data:
-                                              widget.viewModel.room!.roomName +
-                                                  checkOut,
+                                          data: widget
+                                              .viewModel.room!.qrRoomValue,
                                           version: QrVersions.auto,
                                           size: 200.0)),
                             ])));
