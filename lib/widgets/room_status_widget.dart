@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:furnace_app/furnace_ui.dart';
 
 class RoomStatusWidget extends StatelessWidget {
   final bool isEditing;
@@ -25,11 +24,12 @@ class RoomStatusWidget extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          // Icons
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Icons
               Icon(icon, color: textColor, size: 16.0),
+              // Text
               Text(
                 isEditing ? 'Editing' : 'Viewing',
                 style: TextStyle(
@@ -39,7 +39,6 @@ class RoomStatusWidget extends StatelessWidget {
               ),
             ],
           ),
-          // Text
         ));
   }
 }

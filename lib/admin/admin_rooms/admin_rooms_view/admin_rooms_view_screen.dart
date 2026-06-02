@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:furnace_app/admin/admin_rooms/admin_rooms_view/admin_rooms_view_viewmodel.dart';
+
 import 'package:furnace_app/data/repositories/room_repository/room_repository.dart';
+
 import 'package:furnace_app/furnace_ui.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:furnace_app/widgets/room_status_widget.dart';
@@ -58,10 +60,25 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                     icon: _isEditing ? Icons.edit : Icons.visibility),
               ),
               ListenableBuilder(
-                  listenable: widget.viewModel,
+                  listenable: widget.viewModel.loadRoomById,
                   builder: (context, _) {
-                    String checkIn = '-checkin';
-                    String checkOut = '-checkout';
+                    if (widget.viewModel.loadRoomById.running) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (widget.viewModel.loadRoomById.error) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text("There was an error fetching room."),
+                          ElevatedButton(
+                              onPressed: () {
+                                widget.viewModel.loadRoomById
+                                    .execute(widget.viewModel.roomId);
+                              },
+                              child: Text("Try Again"))
+                        ],
+                      );
+                    }
 
                     return FurnaceContent(
                         maxWidth: 560,
@@ -80,13 +97,12 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                 padding: EdgeInsets.symmetric(vertical: 20.0),
                                 child: Divider(color: Colors.grey),
                               ),
-                              // Checking Type
+                              // Checkin
                               Text("Check-In"),
                               // QR Code
                               Center(
                                 child: QrImageView(
-                                    data: widget.viewModel.room!.roomName +
-                                        checkIn,
+                                    data: widget.viewModel.room!.qrRoomValue,
                                     version: QrVersions.auto,
                                     size: 200.0),
                               ),
@@ -102,9 +118,8 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                   child: // Checking Type
                                       // QR Code
                                       QrImageView(
-                                          data:
-                                              widget.viewModel.room!.roomName +
-                                                  checkOut,
+                                          data: widget
+                                              .viewModel.room!.qrRoomValue,
                                           version: QrVersions.auto,
                                           size: 200.0)),
                             ])));
