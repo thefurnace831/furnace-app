@@ -3,6 +3,7 @@ import 'package:furnace_app/admin/admin_rooms/admin_rooms_view/admin_rooms_view_
 import 'package:furnace_app/data/repositories/room_repository/room_repository.dart';
 import 'package:furnace_app/furnace_ui.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:furnace_app/widgets/room_status_widget.dart';
 
 class AdminRoomDetailsScreen extends StatefulWidget {
   final AdminRoomDetailViewmodel viewModel;
@@ -14,6 +15,9 @@ class AdminRoomDetailsScreen extends StatefulWidget {
 
 //edit button -> push to edit page -> pop to view page with new edit
 class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
+  bool _isEditing = false;
+
+  // Text controllers for input
   final TextEditingController _nameController = TextEditingController();
 
   @override
@@ -46,16 +50,14 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/images/otter_wip.png',
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.contain,
+                // SizedBox(height: 10),
+                const SizedBox(height: 25),
+                //Show either View or Edit status
+                Center(
+                  child: RoomStatusWidget(
+                      isEditing: _isEditing,
+                      icon: _isEditing ? Icons.edit : Icons.visibility),
                 ),
-                const SizedBox(height: 5),
-                const Text("Under Construction"),
-                SizedBox(height: 10),
-                const SizedBox(height: 10),
                 ListenableBuilder(
                     listenable: widget.viewModel,
                     builder: (context, _) {
@@ -80,7 +82,7 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                   child: Divider(color: Colors.grey),
                                 ),
                                 // Checking Type
-                                Text("Check-in"),
+                                Text("Check-In"),
                                 // QR Code
                                 Center(
                                   child: QrImageView(
