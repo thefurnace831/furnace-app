@@ -60,8 +60,8 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
               ListenableBuilder(
                   listenable: widget.viewModel,
                   builder: (context, _) {
-                    String checkIn = 'check-in';
-                    String checkOut = 'check-out';
+                    String checkIn = '-checkin';
+                    String checkOut = '-checkout';
 
                     return FurnaceContent(
                         maxWidth: 560,
@@ -74,7 +74,7 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                               Text('Name',
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold)),
-                              Text(widget.viewModel.room!.roomName),
+                              Text(widget.viewModel.room!.roomName + checkIn),
                               // Divider
                               const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 20.0),
