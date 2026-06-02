@@ -74,7 +74,7 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                               Text('Name',
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold)),
-                              Text(widget.viewModel.room!.roomName + checkIn),
+                              Text(widget.viewModel.room!.roomName),
                               // Divider
                               const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 20.0),
