@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furnace_app/admin/admin_rooms/admin_rooms_view/admin_rooms_view_viewmodel.dart';
 
-import 'package:furnace_app/data/repositories/room_repository/room_repository.dart';
-
 import 'package:furnace_app/furnace_ui.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:furnace_app/widgets/room_status_widget.dart';
