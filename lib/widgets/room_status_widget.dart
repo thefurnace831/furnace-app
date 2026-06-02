@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:furnace_app/furnace_ui.dart';
 
 class RoomStatusWidget extends StatelessWidget {
   final bool isEditing;
