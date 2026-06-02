@@ -43,76 +43,85 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Rooms List")),
-        body: FurnaceBackground(
-            pattern: true,
-            child: SingleChildScrollView(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // SizedBox(height: 10),
-                const SizedBox(height: 25),
-                //Show either View or Edit status
-                Center(
-                  child: RoomStatusWidget(
-                      isEditing: _isEditing,
-                      icon: _isEditing ? Icons.edit : Icons.visibility),
-                ),
-                ListenableBuilder(
-                    listenable: widget.viewModel,
-                    builder: (context, _) {
-                      String checkIn = 'check-in';
-                      String checkOut = 'check-out';
+      appBar: AppBar(title: const Text("Rooms List")),
+      body: FurnaceBackground(
+        pattern: true,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 25),
+              //Show either View or Edit status
+              Center(
+                child: RoomStatusWidget(
+                    isEditing: _isEditing,
+                    icon: _isEditing ? Icons.edit : Icons.visibility),
+              ),
+              ListenableBuilder(
+                  listenable: widget.viewModel,
+                  builder: (context, _) {
+                    String checkIn = 'check-in';
+                    String checkOut = 'check-out';
 
-                      return FurnaceContent(
-                          maxWidth: 560,
-                          child: FurnacePanel(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  // Checkin
-                                  children: [
-                                // Room name
-                                Text('Name',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                Text(widget.viewModel.room!.roomName),
-                                // Divider
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 20.0),
-                                  child: Divider(color: Colors.grey),
-                                ),
-                                // Checking Type
-                                Text("Check-In"),
-                                // QR Code
-                                Center(
-                                  child: QrImageView(
-                                      data: widget.viewModel.room!.roomName +
-                                          checkIn,
-                                      version: QrVersions.auto,
-                                      size: 200.0),
-                                ),
+                    return FurnaceContent(
+                        maxWidth: 560,
+                        child: FurnacePanel(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                // Checkin
+                                children: [
+                              // Room name
+                              Text('Name',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              Text(widget.viewModel.room!.roomName),
+                              // Divider
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 20.0),
+                                child: Divider(color: Colors.grey),
+                              ),
+                              // Checking Type
+                              Text("Check-In"),
+                              // QR Code
+                              Center(
+                                child: QrImageView(
+                                    data: widget.viewModel.room!.roomName +
+                                        checkIn,
+                                    version: QrVersions.auto,
+                                    size: 200.0),
+                              ),
 
-                                // Divider
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 22.0),
-                                  child: Divider(color: Colors.grey),
-                                ),
-                                // Checkout
-                                Text("Check-Out"),
-                                Center(
-                                    child: // Checking Type
-                                        // QR Code
-                                        QrImageView(
-                                            data: widget
-                                                    .viewModel.room!.roomName +
-                                                checkOut,
-                                            version: QrVersions.auto,
-                                            size: 200.0)),
-                              ]))
-                          // reusable floating action button
-                          );
-                    })
-              ],
-            ))));
+                              // Divider
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 22.0),
+                                child: Divider(color: Colors.grey),
+                              ),
+                              // Checkout
+                              Text("Check-Out"),
+                              Center(
+                                  child: // Checking Type
+                                      // QR Code
+                                      QrImageView(
+                                          data:
+                                              widget.viewModel.room!.roomName +
+                                                  checkOut,
+                                          version: QrVersions.auto,
+                                          size: 200.0)),
+                            ])));
+                  })
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          setState(() {
+            _isEditing = !_isEditing;
+          });
+        },
+        label: Text(_isEditing ? 'Save' : 'Edit'),
+        icon: Icon(_isEditing ? Icons.save : Icons.edit),
+      ),
+    );
   }
 }
