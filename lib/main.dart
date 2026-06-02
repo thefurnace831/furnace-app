@@ -1,6 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:furnace_app/data/repositories/room_repository/room_repository.dart';
 import 'package:furnace_app/data/repositories/room_repository/room_repository_remote.dart';
+
 import 'package:furnace_app/data/repositories/student/student_repository.dart';
 import 'package:furnace_app/data/repositories/student/student_repository_remote.dart';
 import 'package:furnace_app/data/repositories/time_log/time_log_repository.dart';
@@ -46,9 +47,14 @@ void main() async {
   runApp(
     MultiProvider(
         providers: [
-          Provider(create: (create) => StudentRepositoryRemote() as StudentRepository),
-          Provider(create: (create) => RoomRepositoryRemote() as RoomRepository),
-          Provider(create: (create) => TimeLogRepositoryRemote() as TimeLogRepository),
+          Provider(
+              create: (create) =>
+                  StudentRepositoryRemote() as StudentRepository),
+          Provider(
+              create: (create) => RoomRepositoryRemote() as RoomRepository),
+          Provider(
+              create: (create) =>
+                  TimeLogRepositoryRemote() as TimeLogRepository),
         ],
         child: MyApp(
           isLoggedIn: isLoggedIn,

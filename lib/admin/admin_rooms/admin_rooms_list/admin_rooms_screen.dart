@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furnace_app/furnace_ui.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:furnace_app/admin/admin_rooms/admin_rooms_screen_viewmodel.dart';
+import 'package:furnace_app/admin/admin_rooms/admin_rooms_list/admin_rooms_screen_viewmodel.dart';
 
 // push to add, pop after new room is saved, update previous page
 class AdminViewRoomsScreen extends StatefulWidget {
