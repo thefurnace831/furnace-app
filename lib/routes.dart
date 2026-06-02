@@ -20,9 +20,6 @@ import 'admin/admin_settings/admin_settings_screen.dart';
 
 import 'admin/admin_settings/admin_settings_edit_screen.dart';
 
-import 'admin/admin_rooms/admin_rooms_view/admin_rooms_view_screen.dart';
-import 'admin/admin_rooms/admin_rooms_view/admin_rooms_view_viewmodel.dart';
-
 import 'admin/admin_settings/admin_settings_viewmodel.dart';
 
 import 'admin/admin_rooms/admin_rooms_list/admin_rooms_screen.dart';
