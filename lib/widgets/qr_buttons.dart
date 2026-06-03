@@ -51,17 +51,32 @@ class QrButtons extends StatelessWidget {
     }
   }
 
+  // Copy Image
+  void _copyToClipboard(BuildContext context) {
+    Clipboard.setData(const ClipboardData(text: 'qrRoomValue'));
+  }
+
   @override
   Widget build(BuildContext context) {
     // Colors
     final buttonColor = FurnaceColors.ember;
+    final buttonStyle = ButtonStyle(
+        foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+        backgroundColor: WidgetStateProperty.all<Color>(buttonColor));
 
-    return TextButton(
-      style: ButtonStyle(
-          foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-          backgroundColor: WidgetStateProperty.all<Color>(buttonColor)),
-      onPressed: () => _exportPDf(context),
-      child: Text('Export QR Code'),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextButton(
+          style: buttonStyle,
+          onPressed: () => _exportPDf(context),
+          child: Text('Export QR Code'),
+        ),
+        TextButton(
+            style: buttonStyle,
+            onPressed: () => _copyToClipboard(context),
+            child: Text('Copy QR Image'))
+      ],
     );
   }
 }
