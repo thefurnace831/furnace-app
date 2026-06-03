@@ -6,6 +6,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:furnace_app/widgets/room_status_widget.dart';
 
 class AdminRoomDetailsScreen extends StatefulWidget {
+  final String checkOut = 'Check Out';
   final AdminRoomDetailViewmodel viewModel;
   const AdminRoomDetailsScreen({super.key, required this.viewModel});
 
@@ -82,7 +83,6 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                         child: FurnacePanel(
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                // Checkin
                                 children: [
                               // Room name
                               Text('Name',
@@ -94,7 +94,7 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                 padding: EdgeInsets.symmetric(vertical: 20.0),
                                 child: Divider(color: Colors.grey),
                               ),
-                              // Checkin
+                              // Checkin Section
                               Text("Check-In"),
                               // QR Code
                               Center(
@@ -103,6 +103,7 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                     version: QrVersions.auto,
                                     size: 200.0),
                               ),
+                              // Copy Image and Export button
                               Center(
                                   child: QrButtons(
                                       qrRoomValue:
@@ -114,16 +115,23 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                 padding: EdgeInsets.symmetric(vertical: 22.0),
                                 child: Divider(color: Colors.grey),
                               ),
-                              // Checkout
+                              // Checkout Section
                               Text("Check-Out"),
                               Center(
                                   child: // Checking Type
                                       // QR Code
                                       QrImageView(
                                           data: widget
-                                              .viewModel.room!.qrRoomValue,
+                                              .viewModel.room!.qrCheckoutValue,
                                           version: QrVersions.auto,
                                           size: 200.0)),
+                              Center(
+                                  child: QrButtons(
+                                      qrRoomValue: widget
+                                          .viewModel.room!.qrCheckoutValue,
+                                      roomName:
+                                          widget.viewModel.room!.roomName +
+                                              widget.checkOut)),
                             ])));
                   })
             ],

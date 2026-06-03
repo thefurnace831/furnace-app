@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:furnace_app/furnace_ui.dart';
+import 'dart:io';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
@@ -12,7 +13,7 @@ class QrButtons extends StatelessWidget {
   const QrButtons(
       {super.key, required this.qrRoomValue, required this.roomName});
 
-  // PDF Logic
+  // Export PDF
   Future<void> _exportPDf(BuildContext context) async {
     final pdf = pw.Document();
 
@@ -34,15 +35,19 @@ class QrButtons extends StatelessWidget {
             ),
           );
         }));
-    // Save the bytes to a temporary local file
+    // Save to pdf file
     final output = await getTemporaryDirectory();
     final file = File("${output.path}/${roomName.replaceAll(' ', '_')}_QR.pdf");
     await file.writeAsBytes(await pdf.save());
 
     // Share the file via the native iOS/Android share sheet
+    // Check if widget still active on screen
     if (context.mounted) {
-      await Share.shareXFiles([XFile(file.path)],
-          text: 'Export $roomName QR Code');
+      final params = ShareParams(
+        text: 'Export $roomName QR Code',
+        files: [XFile(file.path)],
+      );
+      await SharePlus.instance.share(params);
     }
   }
 
