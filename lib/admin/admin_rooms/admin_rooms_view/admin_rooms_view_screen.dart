@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furnace_app/admin/admin_rooms/admin_rooms_view/admin_rooms_view_viewmodel.dart';
 import 'package:furnace_app/furnace_ui.dart';
+import 'package:furnace_app/widgets/qr_buttons.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:furnace_app/widgets/room_status_widget.dart';
 
@@ -102,7 +103,12 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                     version: QrVersions.auto,
                                     size: 200.0),
                               ),
-
+                              Center(
+                                  child: QrButtons(
+                                      qrRoomValue:
+                                          widget.viewModel.room!.qrRoomValue,
+                                      roomName:
+                                          widget.viewModel.room!.roomName)),
                               // Divider
                               const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 22.0),
