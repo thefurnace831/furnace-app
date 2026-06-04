@@ -157,6 +157,13 @@ class _AdminSettingsEditScreenState extends State<AdminSettingsEditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.goNamed('adminSettings');
+          },
+        ),
+
         title: const Text("Admin Account"),
       ),
       body: FurnaceBackground(
@@ -313,6 +320,15 @@ class _AdminSettingsEditScreenState extends State<AdminSettingsEditScreen> {
                               onPressed: _resetFields,
                               icon: const Icon(Icons.refresh),
                               label: const Text("Reset"),
+                            ),const SizedBox(height: 12),
+
+                            OutlinedButton.icon(
+                              onPressed: () {
+                                context.goNamed('adminSettings');
+                              },
+
+                              icon: const Icon(Icons.close),
+                              label: const Text("Cancel"),
                             ),
                           ],
                         ),
