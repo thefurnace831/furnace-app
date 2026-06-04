@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:furnace_app/admin/admin_rooms/admin_rooms_view/admin_rooms_view_viewmodel.dart';
 import 'package:furnace_app/furnace_ui.dart';
 import 'package:furnace_app/widgets/qr_buttons.dart';
+
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:furnace_app/widgets/room_status_widget.dart';
 
 class AdminRoomDetailsScreen extends StatefulWidget {
   final String checkOut = ' Check Out';
   final String checkIn = ' Check In';
+
   final AdminRoomDetailViewmodel viewModel;
   const AdminRoomDetailsScreen({super.key, required this.viewModel});
 
@@ -95,7 +97,8 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                 padding: EdgeInsets.symmetric(vertical: 20.0),
                                 child: Divider(color: Colors.grey),
                               ),
-                              // Checkin Section
+
+                              // Checkin
                               Text("Check-In"),
                               // QR Code
                               Center(
@@ -104,6 +107,7 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                     version: QrVersions.auto,
                                     size: 200.0),
                               ),
+
                               // Copy Image and Export button
                               Center(
                                   child: QrButtons(
@@ -117,7 +121,8 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                 padding: EdgeInsets.symmetric(vertical: 22.0),
                                 child: Divider(color: Colors.grey),
                               ),
-                              // Checkout Section
+
+                              // Checkout
                               Text("Check-Out"),
                               Center(
                                   child: // Checking Type

@@ -243,30 +243,138 @@ class _AdminSettingsEditScreenState
                       Align(
                         alignment: Alignment.centerRight,
 
-                        child: ElevatedButton.icon(
-                          onPressed: () {
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
 
-                            // Updates ViewModel state.
-                            widget.viewModel.updateAdminInfo(
-                              name: nameController.text,
-                              email: emailController.text,
-                              phone: phoneController.text,
-                              role: roleController.text,
-                            );
+                          children: [
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  "Admin settings saved successfully.",
-                                ),
-                              ),
-                            );
+                            // Save button updates the ViewModel after validation passes.
+                            ElevatedButton.icon(
+                              onPressed: () {
 
-                            context.pop();
-                          },
+                                // Checks if any required field is empty.
+                                final hasEmptyField =
+                                    nameController.text.trim().isEmpty ||
+                                        emailController.text.trim().isEmpty ||
+                                        phoneController.text.trim().isEmpty ||
+                                        roleController.text.trim().isEmpty;
 
-                          icon: const Icon(Icons.check),
-                          label: const Text("Save"),
+                                // If a field is empty, show an error and stop saving.
+                                if (hasEmptyField) {
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        "Please complete all fields before saving.",
+                                      ),
+                                    ),
+                                  );
+
+                                  return;
+                                }
+
+                                // Checks if email format looks valid.
+                                final hasValidEmail =
+                                    emailController.text.trim().contains("@") &&
+                                        emailController.text.trim().contains(".");
+
+                                // If email format is invalid, show an error and stop saving.
+                                if (!hasValidEmail) {
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        "Please enter a valid email address.",
+                                      ),
+                                    ),
+                                  );
+
+                                  return;
+                                }
+
+                                // Removes formatting characters from phone number.
+                                final phoneDigits =
+                                phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
+
+                                // Checks if phone number contains at least 10 digits.
+                                if (phoneDigits.length < 10) {
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        "Please enter a valid phone number.",
+                                      ),
+                                    ),
+                                  );
+
+                                  return;
+                                }
+
+                                // Checks if role has enough characters.
+                                if (roleController.text.trim().length < 3) {
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        "Please enter a valid role.",
+                                      ),
+                                    ),
+                                  );
+
+                                  return;
+                                }
+
+                                // Updates ViewModel state.
+                                widget.viewModel.updateAdminInfo(
+                                  name: nameController.text.trim(),
+                                  email: emailController.text.trim(),
+                                  phone: phoneController.text.trim(),
+                                  role: roleController.text.trim(),
+                                );
+
+                                // Shows confirmation message.
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      "Admin settings saved successfully.",
+                                    ),
+                                  ),
+                                );
+
+                                // Returns user back to Admin Settings screen.
+                                context.goNamed('adminSettings');
+                              },
+
+                              icon: const Icon(Icons.check),
+                              label: const Text("Save"),
+                            ),
+
+                            const SizedBox(height: 12),
+
+                            // Reset button restores the form back to the current ViewModel values.
+                            OutlinedButton.icon(
+                              onPressed: () {
+
+                                // Restores original values from ViewModel.
+                                nameController.text = widget.viewModel.adminName;
+                                emailController.text = widget.viewModel.adminEmail;
+                                phoneController.text = widget.viewModel.adminPhone;
+                                roleController.text = widget.viewModel.adminRole;
+
+                                // Shows reset confirmation message.
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      "Changes have been reset.",
+                                    ),
+                                  ),
+                                );
+                              },
+
+                              icon: const Icon(Icons.refresh),
+                              label: const Text("Reset"),
+                            ),
+                          ],
                         ),
                       ),
                     ],
