@@ -6,7 +6,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:furnace_app/widgets/room_status_widget.dart';
 
 class AdminRoomDetailsScreen extends StatefulWidget {
-  final String checkOut = 'Check Out';
+  final String checkOut = ' Check Out';
+  final String checkIn = ' Check In';
   final AdminRoomDetailViewmodel viewModel;
   const AdminRoomDetailsScreen({super.key, required this.viewModel});
 
@@ -109,7 +110,8 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                                       qrRoomValue:
                                           widget.viewModel.room!.qrRoomValue,
                                       roomName:
-                                          widget.viewModel.room!.roomName)),
+                                          widget.viewModel.room!.roomName +
+                                              widget.checkIn)),
                               // Divider
                               const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 22.0),
