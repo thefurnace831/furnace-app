@@ -53,19 +53,20 @@ class QrButtons extends StatelessWidget {
 
   // Copy Image
   void _copyToClipboard(BuildContext context) {
-    Clipboard.setData(const ClipboardData(text: 'qrRoomValue'));
+    Clipboard.setData(const ClipboardData(
+      text: 'qrRoomValue',
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
-    // Colors
-    final buttonColor = FurnaceColors.ember;
     final buttonStyle = ButtonStyle(
-        foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-        backgroundColor: WidgetStateProperty.all<Color>(buttonColor));
+        foregroundColor: WidgetStateProperty.all<Color>(FurnaceColors.paper),
+        backgroundColor: WidgetStateProperty.all<Color>(FurnaceColors.amber));
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      spacing: 16.0,
       children: [
         TextButton(
           style: buttonStyle,
