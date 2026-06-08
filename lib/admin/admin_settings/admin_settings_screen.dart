@@ -19,6 +19,13 @@ class AdminSettingsScreen extends StatelessWidget {
 
       // Top app bar.
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.goNamed('adminHome');
+          },
+        ),
+
         title: const Text("Admin Settings"),
       ),
 

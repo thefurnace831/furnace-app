@@ -26,6 +26,7 @@ class RoomStatusWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Row(
             mainAxisSize: MainAxisSize.min,
+            spacing: 10.0,
             children: [
               // Icons
               Icon(icon, color: textColor, size: 16.0),
