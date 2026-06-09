@@ -71,10 +71,12 @@ class RoomRepositoryRemote extends RoomRepository {
       final ParseObject roomObject = response.results?.first as ParseObject;
       roomObject.set('roomName', roomName);
       roomObject.set('qrRoomValue', qrRoomValue);
-      roomObject.set('qrCheckOutValue', qrCheckoutValue);
+      roomObject.set('qrCheckoutValue', qrCheckoutValue);
 
-      await roomObject.save();
-      return Result.ok(null);
+      final saveResponse = await roomObject.save();
+      if (saveResponse.success) {
+        return Result.ok(null);
+      }
     }
     return Result.error(Exception(
         response.error?.message ?? 'Failed to find and update room by id'));
@@ -90,8 +92,11 @@ class RoomRepositoryRemote extends RoomRepository {
 
     if (response.success) {
       final ParseObject roomObject = response.results?.first as ParseObject;
-      roomObject.delete();
-      return Result.ok(null);
+      final deleteReponse = await roomObject.delete();
+
+      if (deleteReponse.success) {
+        return Result.ok(null);
+      }
     }
     return Result.error(Exception(
         response.error?.message ?? 'Failed to find and delete room by id'));
