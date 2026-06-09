@@ -24,7 +24,7 @@ class RoomRepositoryRemote extends RoomRepository {
 
   @override
   Future<Result<List<Room>>> getAllRooms() async {
-    final QueryBuilder<ParseObject> query = QueryBuilder(ParseObject('_Room'));
+    final QueryBuilder<ParseObject> query = QueryBuilder(ParseObject('Room'));
     final response = await query.query();
 
     if (response.success) {
@@ -42,7 +42,7 @@ class RoomRepositoryRemote extends RoomRepository {
   Future<Result<Room>> getRoomById(String roomId) async {
     // Find room by id
     final QueryBuilder<ParseObject> query =
-        QueryBuilder<ParseObject>(ParseObject('_Room'))
+        QueryBuilder<ParseObject>(ParseObject('Room'))
           ..whereEqualTo('objectId', roomId);
     // Query
     final response = await query.query();
@@ -60,7 +60,7 @@ class RoomRepositoryRemote extends RoomRepository {
   Future<Result<void>> updateRoom(String roomId, String roomName,
       String qrRoomValue, String qrCheckoutValue) async {
     // Find room by id
-    final QueryBuilder<ParseObject> query = QueryBuilder(ParseObject('_Room'))
+    final QueryBuilder<ParseObject> query = QueryBuilder(ParseObject('Room'))
       ..whereEqualTo('objectId', roomId);
 
     // Query
@@ -82,7 +82,7 @@ class RoomRepositoryRemote extends RoomRepository {
   @override
   Future<Result<void>> deleteRoom(String roomId) async {
     // Find room by id
-    final QueryBuilder<ParseObject> query = QueryBuilder(ParseObject('_Room'))
+    final QueryBuilder<ParseObject> query = QueryBuilder(ParseObject('Room'))
       ..whereEqualTo('objectId', roomId);
     // Query
     final response = await query.query();
