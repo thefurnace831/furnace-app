@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furnace_app/admin/admin_rooms/admin_rooms_view/admin_rooms_view_viewmodel.dart';
+
 import 'package:furnace_app/furnace_ui.dart';
 import 'package:furnace_app/widgets/qr_buttons.dart';
 
@@ -81,6 +82,7 @@ class _AdminViewRoomState extends State<AdminRoomDetailsScreen> {
                         ],
                       );
                     }
+
                     return FurnaceContent(
                         maxWidth: 560,
                         child: FurnacePanel(
