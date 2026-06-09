@@ -74,6 +74,7 @@ class RoomRepositoryRemote extends RoomRepository {
       roomObject.set('qrCheckOutValue', qrCheckoutValue);
 
       await roomObject.save();
+      return Result.ok(null);
     }
     return Result.error(Exception(
         response.error?.message ?? 'Failed to find and update room by id'));
@@ -90,6 +91,7 @@ class RoomRepositoryRemote extends RoomRepository {
     if (response.success) {
       final ParseObject roomObject = response.results?.first as ParseObject;
       roomObject.delete();
+      return Result.ok(null);
     }
     return Result.error(Exception(
         response.error?.message ?? 'Failed to find and delete room by id'));
