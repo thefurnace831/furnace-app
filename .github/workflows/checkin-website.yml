@@ -1,0 +1,44 @@
+# The check-in website in checkin-website/ (not the Flutter app):
+# test it, and on main, publish it to GitHub Pages once the tests pass.
+name: Check-in website
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: [ "checkin-website/**", ".github/workflows/checkin-website.yml" ]
+  pull_request:
+    paths: [ "checkin-website/**", ".github/workflows/checkin-website.yml" ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: checkin-website
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test
+
+  publish:
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: checkin-website
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,4 +1,31 @@
+This repo holds two separate projects. They share no code and no data.
+
+I do not know why people me before tried their hand at a specific Android app. To me, a universal light weight website that can be easily visted though a qr code and never downloaded makes a lot more sense for Katie use case and needs...
+
+**check-in website code? It's in [`checkin-website/`](checkin-website/).**
+
+| | Check-in website: [`checkin-website/`](checkin-website/) | Mobile app: the rest of this repo |
+|---|---|---|
+| What it is | A small website in plain HTML, CSS and JavaScript | A Flutter app for Android and iOS |
+| How students check in | Scan the QR code at the door with the phone's camera, sign in with Google, tap **I'm here today** | Install the app, register, scan room QR codes in the app |
+| What coordinators get | A monthly spreadsheet of who came and how many days | Per-room check-in and check-out times |
+| Database | Supabase | Parse (Back4App) |
+| To work on it | A text editor; nothing to install | The Flutter SDK, plus Android Studio or Xcode |
+| Setup guide | [`checkin-website/README.md`](checkin-website/README.md) | Below |
+
+**For daily attendance, use the check-in website.** It does one job, needs no
+app install, and its code is small enough for anyone to maintain.
+
+Flutter's `web/` folder is one of the mobile app's build targets and is
+unrelated to `checkin-website/`.
+
+
 # Furnace App
+
+
+---
+
+# Mobile app (Flutter)
 
 A mobile app for the Furnace Teen Center that allows for scanning QR codes to log information into a database. 
 
