@@ -9,8 +9,13 @@ Daily attendance for the Furnace Teen Center:
 
 1. A student scans the QR code at the door with their phone's camera.
 2. The website opens. They sign in with Google and tap **I'm here today**.
-3. At the end of the month, a coordinator picks the month and downloads a
-   spreadsheet of who came and how many days.
+3. A coordinator picks the current month or any past month, clicks **View
+   report**, then **Download CSV** for who came and how many days.
+
+If loading fails, **Try again** reloads the attendance status without signing
+the student out. Cancelling Google sign-in leaves the sign-in button available.
+Returning to an open tab refreshes today's status from the database, while
+keeping the coordinator's selected report month. No background polling is used.
 
 ## Speed and reliability come first
 
@@ -42,7 +47,7 @@ change must keep these rules:
 | `app.js` | What the page does: check in, show the report, download it |
 | `supabase.js` | Talks to Supabase: Google sign-in and database calls |
 | `schema.sql` | The database: one table, three functions and the security rules |
-| `tests/` | Automated tests for sign-in handling and the speed rules |
+| `tests/` | Automated tests for page recovery, daily refresh, historical reports, sign-in handling and speed |
 
 **Supabase** (free) runs the database and Google sign-in. **GitHub Pages**
 (free) hosts the site.

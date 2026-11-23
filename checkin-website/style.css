@@ -96,23 +96,18 @@ code { color: var(--ink); background: var(--soft); padding: 2px 6px; border-radi
 /* Coordinator report */
 #coordinator { margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--line); }
 
-/* Month filters: a row of pills that scrolls sideways */
-.pills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
-.pills button {
-  flex-shrink: 0;
+/* A month picker with access to the full attendance history. */
+.report-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; }
+.report-controls label { display: grid; gap: 4px; }
+.report-controls input {
   font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text);
-  background: var(--soft);
-  border: none;
-  border-radius: 999px;
-  padding: 10px 16px;
+  color: var(--ink);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
   min-height: 44px;
-  cursor: pointer;
 }
-.pills button:hover { color: var(--ink); }
-.pills button[aria-pressed="true"] { background: var(--ink); color: var(--white); }
 
 .people { list-style: none; margin: 16px 0 24px; padding: 0; }
 .people li { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
@@ -168,6 +163,4 @@ code { color: var(--ink); background: var(--soft); padding: 2px 6px; border-radi
 @media (min-width: 640px) {
   header { padding: 16px 32px; }
   .hero { padding-top: 88px; }
-  /* A mouse can't swipe, so on bigger screens every month shows at once. */
-  .pills { flex-wrap: wrap; overflow: visible; }
 }

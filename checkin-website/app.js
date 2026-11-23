@@ -5,29 +5,53 @@ import * as supabase from "./supabase.js";
 
 const $ = (id) => document.getElementById(id);
 let report = { month: "", rows: [] };
+let reportRequest = 0;
+let refreshing = false;
+let checkingIn = false;
 
 $("sign-in").onclick = supabase.signIn;
 $("check-in").onclick = checkIn;
 $("download").onclick = download;
+$("view-report").onclick = showReport;
+$("month").oninput = () => {
+  reportRequest++;
+  $("report-area").hidden = true;
+};
 $("sign-out").onclick = async () => {
   await supabase.signOut();
   location.reload();
 };
 
-// The Back button can show an old copy of this page. Reload to be current.
-addEventListener("pageshow", (event) => event.persisted && location.reload());
+// Refresh on return, without resetting the admin's selected report month.
+const resume = () => !document.hidden && start();
+addEventListener("focus", resume);
+document.addEventListener("visibilitychange", resume);
+addEventListener("pageshow", (event) => event.persisted && resume());
 
 start();
 
 async function start() {
   if (SUPABASE_URL.includes("YOUR-PROJECT")) return show("setup");
+  if (refreshing || checkingIn) return;
 
+  refreshing = true;
+  $("check-in").disabled = true;
+  $("problem").hidden = true;
+  $("retry").hidden = true;
+  if ($("signed-in").hidden) show("loading");
   try {
     supabase.finishSignIn();
-    if (!supabase.isSignedIn()) return show("signed-out");
+    if (!supabase.isSignedIn()) {
+      $("sign-out").hidden = true;
+      return show("signed-out");
+    }
     showStatus(await supabase.call("my_status"));
   } catch (error) {
-    problem(error, "Couldn't load the page");
+    $("signed-in").hidden = true;
+    problem(error, "Couldn't load the page", start);
+  } finally {
+    refreshing = false;
+    $("check-in").disabled = false;
   }
 }
 
@@ -45,45 +69,46 @@ function showStatus(me) {
   $("this-month").textContent =
     `${me.days_this_month} ${me.days_this_month === 1 ? "day" : "days"} this month`;
 
-  if (me.is_coordinator && !$("months").hasChildNodes()) addMonths(me.today);
+  $("month").max = me.today.slice(0, 7);
+  if (!$("month").value) $("month").value = $("month").max;
   show("signed-in", me.is_coordinator && "coordinator");
   $("sign-out").hidden = false;
 }
 
 async function checkIn() {
+  if (refreshing || checkingIn) return;
+  checkingIn = true;
   $("check-in").disabled = true;
   $("problem").hidden = true;
+  $("retry").hidden = true;
   try {
     showStatus(await supabase.call("check_in"));
   } catch (error) {
     problem(error, "Check-in didn't go through");
-  }
-  $("check-in").disabled = false;
-}
-
-// Month pills: this month and the 11 before it. Tapping one shows its report.
-function addMonths(today) {
-  const [year, month] = today.split("-").map(Number);
-  for (let back = 0; back < 12; back++) {
-    const first = new Date(year, month - 1 - back, 1);
-    const button = document.createElement("button");
-    button.type = "button";
-    button.textContent = first.toLocaleDateString([], { month: "short", year: "numeric" });
-    button.dataset.month = `${first.getFullYear()}-${String(first.getMonth() + 1).padStart(2, "0")}-01`;
-    button.setAttribute("aria-pressed", "false");
-    button.onclick = () => showReport(button);
-    $("months").append(button);
+  } finally {
+    checkingIn = false;
+    $("check-in").disabled = false;
   }
 }
 
-async function showReport(button) {
+async function showReport() {
+  const input = $("month");
+  // Also validate browsers that display month inputs as plain text.
+  input.setCustomValidity(/^\d{4}-(0[1-9]|1[0-2])$/.test(input.value)
+    && input.value >= "0001-01" && input.value <= input.max ? "" : "Choose a month up to this month (YYYY-MM).");
+  if (!input.reportValidity()) return;
+  const month = input.value + "-01";
+  const request = ++reportRequest;
   $("problem").hidden = true;
-  for (const pill of $("months").children) pill.setAttribute("aria-pressed", pill === button);
+  $("retry").hidden = true;
+  $("report-area").hidden = true;
   try {
-    const month = button.dataset.month;
-    report = { month, rows: await supabase.call("monthly_report", { month_start: month }) };
+    const rows = await supabase.call("monthly_report", { month_start: month });
+    if (request !== reportRequest) return;
+    report = { month, rows };
   } catch (error) {
-    return problem(error, "Couldn't load the report");
+    if (request === reportRequest) problem(error, "Couldn't load the report", showReport);
+    return;
   }
 
   const checkIns = report.rows.reduce((sum, row) => sum + row.days, 0);
@@ -116,6 +141,7 @@ function element(tag, className, text) {
 
 // Save the report as a CSV file, which Excel and Google Sheets open.
 function download() {
+  if ($("report-area").hidden) return;
   const lines = [["Name", "Email", "Days", "Dates"]]
     .concat(report.rows.map((row) => [row.name, row.email, row.days, row.dates]));
   const csv = lines.map((line) => line.map(csvCell).join(",")).join("\r\n");
@@ -140,13 +166,16 @@ function show(...names) {
   }
 }
 
-function problem(error, what) {
+function problem(error, what, retry) {
   console.error(error);
   $("loading").hidden = true;
-  if (error instanceof supabase.SignedOut) {
+  const signedOut = error instanceof supabase.SignedOut || !supabase.isSignedIn();
+  if (signedOut) {
     show("signed-out");
     $("sign-out").hidden = true;
   }
+  $("retry").hidden = signedOut || !retry;
+  $("retry").onclick = retry;
   const why =
     error.name === "TimeoutError" ? "the connection is too slow"
     : error instanceof TypeError ? "no internet connection"  // how fetch() reports being offline

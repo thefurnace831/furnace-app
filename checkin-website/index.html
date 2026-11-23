@@ -56,15 +56,19 @@
 
     <section id="coordinator" hidden>
       <h2>Monthly report</h2>
-      <div id="months" class="pills"></div>
+      <div class="report-controls">
+        <label>Month <input id="month" type="month" min="0001-01" required placeholder="YYYY-MM"></label>
+        <button id="view-report" class="pill light" type="button">View report</button>
+      </div>
       <div id="report-area" hidden>
         <p id="report-total" class="muted"></p>
         <ul id="report" class="people"></ul>
-        <button id="download" class="pill dark" type="button">Download spreadsheet</button>
+        <button id="download" class="pill dark" type="button">Download CSV</button>
       </div>
     </section>
 
     <p id="problem" role="alert" hidden></p>
+    <button id="retry" class="pill dark" type="button" hidden>Try again</button>
   </main>
 
   <footer class="footer"><a href="privacy.html">Privacy</a></footer>
